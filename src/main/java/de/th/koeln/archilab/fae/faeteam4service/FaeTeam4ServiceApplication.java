@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class FaeTeam4ServiceApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(FaeTeam4ServiceApplication.class, args);
-	}
+  public static void main(String[] args) {
+    SpringApplication.run(FaeTeam4ServiceApplication.class, args);
+  }
 
 }
