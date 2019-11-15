@@ -46,7 +46,7 @@ public class Position {
 
     double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
-    double distance = radiusOfEarth * c * 1000; // convert to meters
+    double distance = radiusOfEarth * c * 1000;
 
     distance = Math.pow(distance, 2);
     return new DistanceInMeters(distance);
