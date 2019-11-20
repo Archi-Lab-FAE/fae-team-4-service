@@ -33,7 +33,7 @@ public class Position {
   public DistanceInMeters getDistanceInMetersTo(final Position otherPosition) {
     GeodeticCurve geodeticCurve = getGeodeticCurve(this, otherPosition);
 
-    Double tempDistanceInMeters = Double.valueOf(geodeticCurve.getEllipsoidalDistance());
+    double tempDistanceInMeters = geodeticCurve.getEllipsoidalDistance();
 
     return new DistanceInMeters(tempDistanceInMeters);
   }
@@ -41,14 +41,14 @@ public class Position {
   private GeodeticCurve getGeodeticCurve(final Position thisPosition,
       final Position otherPosition) {
     GeodeticCalculator geoCalc = new GeodeticCalculator();
-    Double elevation = Double.valueOf(0.0);
+    double elevation = 0.0;
     Ellipsoid representingModelOfEarth = Ellipsoid.WGS84;
 
-    Double otherBreitengrad = Double.valueOf(otherPosition.breitengrad.getBreitengrad());
-    Double otherLaengengrad = Double.valueOf(otherPosition.laengengrad.getLaengengrad());
+    double otherBreitengrad = otherPosition.breitengrad.getBreitengrad();
+    double otherLaengengrad = otherPosition.laengengrad.getLaengengrad();
 
-    Double thisBreitengrad = Double.valueOf(thisPosition.breitengrad.getBreitengrad());
-    Double thisLaengengrad = Double.valueOf(thisPosition.laengengrad.getLaengengrad());
+    double thisBreitengrad = thisPosition.breitengrad.getBreitengrad();
+    double thisLaengengrad = thisPosition.laengengrad.getLaengengrad();
 
     GlobalPosition thisGlobalPosition = new GlobalPosition(thisBreitengrad, thisLaengengrad,
         elevation);
