@@ -10,7 +10,7 @@ public class PersonenServiceTest {
 
 
   @Test
-  public void givenTwoPositionsTheCorespondingDistanceInMetersShouldBeReturned() {
+  public void givenTwoPositionsTheCorrespondingDistanceInMetersShouldBeReturned() {
     Position bahnhofKoelnMesse = getPositionFromLatitudeAndLongitude(50.9417015, 6.9738248);
     Position deutzerFreiheit = getPositionFromLatitudeAndLongitude(50.93684, 6.97523);
     DistanceInMeters expectedDistanceBetweenBahnhofKoelnMesseAndDeutzerFreiheit =
