@@ -11,5 +11,5 @@ class Laengengrad {
   @Getter
   @Setter
   @NonNull
-  private double laegengrad;
+  private double laengengrad;
 }

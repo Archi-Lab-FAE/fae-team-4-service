@@ -5,50 +5,57 @@ import java.util.UUID;
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
 import javax.persistence.Id;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+import org.gavaghan.geodesy.Ellipsoid;
+import org.gavaghan.geodesy.GeodeticCalculator;
+import org.gavaghan.geodesy.GeodeticCurve;
+import org.gavaghan.geodesy.GlobalPosition;
 
 @Embeddable
+@AllArgsConstructor
 public class Position {
 
   @Id
   UUID id;
 
   @Embedded
-  private Laengengrad laengengrad;
-
-  @Embedded
+  @Getter
+  @Setter
   private Breitengrad breitengrad;
 
+  @Embedded
+  @Getter
+  @Setter
+  private Laengengrad laengengrad;
+
   public DistanceInMeters getDistanceInMetersTo(final Position otherPosition) {
-    double thisLaengengrad = laengengrad.getLaegengrad();
-    double thisBreitengrad = breitengrad.getBreitengrad();
+    GeodeticCurve geodeticCurve = getGeodeticCurve(this, otherPosition);
 
-    double otherLaengengrad = otherPosition.laengengrad.getLaegengrad();
-    double otherBreitengrad = otherPosition.breitengrad.getBreitengrad();
+    Double tempDistanceInMeters = Double.valueOf(geodeticCurve.getEllipsoidalDistance());
 
-    double latDistance = Math.toRadians(otherLaengengrad - thisLaengengrad);
-    double lonDistance = Math.toRadians(otherBreitengrad - thisBreitengrad);
-
-    DistanceInMeters distanceInMeters = calculateDistanceInMeters(otherLaengengrad, latDistance,
-        lonDistance);
-
-    return distanceInMeters;
+    return new DistanceInMeters(tempDistanceInMeters);
   }
 
-  private DistanceInMeters calculateDistanceInMeters(double otherLaengengrad, double latDistance,
-      double lonDistance) {
+  private GeodeticCurve getGeodeticCurve(final Position thisPosition,
+      final Position otherPosition) {
+    GeodeticCalculator geoCalc = new GeodeticCalculator();
+    Double elevation = Double.valueOf(0.0);
+    Ellipsoid representingModelOfEarth = Ellipsoid.WGS84;
 
-    final int radiusOfEarth = 6371;
-    double thisLaengengrad = laengengrad.getLaegengrad();
+    Double otherBreitengrad = Double.valueOf(otherPosition.breitengrad.getBreitengrad());
+    Double otherLaengengrad = Double.valueOf(otherPosition.laengengrad.getLaengengrad());
 
-    double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
-        + Math.cos(Math.toRadians(thisLaengengrad)) * Math.cos(Math.toRadians(otherLaengengrad))
-        * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
+    Double thisBreitengrad = Double.valueOf(thisPosition.breitengrad.getBreitengrad());
+    Double thisLaengengrad = Double.valueOf(thisPosition.laengengrad.getLaengengrad());
 
-    double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    GlobalPosition thisGlobalPosition = new GlobalPosition(thisBreitengrad, thisLaengengrad,
+        elevation);
+    GlobalPosition otherGlobalPosition = new GlobalPosition(otherBreitengrad, otherLaengengrad,
+        elevation);
 
-    double distance = radiusOfEarth * c * 1000;
-
-    distance = Math.pow(distance, 2);
-    return new DistanceInMeters(distance);
+    return geoCalc.calculateGeodeticCurve(representingModelOfEarth,
+        otherGlobalPosition, thisGlobalPosition);
   }
 }
