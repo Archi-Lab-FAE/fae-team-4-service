@@ -35,11 +35,11 @@ public class PersonenServiceTest {
 
   private void assertDistanceInMetersBetweenTwoPositions(final Position thisPosition,
       final Position otherPosition, final DistanceInMeters expectedDistanceInMeters) {
-    double delta = 0.0;
+    double toleratedDelta = 0.001;
 
     DistanceInMeters actualDistanceInMeters = thisPosition.getDistanceInMetersTo(otherPosition);
     assertEquals(expectedDistanceInMeters.getDistance(), actualDistanceInMeters.getDistance(),
-        delta);
+        toleratedDelta);
   }
 
   private Position getPositionFromLatitudeAndLongitude(final double latitude,
