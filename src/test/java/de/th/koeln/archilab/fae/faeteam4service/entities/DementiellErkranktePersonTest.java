@@ -11,7 +11,7 @@ public class DementiellErkranktePersonTest {
 
     @Test
     public void dementiellErkranktePersonShouldCreateCorrectHilferuf() {
-        DementiellErkranktePerson dementiellErkranktePerson = new DementiellErkranktePerson();
+        DementiellErkranktePerson dementiellErkranktePerson = new DementiellErkranktePerson(TEST_ID, null, null);
         dementiellErkranktePerson.setId(TEST_ID);
 
         AlarmknopfHilferuf createdHilferuf = dementiellErkranktePerson.createAlarmknopfHilferuf();

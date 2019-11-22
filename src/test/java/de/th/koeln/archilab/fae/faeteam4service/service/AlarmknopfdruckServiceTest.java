@@ -2,7 +2,6 @@ package de.th.koeln.archilab.fae.faeteam4service.service;
 
 import static org.mockito.Mockito.when;
 
-import de.th.koeln.archilab.fae.faeteam4service.DementiellErkranktePersonenService;
 import de.th.koeln.archilab.fae.faeteam4service.entities.AlarmknopfRepository;
 import de.th.koeln.archilab.fae.faeteam4service.entities.Alarmknopfdruck;
 import de.th.koeln.archilab.fae.faeteam4service.entities.DementiellErkranktePersonRepository;

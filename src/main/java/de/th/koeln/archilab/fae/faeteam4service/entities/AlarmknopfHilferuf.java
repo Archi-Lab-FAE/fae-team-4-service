@@ -4,10 +4,10 @@ import lombok.Getter;
 
 public class AlarmknopfHilferuf {
 
-    @Getter
-    private String dementiellErkranktePersonId;
+  @Getter
+  private String dementiellErkranktePersonId;
 
-    AlarmknopfHilferuf(String dementiellErkranktePersonId) {
-        this.dementiellErkranktePersonId = dementiellErkranktePersonId;
-    }
+  AlarmknopfHilferuf(String dementiellErkranktePersonId) {
+    this.dementiellErkranktePersonId = dementiellErkranktePersonId;
+  }
 }
