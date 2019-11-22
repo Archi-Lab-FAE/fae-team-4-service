@@ -23,7 +23,7 @@ public class KnopfdruckService {
     }
 
     /**
-     * Handels a Knopfdruck and created Hilferufe if there are DementiellErkranktePersonen nearby the Alarmknopf.
+     * Handles a Knopfdruck and created Hilferufe if there are DementiellErkranktePersonen nearby the Alarmknopf.
      *
      * @param alarmKnopfId KnopfId
      */

@@ -15,11 +15,11 @@ public class Alarmknopf {
   @Getter
   @Setter
   @NonNull
-  String id;
+  private String id;
 
   @Embedded
   @Getter
   @Setter
   @NonNull
-  Position position;
+  private Position position;
 }

@@ -15,14 +15,16 @@ public class DementiellErkranktePerson {
     @Id
     @Getter
     @Setter
-    String id;
+    private String id;
 
-    String trackerId;
+    @Getter
+    @Setter
+    private String trackerId;
 
     @Embedded
     @Getter
     @Setter
-    Position position;
+    private Position position;
 
     public AlarmknopfHilferuf createAlarmknopfHilferuf(){
         return new AlarmknopfHilferuf(id);

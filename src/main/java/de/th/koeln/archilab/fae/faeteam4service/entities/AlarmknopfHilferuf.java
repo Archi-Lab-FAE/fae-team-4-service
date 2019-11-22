@@ -7,7 +7,7 @@ public class AlarmknopfHilferuf {
     @Getter
     private String dementiellErkranktePersonId;
 
-    public AlarmknopfHilferuf(String dementiellErkranktePersonId) {
+    AlarmknopfHilferuf(String dementiellErkranktePersonId) {
         this.dementiellErkranktePersonId = dementiellErkranktePersonId;
     }
 }
