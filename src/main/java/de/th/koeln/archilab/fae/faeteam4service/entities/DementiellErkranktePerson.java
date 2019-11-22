@@ -10,7 +10,7 @@ import lombok.NonNull;
 import lombok.Setter;
 
 @Entity
-public class Person {
+public class DementiellErkranktePerson {
 
   @Id
   String id;

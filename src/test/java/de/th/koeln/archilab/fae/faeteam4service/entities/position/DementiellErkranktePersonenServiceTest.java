@@ -6,7 +6,7 @@ import de.th.koeln.archilab.fae.faeteam4service.domain.DistanceInMeters;
 import java.util.UUID;
 import org.junit.Test;
 
-public class PersonenServiceTest {
+public class DementiellErkranktePersonenServiceTest {
 
 
   @Test

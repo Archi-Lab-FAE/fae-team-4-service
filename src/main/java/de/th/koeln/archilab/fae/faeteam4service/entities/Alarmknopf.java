@@ -9,7 +9,7 @@ import lombok.NonNull;
 import lombok.Setter;
 
 @Entity
-public class Knopf {
+public class Alarmknopf {
 
   @Id
   @Getter
