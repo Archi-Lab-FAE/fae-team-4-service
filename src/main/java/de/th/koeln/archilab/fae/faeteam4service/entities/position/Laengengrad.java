@@ -6,7 +6,7 @@ import lombok.NonNull;
 import lombok.Setter;
 
 @Embeddable
-class Laengengrad {
+public class Laengengrad {
 
   @Getter
   @Setter
