@@ -9,14 +9,14 @@ import java.util.Optional;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-public class AlarmknopfDruckServiceTest {
+public class AlarmknopfdruckServiceTest {
 
   private KnopfdruckService knopfdruckService;
   private AlarmknopfRepository mockAlarmknopfRepository;
   private DementiellErkranktePersonRepository mockDementiellErkranktePersonRepository;
   private DementiellErkranktePersonenService dementiellErkranktePersonenService;
 
-  public AlarmknopfDruckServiceTest(){
+  public AlarmknopfdruckServiceTest(){
     mockAlarmknopfRepository = Mockito.mock(AlarmknopfRepository.class);
     mockDementiellErkranktePersonRepository = Mockito.mock(DementiellErkranktePersonRepository.class);
 
@@ -32,7 +32,7 @@ public class AlarmknopfDruckServiceTest {
     when(mockAlarmknopfRepository.findById(givenId))
         .thenReturn(Optional.empty());
 
-    knopfdruckService.handleKnopfdruck(givenId);
+    knopfdruckService.handleAlarmknopfdruck(givenId);
 
   }
 }

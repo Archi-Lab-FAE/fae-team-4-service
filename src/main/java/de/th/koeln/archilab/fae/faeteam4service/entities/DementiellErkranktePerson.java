@@ -12,13 +12,19 @@ import lombok.Setter;
 @Entity
 public class DementiellErkranktePerson {
 
-  @Id
-  String id;
+    @Id
+    @Getter
+    @Setter
+    String id;
 
-  String trackerId;
+    String trackerId;
 
-  @Embedded
-  @Getter
-  @Setter
-  Position position;
+    @Embedded
+    @Getter
+    @Setter
+    Position position;
+
+    public AlarmknopfHilferuf createAlarmknopfHilferuf(){
+        return new AlarmknopfHilferuf(id);
+    }
 }
