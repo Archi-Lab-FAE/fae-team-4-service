@@ -1,6 +1,5 @@
 package de.th.koeln.archilab.fae.faeteam4service.entities;
 
-import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -13,7 +12,7 @@ public class DementiellErkranktePersonTest {
     @Test
     public void dementiellErkranktePersonShouldCreateCorrectHilferuf() {
         DementiellErkranktePerson dementiellErkranktePerson = new DementiellErkranktePerson();
-        dementiellErkranktePerson.id = TEST_ID;
+        dementiellErkranktePerson.setId(TEST_ID);
 
         AlarmknopfHilferuf createdHilferuf = dementiellErkranktePerson.createAlarmknopfHilferuf();
 
