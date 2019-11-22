@@ -50,6 +50,6 @@ public class PersonenServiceTest {
     Laengengrad laengengrad = new Laengengrad();
     laengengrad.setLaengengrad(longitude);
 
-    return new Position(new UUID(0, 0), breitengrad, laengengrad);
+    return new Position(breitengrad, laengengrad);
   }
 }

@@ -4,7 +4,7 @@ import de.th.koeln.archilab.fae.faeteam4service.domain.DistanceInMeters;
 import de.th.koeln.archilab.fae.faeteam4service.entities.Knopf;
 import de.th.koeln.archilab.fae.faeteam4service.entities.Person;
 import de.th.koeln.archilab.fae.faeteam4service.entities.PersonRepository;
-import de.th.koeln.archilab.fae.faeteam4service.entities.position.PersonPosition;
+
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.stereotype.Service;
@@ -33,7 +33,6 @@ public class PersonenService {
   }
 
   private DistanceInMeters getDistanceInMeters(Knopf knopf, Person person) {
-    PersonPosition personPosition = person.getPersonPosition();
-    return knopf.getPosition().getDistanceInMetersTo(personPosition.getPosition());
+    return knopf.getPosition().getDistanceInMetersTo(person.getPosition());
   }
 }

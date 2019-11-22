@@ -17,9 +17,6 @@ import org.gavaghan.geodesy.GlobalPosition;
 @AllArgsConstructor
 public class Position {
 
-  @Id
-  UUID id;
-
   @Embedded
   @Getter
   @Setter

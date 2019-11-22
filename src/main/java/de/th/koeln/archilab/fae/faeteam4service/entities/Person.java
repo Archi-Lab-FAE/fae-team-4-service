@@ -1,9 +1,10 @@
 package de.th.koeln.archilab.fae.faeteam4service.entities;
 
-import de.th.koeln.archilab.fae.faeteam4service.entities.position.PersonPosition;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+
+import de.th.koeln.archilab.fae.faeteam4service.entities.position.Position;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -19,6 +20,5 @@ public class Person {
   @Embedded
   @Getter
   @Setter
-  @NonNull
-  PersonPosition personPosition;
+  Position position;
 }
