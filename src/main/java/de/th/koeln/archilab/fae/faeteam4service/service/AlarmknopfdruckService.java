@@ -6,6 +6,7 @@ import de.th.koeln.archilab.fae.faeteam4service.entities.Alarmknopfdruck;
 import de.th.koeln.archilab.fae.faeteam4service.entities.DementiellErkranktePerson;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -13,11 +14,17 @@ public class AlarmknopfdruckService {
 
   private final AlarmknopfRepository alarmknopfRepository;
   private final DementiellErkranktePersonenService dementiellErkranktePersonenService;
+  private final KafkaTemplate<String, List> kafkaTemplate;
+
+  private static final String KAFKA_TOPIC = "Alarmmeldung";
 
   public AlarmknopfdruckService(final AlarmknopfRepository alarmknopfRepository,
-      final DementiellErkranktePersonenService dementiellErkranktePersonenService) {
+      final DementiellErkranktePersonenService dementiellErkranktePersonenService,
+      final KafkaTemplate<String, List> kafkaTemplate) {
+
     this.alarmknopfRepository = alarmknopfRepository;
     this.dementiellErkranktePersonenService = dementiellErkranktePersonenService;
+    this.kafkaTemplate = kafkaTemplate;
   }
 
   /**
@@ -37,7 +44,7 @@ public class AlarmknopfdruckService {
         .map(DementiellErkranktePerson::createAlarmknopfHilferuf)
         .collect(Collectors.toList());
 
-    //TODO: publish createdHilferufe here
+    kafkaTemplate.send(KAFKA_TOPIC, createdHilferufe);
   }
 
 
