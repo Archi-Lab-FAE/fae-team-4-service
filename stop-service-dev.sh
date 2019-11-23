@@ -6,7 +6,7 @@ CURRENT="$(
 )"
 
 # start service
-docker-compose -p shop \
+docker-compose -p team4service \
   -f "$CURRENT/src/main/docker/docker-compose.yml" \
   -f "$CURRENT/src/main/docker/docker-compose.dev.yml" \
   down

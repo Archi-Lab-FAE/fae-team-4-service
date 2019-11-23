@@ -4,7 +4,7 @@ services:
   postgres:
     image: postgres:10.1
     volumes:
-      - shop_demo_db:/var/lib/postgresql/data
+      - fae-team-4-service_db:/var/lib/postgresql/data
     environment:
       - POSTGRES_PASSWORD=_FAE_DeMO_MS_2019
       - POSTGRES_USER=shop_demo
@@ -27,7 +27,7 @@ services:
       - fae_backend
 
 volumes:
-  shop_demo_db: {}
+  fae-team-4-service_db: {}
 
 networks:
   service_internal:
