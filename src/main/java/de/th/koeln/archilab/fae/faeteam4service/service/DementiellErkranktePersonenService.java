@@ -1,6 +1,5 @@
 package de.th.koeln.archilab.fae.faeteam4service.service;
 
-import de.th.koeln.archilab.fae.faeteam4service.domain.DistanceInMeters;
 import de.th.koeln.archilab.fae.faeteam4service.entities.Alarmknopf;
 import de.th.koeln.archilab.fae.faeteam4service.entities.DementiellErkranktePerson;
 import de.th.koeln.archilab.fae.faeteam4service.entities.DementiellErkranktePersonRepository;
@@ -25,13 +24,7 @@ public class DementiellErkranktePersonenService {
     Iterable<DementiellErkranktePerson> allPersonen = dementiellErkranktePersonRepository.findAll();
     return StreamSupport.stream(allPersonen.spliterator(), false)
         .filter(
-            (person) ->
-                getDistanceInMetersBetween(alarmknopf, person).getDistance() <= radiusInMeters)
+            (person) -> person.isInProximityOfPosition(alarmknopf.getPosition(), radiusInMeters))
         .collect(Collectors.toList());
-  }
-
-  private DistanceInMeters getDistanceInMetersBetween(
-      Alarmknopf alarmknopf, DementiellErkranktePerson dementiellErkranktePerson) {
-    return alarmknopf.getPosition().getDistanceInMetersTo(dementiellErkranktePerson.getPosition());
   }
 }
