@@ -29,7 +29,7 @@ public class DementiellErkranktePersonTest {
 
   @Test
   public void shouldBeNotInProximityOfPositionIfNoPositionIsSaved() {
-    Position otherPosition = new Position(new Breitengrad(), new Laengengrad());
+    Position otherPosition = new Position(0,0);
 
     boolean isPersonInProximity =
         dementiellErkranktePerson.isInProximityOfPosition(otherPosition, 1.0);
@@ -39,7 +39,7 @@ public class DementiellErkranktePersonTest {
 
   @Test
   public void shouldBeInProximityIfPositionsAreNearEnough() {
-    Position position = new Position(new Breitengrad(), new Laengengrad());
+    Position position = new Position(0,0);
     dementiellErkranktePerson.setPosition(position);
 
     boolean isPersonInProximity = dementiellErkranktePerson.isInProximityOfPosition(position, 1.0);
@@ -49,11 +49,10 @@ public class DementiellErkranktePersonTest {
 
   @Test
   public void shouldNotBeInProximityOfPositionThatsTooFarAway() {
-    Position position = new Position(new Breitengrad(), new Laengengrad());
+    Position position = new Position(0,0);
     dementiellErkranktePerson.setPosition(position);
 
-    Position positionThatIsTooFarAway = new Position(new Breitengrad(), new Laengengrad());
-    positionThatIsTooFarAway.getBreitengrad().setBreitengrad(10);
+    Position positionThatIsTooFarAway = new Position(10,10);
 
     boolean isPersonInProximity =
         dementiellErkranktePerson.isInProximityOfPosition(positionThatIsTooFarAway, 1.0);
