@@ -101,10 +101,10 @@ public class DementiellErkranktePersonenServiceTest {
   private Position getPositionFromLatitudeAndLongitude(
       final double latitude, final double longitude) {
     Breitengrad breitengrad = new Breitengrad();
-    breitengrad.setBreitengrad(latitude);
+    breitengrad.setBreitengradVal(latitude);
 
     Laengengrad laengengrad = new Laengengrad();
-    laengengrad.setLaengengrad(longitude);
+    laengengrad.setLaengengradVal(longitude);
 
     return new Position(breitengrad, laengengrad);
   }

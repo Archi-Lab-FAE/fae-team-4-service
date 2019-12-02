@@ -1,6 +1,6 @@
 package de.th.koeln.archilab.fae.faeteam4service.config;
 
-import de.th.koeln.archilab.fae.faeteam4service.entities.external.DementiellErkranktePerson;
+import de.th.koeln.archilab.fae.faeteam4service.dto.DementiellErkranktePersonDto;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,6 +8,7 @@ import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafka;
@@ -22,15 +23,19 @@ import org.springframework.kafka.support.serializer.JsonSerializer;
 
 @EnableKafka
 @Configuration
-public class Kafka {
+public class KafkaConfig {
 
-  private static final String KAFKA_SERVER_ADRESS = "10.0.0.1:9092"; //TODO set adress
+  @Value("${spring.kafka.bootstrap-servers}")
+  private String serverAdress;
+
+  @Value("${spring.kafka.group-id}")
+  private String groupId;
 
   @Bean
   public ProducerFactory<String, List> producerFactory() {
     Map<String, Object> config = new HashMap<>();
 
-    config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, KAFKA_SERVER_ADRESS);
+    config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, serverAdress);
     config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
     config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
 
@@ -48,8 +53,8 @@ public class Kafka {
   public ConsumerFactory<String, String> consumerFactory() {
     Map<String, Object> config = new HashMap<>();
 
-    config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, KAFKA_SERVER_ADRESS);
-    config.put(ConsumerConfig.GROUP_ID_CONFIG, "group_id");
+    config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, serverAdress);
+    config.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
     config.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
     config.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
 
@@ -65,23 +70,23 @@ public class Kafka {
   }
 
   @Bean
-  public ConsumerFactory<String, DementiellErkranktePerson>
+  public ConsumerFactory<String, DementiellErkranktePersonDto>
       dementiellErkranktePersonConsumerFactory() {
     Map<String, Object> config = new HashMap<>();
 
-    config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "127.0.0.1:9092");
-    config.put(ConsumerConfig.GROUP_ID_CONFIG, "group_id");
+    config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, serverAdress);
+    config.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
     config.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
     config.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
     return new DefaultKafkaConsumerFactory<>(config, new StringDeserializer(),
-        new JsonDeserializer<>(DementiellErkranktePerson.class));
+        new JsonDeserializer<>(DementiellErkranktePersonDto.class));
   }
 
   @Bean
-  public ConcurrentKafkaListenerContainerFactory<String, DementiellErkranktePerson>
+  public ConcurrentKafkaListenerContainerFactory<String, DementiellErkranktePersonDto>
       dementiellErkranktePersonKafkaListenerFactory() {
 
-    ConcurrentKafkaListenerContainerFactory<String, DementiellErkranktePerson> factory =
+    ConcurrentKafkaListenerContainerFactory<String, DementiellErkranktePersonDto> factory =
         new ConcurrentKafkaListenerContainerFactory<>();
 
     factory.setConsumerFactory(dementiellErkranktePersonConsumerFactory());

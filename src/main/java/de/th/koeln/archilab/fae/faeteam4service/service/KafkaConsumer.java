@@ -1,7 +1,5 @@
 package de.th.koeln.archilab.fae.faeteam4service.service;
 
-import de.th.koeln.archilab.fae.faeteam4service.entities.external.DementiellErkranktePerson;
-import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
 @Service

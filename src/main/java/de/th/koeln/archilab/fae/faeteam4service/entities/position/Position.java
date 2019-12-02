@@ -1,24 +1,31 @@
 package de.th.koeln.archilab.fae.faeteam4service.entities.position;
 
 import de.th.koeln.archilab.fae.faeteam4service.domain.DistanceInMeters;
+import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.gavaghan.geodesy.Ellipsoid;
 import org.gavaghan.geodesy.GeodeticCalculator;
 import org.gavaghan.geodesy.GeodeticCurve;
 import org.gavaghan.geodesy.GlobalPosition;
 
-import javax.persistence.Embeddable;
-import javax.persistence.Embedded;
-
 @Embeddable
 @AllArgsConstructor
+@NoArgsConstructor
 public class Position {
 
-  @Embedded @Getter @Setter private Breitengrad breitengrad;
+  @Embedded
+  @Getter
+  @Setter
+  private Breitengrad breitengrad;
 
-  @Embedded @Getter @Setter private Laengengrad laengengrad;
+  @Embedded
+  @Getter
+  @Setter
+  private Laengengrad laengengrad;
 
   public Position(double laengengrad, double breitengrad) {
     this.laengengrad = new Laengengrad(laengengrad);
@@ -39,11 +46,11 @@ public class Position {
     double elevation = 0.0;
     Ellipsoid representingModelOfEarth = Ellipsoid.WGS84;
 
-    double otherBreitengrad = otherPosition.breitengrad.getBreitengrad();
-    double otherLaengengrad = otherPosition.laengengrad.getLaengengrad();
+    double otherBreitengrad = otherPosition.breitengrad.getBreitengradVal();
+    double otherLaengengrad = otherPosition.laengengrad.getLaengengradVal();
 
-    double thisBreitengrad = thisPosition.breitengrad.getBreitengrad();
-    double thisLaengengrad = thisPosition.laengengrad.getLaengengrad();
+    double thisBreitengrad = thisPosition.breitengrad.getBreitengradVal();
+    double thisLaengengrad = thisPosition.laengengrad.getLaengengradVal();
 
     GlobalPosition thisGlobalPosition =
         new GlobalPosition(thisBreitengrad, thisLaengengrad, elevation);

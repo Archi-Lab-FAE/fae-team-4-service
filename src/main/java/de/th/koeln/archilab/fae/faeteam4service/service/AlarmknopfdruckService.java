@@ -33,9 +33,9 @@ public class AlarmknopfdruckService {
    *
    * @param alarmknopfdruck alarmknopfdruck
    */
-  void handleAlarmknopfdruck(final Alarmknopfdruck alarmknopfdruck) {
+  public void handleAlarmknopfdruck(final Alarmknopfdruck alarmknopfdruck) {
     Alarmknopf pressedAlarmknopf = alarmknopfRepository.findById(alarmknopfdruck.getAlarmknopfId())
-        .orElseThrow(() -> new IllegalArgumentException("HilfeKnopf not found"));
+        .orElseThrow(() -> new IllegalArgumentException("Alarmknopf not found"));
 
     List<DementiellErkranktePerson> potentiellBetroffeneDementiellErkranktePersonen =
         getPersonenInKnopfProximity(pressedAlarmknopf);

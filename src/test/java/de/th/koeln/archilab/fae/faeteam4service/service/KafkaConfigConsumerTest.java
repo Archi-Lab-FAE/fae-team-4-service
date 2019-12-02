@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-public class KafkaConsumerTest {
+public class KafkaConfigConsumerTest {
 
   @Test
   public void consumeDementiellErkranktePersonTopic() {

@@ -2,24 +2,31 @@ package de.th.koeln.archilab.fae.faeteam4service.entities;
 
 import de.th.koeln.archilab.fae.faeteam4service.domain.DistanceInMeters;
 import de.th.koeln.archilab.fae.faeteam4service.entities.position.Position;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-
+import java.util.Optional;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import java.util.Optional;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @AllArgsConstructor
 public class DementiellErkranktePerson {
 
-  @Id @Getter @Setter private String id;
+  @Id
+  @Getter
+  @Setter
+  private String id;
 
-  @Getter @Setter private String trackerId;
+  @Getter
+  @Setter
+  private String trackerId;
 
-  @Embedded @Getter @Setter private Position position;
+  @Embedded
+  @Getter
+  @Setter
+  private Position position;
 
   public AlarmknopfHilferuf createAlarmknopfHilferuf() {
     return new AlarmknopfHilferuf(id);

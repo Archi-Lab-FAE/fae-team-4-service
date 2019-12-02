@@ -20,21 +20,24 @@ public class AlarmknopfdruckServiceTest {
 
   private KafkaTemplate mockKafkaTemplate;
 
-  private static final String ALARMKNOPF_ID= "someId";
+  private static final String ALARMKNOPF_ID = "someId";
 
-  public AlarmknopfdruckServiceTest(){
+  public AlarmknopfdruckServiceTest() {
     mockAlarmknopfRepository = Mockito.mock(AlarmknopfRepository.class);
-    mockDementiellErkranktePersonRepository = Mockito.mock(DementiellErkranktePersonRepository.class);
+    mockDementiellErkranktePersonRepository = Mockito
+        .mock(DementiellErkranktePersonRepository.class);
     mockKafkaTemplate = Mockito.mock(KafkaTemplate.class);
 
-    dementiellErkranktePersonenService = new DementiellErkranktePersonenService(mockDementiellErkranktePersonRepository);
-    alarmknopfdruckService = new AlarmknopfdruckService(mockAlarmknopfRepository, dementiellErkranktePersonenService, mockKafkaTemplate);
+    dementiellErkranktePersonenService = new DementiellErkranktePersonenService(
+        mockDementiellErkranktePersonRepository);
+    alarmknopfdruckService = new AlarmknopfdruckService(mockAlarmknopfRepository,
+        dementiellErkranktePersonenService, mockKafkaTemplate);
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void givenHandleKnopfdruckIsCalledAndHilfeknopfIsUnknownIllegalArgumentExceptionShouldBeThrown() {
 
-    Alarmknopfdruck alarmknopfdruck= new Alarmknopfdruck(ALARMKNOPF_ID);
+    Alarmknopfdruck alarmknopfdruck = new Alarmknopfdruck(ALARMKNOPF_ID);
 
     when(mockAlarmknopfRepository.findById(ALARMKNOPF_ID))
         .thenReturn(Optional.empty());

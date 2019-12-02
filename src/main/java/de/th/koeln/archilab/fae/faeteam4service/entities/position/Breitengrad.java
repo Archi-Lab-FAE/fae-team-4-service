@@ -13,14 +13,15 @@ public class Breitengrad {
   @Getter
   @Setter
   @NonNull
-  private double breitengrad;
+  private double breitengradVal;
 
-  //TODO: Breiten& Längengrad haben den selben sanity check - zusammenführen? DB update script notwendig?
-  Breitengrad(double breitengrad){
-    if (breitengrad < 0 || breitengrad > 180) {
+  //TODO: Breiten& Längengrad haben den selben sanity check - zusammenführen?
+  // DB update script notwendig?
+  Breitengrad(double breitengradVal) {
+    if (breitengradVal < 0 || breitengradVal > 180) {
       throw new IllegalArgumentException("Breitengrad muss zwischen 0 und 180 liegen.");
     }
 
-    this.breitengrad = breitengrad;
+    this.breitengradVal = breitengradVal;
   }
 }
