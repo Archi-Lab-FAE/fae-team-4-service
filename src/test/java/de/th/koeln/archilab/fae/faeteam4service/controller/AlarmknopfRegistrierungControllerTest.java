@@ -1,10 +1,15 @@
 package de.th.koeln.archilab.fae.faeteam4service.controller;
 
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import de.th.koeln.archilab.fae.faeteam4service.FaeTeam4ServiceApplication;
 import de.th.koeln.archilab.fae.faeteam4service.dto.AlarmknopfDto;
 import de.th.koeln.archilab.fae.faeteam4service.dto.position.PositionDto;
@@ -36,6 +41,8 @@ public class AlarmknopfRegistrierungControllerTest {
   @Autowired
   private AlarmknopfRepository alarmknopfRepository;
 
+  @Autowired
+  private ObjectMapper objectMapper;
   @Test
   public void givenAlarmknopf_whenGetAlarmknoepfe_thenReturnJsonWithAlarmknopfById()
       throws Exception {
@@ -63,5 +70,36 @@ public class AlarmknopfRegistrierungControllerTest {
     laengengrad.setLaengengradVal(longitude);
 
     return new Position(breitengrad, laengengrad);
+  }
+
+  @Test
+  public void givenAlarmknopf_whenDeleteAlarmknopfById_thenRemoveAlarmknopf() throws Exception
+  {
+    String alarmknopfId = "1337";
+    Position position = getPositionFromLatitudeAndLongitude(3.14, 4.13);
+
+    Alarmknopf alarmknopf = new Alarmknopf(alarmknopfId, position);
+    alarmknopfRepository.save(alarmknopf);
+    AlarmknopfDto alarmknopfDto = new AlarmknopfDto(alarmknopfId, new PositionDto());
+
+    mockMvc.perform(delete("/alarmknoepfe/{alarmknopfId}", alarmknopfId)
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk());
+    assertThat( alarmknopfRepository.existsById(alarmknopfId), equalTo(false) );
+  }
+
+  @Test
+  public void givenNone_whenRegisterAlarmknopf_thenReturnJsonWithAlarmknopf() throws Exception
+  {
+    String alarmknopfId = "1337";
+    PositionDto positionDto = new PositionDto(3.14, 4.13);
+    AlarmknopfDto alarmknopfDto = new AlarmknopfDto(alarmknopfId, positionDto);
+
+    mockMvc.perform( post("/alarmknoepfe/").content( objectMapper.writeValueAsString(alarmknopfDto))
+          .contentType(MediaType.APPLICATION_JSON))
+          .andExpect(status().isCreated())
+          .andExpect(jsonPath("$.id", is(alarmknopfDto.getId())))
+          .andExpect(jsonPath("$.position.breitengrad.breitengradVal", is(positionDto.getBreitengrad().getBreitengradVal())))
+          .andExpect(jsonPath("$.position.laengengrad.laengengradVal", is(positionDto.getLaengengrad().getLaengengradVal())));
   }
 }
