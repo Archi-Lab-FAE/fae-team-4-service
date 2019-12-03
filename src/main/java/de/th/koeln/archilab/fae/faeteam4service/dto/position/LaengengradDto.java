@@ -10,6 +10,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class LaengengradDto {
 
-  @Getter @Setter @NonNull private double laengengradVal;
+  @Getter @Setter @NonNull private double laengengradDezimal;
 
 }

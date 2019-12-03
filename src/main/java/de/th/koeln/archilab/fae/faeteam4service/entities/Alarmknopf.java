@@ -21,6 +21,11 @@ public class Alarmknopf {
   @NonNull
   private String id;
 
+  @Getter
+  @Setter
+  @NonNull
+  private String name;
+
   @Embedded
   @Getter
   @Setter

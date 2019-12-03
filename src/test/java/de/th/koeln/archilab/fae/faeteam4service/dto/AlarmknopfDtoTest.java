@@ -24,16 +24,18 @@ public class AlarmknopfDtoTest {
 
     Alarmknopf alarmknopf = new Alarmknopf();
     alarmknopf.setId("1234Id");
+    alarmknopf.setName("myName");
     alarmknopf.setPosition(position);
 
     AlarmknopfDto alarmknopfDto = modelMapper.map(alarmknopf, AlarmknopfDto.class);
 
-    double alarmknopfBreitengrad = alarmknopf.getPosition().getBreitengrad().getBreitengradVal();
-    double alarmknopfLaengengrad = alarmknopf.getPosition().getLaengengrad().getLaengengradVal();
-    double alarmknopfDtoBreitengrad = alarmknopfDto.getPosition().getBreitengrad().getBreitengradVal();
-    double alarmknopfDtoLaengengrad = alarmknopfDto.getPosition().getLaengengrad().getLaengengradVal();
+    double alarmknopfBreitengrad = alarmknopf.getPosition().getBreitengrad().getBreitengradDezimal();
+    double alarmknopfLaengengrad = alarmknopf.getPosition().getLaengengrad().getLaengengradDezimal();
+    double alarmknopfDtoBreitengrad = alarmknopfDto.getPosition().getBreitengrad().getBreitengradDezimal();
+    double alarmknopfDtoLaengengrad = alarmknopfDto.getPosition().getLaengengrad().getLaengengradDezimal();
 
     assertEquals(alarmknopf.getId(), alarmknopfDto.getId());
+    assertEquals(alarmknopf.getName(), alarmknopfDto.getName());
     assertEquals(alarmknopfBreitengrad, alarmknopfDtoBreitengrad, toleratedDelta);
     assertEquals(alarmknopfLaengengrad, alarmknopfDtoLaengengrad, toleratedDelta);
   }
@@ -45,16 +47,18 @@ public class AlarmknopfDtoTest {
 
     AlarmknopfDto alarmknopfDto = new AlarmknopfDto();
     alarmknopfDto.setId("1234Id");
+    alarmknopfDto.setName("myName");
     alarmknopfDto.setPosition(positionDto);
 
     Alarmknopf alarmknopf = modelMapper.map(alarmknopfDto, Alarmknopf.class);
 
-    double alarmknopfDtoBreitengrad = alarmknopfDto.getPosition().getBreitengrad().getBreitengradVal();
-    double alarmknopfDtoLaengengrad = alarmknopfDto.getPosition().getLaengengrad().getLaengengradVal();
-    double alarmknopfBreitengrad = alarmknopf.getPosition().getBreitengrad().getBreitengradVal();
-    double alarmknopfLaengengrad = alarmknopf.getPosition().getLaengengrad().getLaengengradVal();
+    double alarmknopfDtoBreitengrad = alarmknopfDto.getPosition().getBreitengrad().getBreitengradDezimal();
+    double alarmknopfDtoLaengengrad = alarmknopfDto.getPosition().getLaengengrad().getLaengengradDezimal();
+    double alarmknopfBreitengrad = alarmknopf.getPosition().getBreitengrad().getBreitengradDezimal();
+    double alarmknopfLaengengrad = alarmknopf.getPosition().getLaengengrad().getLaengengradDezimal();
 
     assertEquals(alarmknopfDto.getId(), alarmknopf.getId());
+    assertEquals(alarmknopfDto.getName(), alarmknopf.getName());
     assertEquals(alarmknopfDtoBreitengrad, alarmknopfBreitengrad, toleratedDelta);
     assertEquals(alarmknopfDtoLaengengrad, alarmknopfLaengengrad, toleratedDelta);
   }
@@ -62,10 +66,10 @@ public class AlarmknopfDtoTest {
   private Position getPositionFromLatitudeAndLongitude(final double latitude,
       final double longitude) {
     Breitengrad breitengrad = new Breitengrad();
-    breitengrad.setBreitengradVal(latitude);
+    breitengrad.setBreitengradDezimal(latitude);
 
     Laengengrad laengengrad = new Laengengrad();
-    laengengrad.setLaengengradVal(longitude);
+    laengengrad.setLaengengradDezimal(longitude);
 
     return new Position(breitengrad, laengengrad);
   }
@@ -73,10 +77,10 @@ public class AlarmknopfDtoTest {
   private PositionDto getPositionDtoFromLatitudeAndLongitude(final double latitude,
       final double longitude) {
     BreitengradDto breitengrad = new BreitengradDto();
-    breitengrad.setBreitengradVal(latitude);
+    breitengrad.setBreitengradDezimal(latitude);
 
     LaengengradDto laengengrad = new LaengengradDto();
-    laengengrad.setLaengengradVal(longitude);
+    laengengrad.setLaengengradDezimal(longitude);
 
     return new PositionDto(breitengrad, laengengrad);
   }

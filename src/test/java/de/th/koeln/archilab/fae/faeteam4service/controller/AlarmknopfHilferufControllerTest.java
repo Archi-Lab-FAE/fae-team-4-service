@@ -39,9 +39,10 @@ public class AlarmknopfHilferufControllerTest {
   @Test
   public void givenAlarmknopfId_whenHilferufMethodIsCalled_thenReturnHttp200() throws Exception {
     String alarmknopfId = "1337";
+    String alarmknopfName = "myName";
     Position position = getPositionFromLatitudeAndLongitude(3.14, 4.13);
 
-    Alarmknopf alarmknopf = new Alarmknopf(alarmknopfId, position);
+    Alarmknopf alarmknopf = new Alarmknopf(alarmknopfId, alarmknopfName, position);
     alarmknopfRepository.save(alarmknopf);
 
     mockMvc.perform(get("/alarmknoepfe/hilferuf/{alarmknopfId}", alarmknopfId))
@@ -51,10 +52,10 @@ public class AlarmknopfHilferufControllerTest {
   private Position getPositionFromLatitudeAndLongitude(final double latitude,
       final double longitude) {
     Breitengrad breitengrad = new Breitengrad();
-    breitengrad.setBreitengradVal(latitude);
+    breitengrad.setBreitengradDezimal(latitude);
 
     Laengengrad laengengrad = new Laengengrad();
-    laengengrad.setLaengengradVal(longitude);
+    laengengrad.setLaengengradDezimal(longitude);
 
     return new Position(breitengrad, laengengrad);
   }

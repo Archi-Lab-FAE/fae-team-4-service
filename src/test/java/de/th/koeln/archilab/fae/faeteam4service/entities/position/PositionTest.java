@@ -43,10 +43,10 @@ public class PositionTest {
   private Position getPositionFromLatitudeAndLongitude(final double latitude,
       final double longitude) {
     Breitengrad breitengrad = new Breitengrad();
-    breitengrad.setBreitengradVal(latitude);
+    breitengrad.setBreitengradDezimal(latitude);
 
     Laengengrad laengengrad = new Laengengrad();
-    laengengrad.setLaengengradVal(longitude);
+    laengengrad.setLaengengradDezimal(longitude);
 
     return new Position(breitengrad, laengengrad);
   }

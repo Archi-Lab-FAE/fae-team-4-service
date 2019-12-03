@@ -10,6 +10,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class BreitengradDto {
 
-  @Getter @Setter @NonNull private double breitengradVal;
+  @Getter @Setter @NonNull private double breitengradDezimal;
 
 }

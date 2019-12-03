@@ -19,5 +19,10 @@ public class AlarmknopfDto {
   @Getter
   @Setter
   @NonNull
+  private String name;
+
+  @Getter
+  @Setter
+  @NonNull
   private PositionDto position;
 }

@@ -46,11 +46,11 @@ public class Position {
     double elevation = 0.0;
     Ellipsoid representingModelOfEarth = Ellipsoid.WGS84;
 
-    double otherBreitengrad = otherPosition.breitengrad.getBreitengradVal();
-    double otherLaengengrad = otherPosition.laengengrad.getLaengengradVal();
+    double otherBreitengrad = otherPosition.breitengrad.getBreitengradDezimal();
+    double otherLaengengrad = otherPosition.laengengrad.getLaengengradDezimal();
 
-    double thisBreitengrad = thisPosition.breitengrad.getBreitengradVal();
-    double thisLaengengrad = thisPosition.laengengrad.getLaengengradVal();
+    double thisBreitengrad = thisPosition.breitengrad.getBreitengradDezimal();
+    double thisLaengengrad = thisPosition.laengengrad.getLaengengradDezimal();
 
     GlobalPosition thisGlobalPosition =
         new GlobalPosition(thisBreitengrad, thisLaengengrad, elevation);

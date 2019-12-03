@@ -48,7 +48,7 @@ public class DementiellErkranktePersonenServiceTest {
   @Test
   public void
       givenAlarmknopfAndDementiellErkranktePersonenRepoAndRadiusThenReturnPersonenInProximity_2_InRange() {
-    Alarmknopf alarmknopf = generateKnopfWithIdAndPosition("id", 50.94232, 6.97139);
+    Alarmknopf alarmknopf = generateKnopfWithIdAndNameAndPosition("id", "myName", 50.94232, 6.97139);
     double radius = 5.0;
 
     when(mockPersonRepository.findAll()).thenReturn(personen);
@@ -62,7 +62,7 @@ public class DementiellErkranktePersonenServiceTest {
   @Test
   public void
       givenAlarmknopfAndDementiellErkranktePersonenRepoAndRadiusThenReturnPersonenInProximity_0_InRange() {
-    Alarmknopf alarmknopf = generateKnopfWithIdAndPosition("id", 78.0649, 14.213);
+    Alarmknopf alarmknopf = generateKnopfWithIdAndNameAndPosition("id", "myName", 78.0649, 14.213);
     double radius = 5.0;
 
     when(mockPersonRepository.findAll()).thenReturn(personen);
@@ -75,7 +75,7 @@ public class DementiellErkranktePersonenServiceTest {
   @Test
   public void
       givenAlarmknopfAndDementiellErkranktePersonenRepoAndRadiusThenReturnPersonenInProxy_IncorrectRadius_0_InRange() {
-    Alarmknopf alarmknopf = generateKnopfWithIdAndPosition("id", 50.94232, 6.97139);
+    Alarmknopf alarmknopf = generateKnopfWithIdAndNameAndPosition("id", "myName", 50.94232, 6.97139);
     double radius = -5.0;
 
     when(mockPersonRepository.findAll()).thenReturn(personen);
@@ -85,10 +85,10 @@ public class DementiellErkranktePersonenServiceTest {
     assertThat(personenInProximity, is(empty()));
   }
 
-  private Alarmknopf generateKnopfWithIdAndPosition(
-      final String id, final double latitude, final double longitude) {
+  private Alarmknopf generateKnopfWithIdAndNameAndPosition(
+      final String id, final String name, final double latitude, final double longitude) {
     Position position = getPositionFromLatitudeAndLongitude(latitude, longitude);
-    return new Alarmknopf(id, position);
+    return new Alarmknopf(id, name, position);
   }
 
   private DementiellErkranktePerson generatePersonWithPosition(
@@ -101,10 +101,10 @@ public class DementiellErkranktePersonenServiceTest {
   private Position getPositionFromLatitudeAndLongitude(
       final double latitude, final double longitude) {
     Breitengrad breitengrad = new Breitengrad();
-    breitengrad.setBreitengradVal(latitude);
+    breitengrad.setBreitengradDezimal(latitude);
 
     Laengengrad laengengrad = new Laengengrad();
-    laengengrad.setLaengengradVal(longitude);
+    laengengrad.setLaengengradDezimal(longitude);
 
     return new Position(breitengrad, laengengrad);
   }

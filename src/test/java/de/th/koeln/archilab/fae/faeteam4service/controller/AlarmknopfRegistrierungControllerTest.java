@@ -43,6 +43,10 @@ public class AlarmknopfRegistrierungControllerTest {
 
   @Autowired
   private ObjectMapper objectMapper;
+
+  private static final String ALARMKNOPF_ID = "1337";
+  private static final String ALARMKNOPF_NAME = "myName";
+
   @Test
   public void givenAlarmknopf_whenGetAlarmknoepfe_thenReturnJsonWithAlarmknopfById()
       throws Exception {
@@ -50,10 +54,11 @@ public class AlarmknopfRegistrierungControllerTest {
     String alarmknopfId = "1337";
     Position position = getPositionFromLatitudeAndLongitude(3.14, 4.13);
 
-    Alarmknopf alarmknopf = new Alarmknopf(alarmknopfId, position);
+    Alarmknopf alarmknopf = new Alarmknopf(ALARMKNOPF_ID, ALARMKNOPF_NAME, position);
     alarmknopfRepository.save(alarmknopf);
 
-    AlarmknopfDto alarmknopfDto = new AlarmknopfDto(alarmknopfId, new PositionDto());
+    AlarmknopfDto alarmknopfDto = new AlarmknopfDto(ALARMKNOPF_ID, ALARMKNOPF_NAME,
+        new PositionDto());
 
     mockMvc.perform(get("/alarmknoepfe/{alarmknopfId}", alarmknopfId)
         .contentType(MediaType.APPLICATION_JSON))
@@ -61,45 +66,45 @@ public class AlarmknopfRegistrierungControllerTest {
         .andExpect(jsonPath("$.id", is(alarmknopfDto.getId())));
   }
 
+  @Test
+  public void givenAlarmknopf_whenDeleteAlarmknopfById_thenRemoveAlarmknopf() throws Exception {
+    String alarmknopfId = "1337";
+    String alarmknopfName = "myName";
+    Position position = getPositionFromLatitudeAndLongitude(3.14, 4.13);
+
+    Alarmknopf alarmknopf = new Alarmknopf(alarmknopfId, alarmknopfName, position);
+    alarmknopfRepository.save(alarmknopf);
+
+    mockMvc.perform(delete("/alarmknoepfe/{alarmknopfId}", alarmknopfId)
+        .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk());
+    assertThat(alarmknopfRepository.existsById(alarmknopfId), equalTo(false));
+  }
+
+  @Test
+  public void givenNone_whenRegisterAlarmknopf_thenReturnJsonWithAlarmknopf() throws Exception {
+    PositionDto positionDto = new PositionDto(3.14, 4.13);
+    AlarmknopfDto alarmknopfDto = new AlarmknopfDto(ALARMKNOPF_ID, ALARMKNOPF_NAME, positionDto);
+
+    mockMvc.perform(post("/alarmknoepfe/").content(objectMapper.writeValueAsString(alarmknopfDto))
+        .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isCreated())
+        .andExpect(jsonPath("$.id", is(alarmknopfDto.getId())))
+        .andExpect(jsonPath("$.position.breitengrad.breitengradDezimal",
+            is(positionDto.getBreitengrad().getBreitengradDezimal())))
+        .andExpect(jsonPath("$.position.laengengrad.laengengradDezimal",
+            is(positionDto.getLaengengrad().getLaengengradDezimal())));
+  }
+
   private Position getPositionFromLatitudeAndLongitude(final double latitude,
       final double longitude) {
     Breitengrad breitengrad = new Breitengrad();
-    breitengrad.setBreitengradVal(latitude);
+    breitengrad.setBreitengradDezimal(latitude);
 
     Laengengrad laengengrad = new Laengengrad();
-    laengengrad.setLaengengradVal(longitude);
+    laengengrad.setLaengengradDezimal(longitude);
 
     return new Position(breitengrad, laengengrad);
   }
 
-  @Test
-  public void givenAlarmknopf_whenDeleteAlarmknopfById_thenRemoveAlarmknopf() throws Exception
-  {
-    String alarmknopfId = "1337";
-    Position position = getPositionFromLatitudeAndLongitude(3.14, 4.13);
-
-    Alarmknopf alarmknopf = new Alarmknopf(alarmknopfId, position);
-    alarmknopfRepository.save(alarmknopf);
-    AlarmknopfDto alarmknopfDto = new AlarmknopfDto(alarmknopfId, new PositionDto());
-
-    mockMvc.perform(delete("/alarmknoepfe/{alarmknopfId}", alarmknopfId)
-            .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk());
-    assertThat( alarmknopfRepository.existsById(alarmknopfId), equalTo(false) );
-  }
-
-  @Test
-  public void givenNone_whenRegisterAlarmknopf_thenReturnJsonWithAlarmknopf() throws Exception
-  {
-    String alarmknopfId = "1337";
-    PositionDto positionDto = new PositionDto(3.14, 4.13);
-    AlarmknopfDto alarmknopfDto = new AlarmknopfDto(alarmknopfId, positionDto);
-
-    mockMvc.perform( post("/alarmknoepfe/").content( objectMapper.writeValueAsString(alarmknopfDto))
-          .contentType(MediaType.APPLICATION_JSON))
-          .andExpect(status().isCreated())
-          .andExpect(jsonPath("$.id", is(alarmknopfDto.getId())))
-          .andExpect(jsonPath("$.position.breitengrad.breitengradVal", is(positionDto.getBreitengrad().getBreitengradVal())))
-          .andExpect(jsonPath("$.position.laengengrad.laengengradVal", is(positionDto.getLaengengrad().getLaengengradVal())));
-  }
 }
