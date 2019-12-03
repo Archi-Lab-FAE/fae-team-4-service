@@ -56,7 +56,7 @@ public class AlarmknopfRegistrierungController {
     return alarmknopfRepository.save(alarmknopf);
   }
 
-  @DeleteMapping(path = "/alarmknoepfe/")
+  @DeleteMapping(path = "/alarmknoepfe/{trackerId}")
   public void deleteOrder(@PathVariable String trackerId) {
     alarmknopfRepository.deleteById(trackerId);
   }
