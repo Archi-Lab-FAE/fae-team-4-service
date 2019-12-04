@@ -1,6 +1,7 @@
 package de.th.koeln.archilab.fae.faeteam4service.controller;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import de.th.koeln.archilab.fae.faeteam4service.FaeTeam4ServiceApplication;
@@ -45,7 +46,7 @@ public class AlarmknopfHilferufControllerTest {
     Alarmknopf alarmknopf = new Alarmknopf(alarmknopfId, alarmknopfName, position);
     alarmknopfRepository.save(alarmknopf);
 
-    mockMvc.perform(get("/alarmknoepfe/hilferuf/{alarmknopfId}", alarmknopfId))
+    mockMvc.perform(post("/alarmknoepfe/hilferuf/{alarmknopfId}", alarmknopfId))
         .andExpect(status().isOk());
   }
 

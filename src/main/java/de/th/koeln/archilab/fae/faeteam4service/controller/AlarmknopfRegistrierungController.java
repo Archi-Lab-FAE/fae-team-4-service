@@ -10,6 +10,7 @@ import java.util.stream.StreamSupport;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,14 +39,12 @@ public class AlarmknopfRegistrierungController {
   }
 
   @GetMapping(path = "/alarmknoepfe/{alarmknopfId}", produces = MediaType.APPLICATION_JSON_VALUE)
-  public AlarmknopfDto getAlarmknopf(@PathVariable String alarmknopfId) {
+  public ResponseEntity<AlarmknopfDto> getAlarmknopf(@PathVariable String alarmknopfId) {
     Optional<Alarmknopf> alarmknopf = alarmknopfRepository.findById(alarmknopfId);
 
-    if (!alarmknopf.isPresent()) {
-      throw new IllegalArgumentException("Alarmknopf not found");
-    }
-
-    return convertToDto(alarmknopf.get());
+    return alarmknopf
+            .map(value -> new ResponseEntity<>(convertToDto(value), HttpStatus.OK))
+            .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
   }
 
   @PostMapping(path = "/alarmknoepfe/",
@@ -56,9 +55,9 @@ public class AlarmknopfRegistrierungController {
     return alarmknopfRepository.save(alarmknopf);
   }
 
-  @DeleteMapping(path = "/alarmknoepfe/{trackerId}")
-  public void deleteOrder(@PathVariable String trackerId) {
-    alarmknopfRepository.deleteById(trackerId);
+  @DeleteMapping(path = "/alarmknoepfe/{alarmknopfId}")
+  public void deleteOrder(@PathVariable String alarmknopfId) {
+    alarmknopfRepository.deleteById(alarmknopfId);
   }
 
   private List<AlarmknopfDto> getAlarmknoepfeDto(Iterable<Alarmknopf> alarmknoepfe) {
