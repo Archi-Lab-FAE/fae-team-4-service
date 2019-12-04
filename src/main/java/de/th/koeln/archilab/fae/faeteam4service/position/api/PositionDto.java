@@ -1,20 +1,18 @@
 package de.th.koeln.archilab.fae.faeteam4service.position.api;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Schema(name = "Position")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class PositionDto {
 
-  private BreitengradDto breitengrad;
+  private double breitengrad;
 
-  private LaengengradDto laengengrad;
+  private double laengengrad;
 
-  public PositionDto(double laengengrad, double breitengrad) {
-    this.laengengrad = new LaengengradDto(laengengrad);
-    this.breitengrad = new BreitengradDto(breitengrad);
-  }
 }

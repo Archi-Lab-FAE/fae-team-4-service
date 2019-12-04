@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class AlarmknopfHilferufController {
 
-  private AlarmknopfdruckService alarmknopfdruckService;
+  private final AlarmknopfdruckService alarmknopfdruckService;
 
   public AlarmknopfHilferufController(AlarmknopfdruckService alarmknopfdruckService) {
     this.alarmknopfdruckService = alarmknopfdruckService;

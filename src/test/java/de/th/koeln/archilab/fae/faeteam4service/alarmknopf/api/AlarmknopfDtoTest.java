@@ -2,21 +2,26 @@ package de.th.koeln.archilab.fae.faeteam4service.alarmknopf.api;
 
 import static org.junit.Assert.assertEquals;
 
-import de.th.koeln.archilab.fae.faeteam4service.alarmknopf.api.AlarmknopfDto;
-import de.th.koeln.archilab.fae.faeteam4service.position.api.BreitengradDto;
-import de.th.koeln.archilab.fae.faeteam4service.position.api.LaengengradDto;
+import de.th.koeln.archilab.fae.faeteam4service.config.ModelMapperConfig;
 import de.th.koeln.archilab.fae.faeteam4service.position.api.PositionDto;
 import de.th.koeln.archilab.fae.faeteam4service.alarmknopf.persistence.Alarmknopf;
 import de.th.koeln.archilab.fae.faeteam4service.position.persistence.Breitengrad;
 import de.th.koeln.archilab.fae.faeteam4service.position.persistence.Laengengrad;
 import de.th.koeln.archilab.fae.faeteam4service.position.persistence.Position;
+import org.junit.Before;
 import org.junit.Test;
 import org.modelmapper.ModelMapper;
 
 public class AlarmknopfDtoTest {
 
-  private ModelMapper modelMapper = new ModelMapper();
   private final double toleratedDelta = 0.00000001;
+  private ModelMapper modelMapper;
+
+  @Before
+  public void initModelMapper() {
+    ModelMapperConfig modelMapperConfig = new ModelMapperConfig();
+    modelMapper = modelMapperConfig.modelMapper();
+  }
 
   @Test
   public void whenConvertAlarmknopfEntityToPostDto_thenCorrect() {
@@ -28,12 +33,13 @@ public class AlarmknopfDtoTest {
     alarmknopf.setName("myName");
     alarmknopf.setPosition(position);
 
+
     AlarmknopfDto alarmknopfDto = modelMapper.map(alarmknopf, AlarmknopfDto.class);
 
     double alarmknopfBreitengrad = alarmknopf.getPosition().getBreitengrad().getBreitengradDezimal();
     double alarmknopfLaengengrad = alarmknopf.getPosition().getLaengengrad().getLaengengradDezimal();
-    double alarmknopfDtoBreitengrad = alarmknopfDto.getPosition().getBreitengrad().getBreitengradDezimal();
-    double alarmknopfDtoLaengengrad = alarmknopfDto.getPosition().getLaengengrad().getLaengengradDezimal();
+    double alarmknopfDtoBreitengrad = alarmknopfDto.getPosition().getBreitengrad();
+    double alarmknopfDtoLaengengrad = alarmknopfDto.getPosition().getLaengengrad();
 
     assertEquals(alarmknopf.getId(), alarmknopfDto.getId());
     assertEquals(alarmknopf.getName(), alarmknopfDto.getName());
@@ -43,8 +49,7 @@ public class AlarmknopfDtoTest {
 
   @Test
   public void whenConvertAlarmknopfDtoToAlarmknopfEntity_thenCorrect() {
-    PositionDto positionDto =
-        getPositionDtoFromLatitudeAndLongitude(50.9432138, 6.9583567);
+    PositionDto positionDto = new PositionDto(50.9432138, 6.9583567);
 
     AlarmknopfDto alarmknopfDto = new AlarmknopfDto();
     alarmknopfDto.setId("1234Id");
@@ -53,8 +58,8 @@ public class AlarmknopfDtoTest {
 
     Alarmknopf alarmknopf = modelMapper.map(alarmknopfDto, Alarmknopf.class);
 
-    double alarmknopfDtoBreitengrad = alarmknopfDto.getPosition().getBreitengrad().getBreitengradDezimal();
-    double alarmknopfDtoLaengengrad = alarmknopfDto.getPosition().getLaengengrad().getLaengengradDezimal();
+    double alarmknopfDtoBreitengrad = alarmknopfDto.getPosition().getBreitengrad();
+    double alarmknopfDtoLaengengrad = alarmknopfDto.getPosition().getLaengengrad();
     double alarmknopfBreitengrad = alarmknopf.getPosition().getBreitengrad().getBreitengradDezimal();
     double alarmknopfLaengengrad = alarmknopf.getPosition().getLaengengrad().getLaengengradDezimal();
 
@@ -73,16 +78,5 @@ public class AlarmknopfDtoTest {
     laengengrad.setLaengengradDezimal(longitude);
 
     return new Position(breitengrad, laengengrad);
-  }
-
-  private PositionDto getPositionDtoFromLatitudeAndLongitude(final double latitude,
-      final double longitude) {
-    BreitengradDto breitengrad = new BreitengradDto();
-    breitengrad.setBreitengradDezimal(latitude);
-
-    LaengengradDto laengengrad = new LaengengradDto();
-    laengengrad.setLaengengradDezimal(longitude);
-
-    return new PositionDto(breitengrad, laengengrad);
   }
 }

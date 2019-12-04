@@ -15,13 +15,13 @@ import org.springframework.kafka.core.KafkaTemplate;
 
 public class AlarmknopfdruckServiceTest {
 
-  private AlarmknopfdruckService alarmknopfdruckService;
-  private AlarmknopfRepository mockAlarmknopfRepository;
+  private final AlarmknopfdruckService alarmknopfdruckService;
+  private final AlarmknopfRepository mockAlarmknopfRepository;
 
-  private DementiellErkranktePersonRepository mockDementiellErkranktePersonRepository;
-  private DementiellErkranktePersonenService dementiellErkranktePersonenService;
+  private final DementiellErkranktePersonRepository mockDementiellErkranktePersonRepository;
+  private final DementiellErkranktePersonenService dementiellErkranktePersonenService;
 
-  private KafkaTemplate mockKafkaTemplate;
+  private final KafkaTemplate mockKafkaTemplate;
 
   private static final String ALARMKNOPF_ID = "someId";
 

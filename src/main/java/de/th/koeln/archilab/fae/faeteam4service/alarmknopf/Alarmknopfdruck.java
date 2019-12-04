@@ -5,7 +5,7 @@ import lombok.Getter;
 public class Alarmknopfdruck {
 
   @Getter
-  private String alarmknopfId;
+  private final String alarmknopfId;
 
   public Alarmknopfdruck(String alarmknopfId) {
     this.alarmknopfId = alarmknopfId;

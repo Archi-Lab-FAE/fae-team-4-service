@@ -1,6 +1,6 @@
 package de.th.koeln.archilab.fae.faeteam4service.alarmknopfhilferuf;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -11,6 +11,7 @@ import de.th.koeln.archilab.fae.faeteam4service.position.persistence.Breitengrad
 import de.th.koeln.archilab.fae.faeteam4service.position.persistence.Laengengrad;
 import de.th.koeln.archilab.fae.faeteam4service.position.persistence.Position;
 import de.th.koeln.archilab.fae.faeteam4service.alarmknopf.AlarmknopfdruckService;
+import java.util.Optional;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ public class AlarmknopfHilferufControllerTest {
   @Autowired
   private MockMvc mockMvc;
 
-  @Autowired
+  @MockBean
   private AlarmknopfRepository alarmknopfRepository;
 
   @MockBean
@@ -44,7 +45,8 @@ public class AlarmknopfHilferufControllerTest {
     Position position = getPositionFromLatitudeAndLongitude(3.14, 4.13);
 
     Alarmknopf alarmknopf = new Alarmknopf(alarmknopfId, alarmknopfName, position);
-    alarmknopfRepository.save(alarmknopf);
+    Optional<Alarmknopf> alarmknopfOptional = Optional.of(alarmknopf);
+    given(alarmknopfRepository.findById(alarmknopfId)).willReturn(alarmknopfOptional);
 
     mockMvc.perform(post("/alarmknoepfe/hilferuf/{alarmknopfId}", alarmknopfId))
         .andExpect(status().isOk());

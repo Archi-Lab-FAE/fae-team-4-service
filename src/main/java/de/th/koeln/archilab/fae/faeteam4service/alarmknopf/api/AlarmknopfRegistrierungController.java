@@ -49,9 +49,10 @@ public class AlarmknopfRegistrierungController {
   @PostMapping(path = "/alarmknoepfe/",
       consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.CREATED)
-  public Alarmknopf registerAlarmknopf(@RequestBody AlarmknopfDto newAlarmknopfDto) {
+  public AlarmknopfDto registerAlarmknopf(@RequestBody AlarmknopfDto newAlarmknopfDto) {
     Alarmknopf alarmknopf = convertToEntity(newAlarmknopfDto);
-    return alarmknopfRepository.save(alarmknopf);
+    alarmknopfRepository.save(alarmknopf);
+    return newAlarmknopfDto;
   }
 
   @DeleteMapping(path = "/alarmknoepfe/{alarmknopfId}")

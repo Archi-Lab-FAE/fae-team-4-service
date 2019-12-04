@@ -3,6 +3,7 @@ package de.th.koeln.archilab.fae.faeteam4service.alarmknopf.api;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -11,13 +12,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.th.koeln.archilab.fae.faeteam4service.FaeTeam4ServiceApplication;
-import de.th.koeln.archilab.fae.faeteam4service.alarmknopf.api.AlarmknopfDto;
-import de.th.koeln.archilab.fae.faeteam4service.position.api.PositionDto;
 import de.th.koeln.archilab.fae.faeteam4service.alarmknopf.persistence.Alarmknopf;
 import de.th.koeln.archilab.fae.faeteam4service.alarmknopf.persistence.AlarmknopfRepository;
+import de.th.koeln.archilab.fae.faeteam4service.position.api.PositionDto;
 import de.th.koeln.archilab.fae.faeteam4service.position.persistence.Breitengrad;
 import de.th.koeln.archilab.fae.faeteam4service.position.persistence.Laengengrad;
 import de.th.koeln.archilab.fae.faeteam4service.position.persistence.Position;
+import java.util.Optional;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -38,7 +40,7 @@ public class AlarmknopfRegistrierungControllerTest {
   @Autowired
   private MockMvc mockMvc;
 
-  @Autowired
+  @MockBean
   private AlarmknopfRepository alarmknopfRepository;
 
   @Autowired
@@ -55,7 +57,8 @@ public class AlarmknopfRegistrierungControllerTest {
     Position position = getPositionFromLatitudeAndLongitude(3.14, 4.13);
 
     Alarmknopf alarmknopf = new Alarmknopf(ALARMKNOPF_ID, ALARMKNOPF_NAME, position);
-    alarmknopfRepository.save(alarmknopf);
+    Optional<Alarmknopf> alarmknopfOptional = Optional.of(alarmknopf);
+    given(alarmknopfRepository.findById(alarmknopfId)).willReturn(alarmknopfOptional);
 
     AlarmknopfDto alarmknopfDto = new AlarmknopfDto(ALARMKNOPF_ID, ALARMKNOPF_NAME,
         new PositionDto());
@@ -69,11 +72,8 @@ public class AlarmknopfRegistrierungControllerTest {
   @Test
   public void givenAlarmknopf_whenDeleteAlarmknopfById_thenRemoveAlarmknopf() throws Exception {
     String alarmknopfId = "1337";
-    String alarmknopfName = "myName";
-    Position position = getPositionFromLatitudeAndLongitude(3.14, 4.13);
 
-    Alarmknopf alarmknopf = new Alarmknopf(alarmknopfId, alarmknopfName, position);
-    alarmknopfRepository.save(alarmknopf);
+    given(alarmknopfRepository.existsById(alarmknopfId)).willReturn(false);
 
     mockMvc.perform(delete("/alarmknoepfe/{alarmknopfId}", alarmknopfId)
         .contentType(MediaType.APPLICATION_JSON))
@@ -90,10 +90,8 @@ public class AlarmknopfRegistrierungControllerTest {
         .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isCreated())
         .andExpect(jsonPath("$.id", is(alarmknopfDto.getId())))
-        .andExpect(jsonPath("$.position.breitengrad.breitengradDezimal",
-            is(positionDto.getBreitengrad().getBreitengradDezimal())))
-        .andExpect(jsonPath("$.position.laengengrad.laengengradDezimal",
-            is(positionDto.getLaengengrad().getLaengengradDezimal())));
+        .andExpect(jsonPath("$.position.breitengrad", is(positionDto.getBreitengrad())))
+        .andExpect(jsonPath("$.position.laengengrad", is(positionDto.getLaengengrad())));
   }
 
   private Position getPositionFromLatitudeAndLongitude(final double latitude,

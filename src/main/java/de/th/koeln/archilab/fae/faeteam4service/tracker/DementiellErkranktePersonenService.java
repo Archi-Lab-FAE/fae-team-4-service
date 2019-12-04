@@ -1,8 +1,6 @@
 package de.th.koeln.archilab.fae.faeteam4service.tracker;
 
 import de.th.koeln.archilab.fae.faeteam4service.alarmknopf.persistence.Alarmknopf;
-import de.th.koeln.archilab.fae.faeteam4service.tracker.DementiellErkranktePerson;
-import de.th.koeln.archilab.fae.faeteam4service.tracker.DementiellErkranktePersonRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
