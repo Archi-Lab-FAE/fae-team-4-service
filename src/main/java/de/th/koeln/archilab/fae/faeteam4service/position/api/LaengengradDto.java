@@ -1,15 +1,15 @@
 package de.th.koeln.archilab.fae.faeteam4service.position.api;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
-import lombok.Setter;
 
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class LaengengradDto {
 
-  @Getter @Setter @NonNull private double laengengradDezimal;
+  @NonNull private double laengengradDezimal;
 
 }

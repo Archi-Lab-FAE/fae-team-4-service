@@ -1,12 +1,11 @@
 package de.th.koeln.archilab.fae.faeteam4service.alarmknopf.api;
 
+import de.th.koeln.archilab.fae.faeteam4service.alarmknopf.persistence.Alarmknopf;
+import de.th.koeln.archilab.fae.faeteam4service.alarmknopf.persistence.AlarmknopfRepository;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
-
-import de.th.koeln.archilab.fae.faeteam4service.alarmknopf.persistence.Alarmknopf;
-import de.th.koeln.archilab.fae.faeteam4service.alarmknopf.persistence.AlarmknopfRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -43,8 +42,8 @@ public class AlarmknopfRegistrierungController {
     Optional<Alarmknopf> alarmknopf = alarmknopfRepository.findById(alarmknopfId);
 
     return alarmknopf
-            .map(value -> new ResponseEntity<>(convertToDto(value), HttpStatus.OK))
-            .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        .map(value -> new ResponseEntity<>(convertToDto(value), HttpStatus.OK))
+        .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
   }
 
   @PostMapping(path = "/alarmknoepfe/",

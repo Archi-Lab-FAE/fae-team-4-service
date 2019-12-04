@@ -4,27 +4,23 @@ import de.th.koeln.archilab.fae.faeteam4service.position.DistanceInMeters;
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.gavaghan.geodesy.Ellipsoid;
 import org.gavaghan.geodesy.GeodeticCalculator;
 import org.gavaghan.geodesy.GeodeticCurve;
 import org.gavaghan.geodesy.GlobalPosition;
 
+@Data
 @Embeddable
 @AllArgsConstructor
 @NoArgsConstructor
 public class Position {
 
   @Embedded
-  @Getter
-  @Setter
   private Breitengrad breitengrad;
 
   @Embedded
-  @Getter
-  @Setter
   private Laengengrad laengengrad;
 
   public Position(double laengengrad, double breitengrad) {
