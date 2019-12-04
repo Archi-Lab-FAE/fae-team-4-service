@@ -1,6 +1,6 @@
 package de.th.koeln.archilab.fae.faeteam4service.position.persistence;
 
-import de.th.koeln.archilab.fae.faeteam4service.common.DistanceInMeters;
+import de.th.koeln.archilab.fae.faeteam4service.position.DistanceInMeters;
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
 import lombok.AllArgsConstructor;

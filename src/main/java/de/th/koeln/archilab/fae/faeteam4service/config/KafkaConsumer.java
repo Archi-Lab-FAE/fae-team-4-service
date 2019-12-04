@@ -1,4 +1,4 @@
-package de.th.koeln.archilab.fae.faeteam4service.common;
+package de.th.koeln.archilab.fae.faeteam4service.config;
 
 import org.springframework.stereotype.Service;
 

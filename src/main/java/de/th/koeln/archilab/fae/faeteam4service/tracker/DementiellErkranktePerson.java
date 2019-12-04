@@ -1,6 +1,6 @@
 package de.th.koeln.archilab.fae.faeteam4service.tracker;
 
-import de.th.koeln.archilab.fae.faeteam4service.common.DistanceInMeters;
+import de.th.koeln.archilab.fae.faeteam4service.position.DistanceInMeters;
 import de.th.koeln.archilab.fae.faeteam4service.alarmknopfhilferuf.AlarmknopfHilferuf;
 import de.th.koeln.archilab.fae.faeteam4service.position.persistence.Position;
 import java.util.Optional;
@@ -33,7 +33,7 @@ public class DementiellErkranktePerson {
     return new AlarmknopfHilferuf(id);
   }
 
-  public Boolean isInProximityOfPosition(Position otherPosition, double maxDistanceInMeters) {
+  Boolean isInProximityOfPosition(Position otherPosition, double maxDistanceInMeters) {
     Optional<DistanceInMeters> distanceToPosition = getDistanceToPosition(otherPosition);
     return distanceToPosition
         .filter(distanceInMeters -> distanceInMeters.getDistance() <= maxDistanceInMeters)

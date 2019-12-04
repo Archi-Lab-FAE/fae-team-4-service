@@ -1,4 +1,4 @@
-package de.th.koeln.archilab.fae.faeteam4service.common;
+package de.th.koeln.archilab.fae.faeteam4service.position;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

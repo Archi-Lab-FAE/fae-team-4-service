@@ -2,10 +2,7 @@ package de.th.koeln.archilab.fae.faeteam4service.position.persistence;
 
 import static org.junit.Assert.assertEquals;
 
-import de.th.koeln.archilab.fae.faeteam4service.common.DistanceInMeters;
-import de.th.koeln.archilab.fae.faeteam4service.position.persistence.Breitengrad;
-import de.th.koeln.archilab.fae.faeteam4service.position.persistence.Laengengrad;
-import de.th.koeln.archilab.fae.faeteam4service.position.persistence.Position;
+import de.th.koeln.archilab.fae.faeteam4service.position.DistanceInMeters;
 import org.junit.Test;
 
 public class PositionTest {
