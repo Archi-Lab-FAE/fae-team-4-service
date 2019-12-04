@@ -10,7 +10,7 @@ public class BreitengradTest {
   }
 
   @Test(expected = IllegalArgumentException.class)
-  public void shouldThrowExceptionWhenGradIsUnder0() {
-    Breitengrad breitengrad = new Breitengrad(-1.0);
+  public void shouldThrowExceptionWhenGradIsUnderMinus180() {
+    Breitengrad breitengrad = new Breitengrad(-181.0);
   }
 }
