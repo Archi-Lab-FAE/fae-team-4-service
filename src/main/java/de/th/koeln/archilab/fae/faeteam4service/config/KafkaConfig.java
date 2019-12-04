@@ -1,6 +1,6 @@
 package de.th.koeln.archilab.fae.faeteam4service.config;
 
-import de.th.koeln.archilab.fae.faeteam4service.dto.DementiellErkranktePersonDto;
+import de.th.koeln.archilab.fae.faeteam4service.tracker.DementiellErkranktePersonDto;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
