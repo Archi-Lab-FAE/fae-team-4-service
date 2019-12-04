@@ -1,4 +1,4 @@
-package de.th.koeln.archilab.fae.faeteam4service.alarmknopfhilferuf;
+package de.th.koeln.archilab.fae.faeteam4service.alarmknopf;
 
 import static org.mockito.Mockito.when;
 

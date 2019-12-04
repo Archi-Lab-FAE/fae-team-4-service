@@ -1,4 +1,4 @@
-package de.th.koeln.archilab.fae.faeteam4service.alarmknopf;
+package de.th.koeln.archilab.fae.faeteam4service.alarmknopf.api;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
