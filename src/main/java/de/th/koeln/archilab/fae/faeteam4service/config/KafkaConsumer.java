@@ -6,11 +6,11 @@ import org.springframework.stereotype.Service;
 public class KafkaConsumer {
 
   /**
-  @KafkaListener(topics = "Dummy_Topic",
-      containerFactory = "dementiellErkranktePersonKafkaListenerFactory")
-  public void consumeDementiellErkranktePersonTopic(final String id,
-      final DementiellErkranktePerson dementiellErkranktePerson) {
-
-  }
-  **/
+   * @KafkaListener(topics = "Dummy_Topic", containerFactory =
+   * "dementiellErkranktePersonKafkaListenerFactory") public void
+   * consumeDementiellErkranktePersonTopic(final String id, final DementiellErkranktePerson
+   * dementiellErkranktePerson) {
+   *
+   * <p>}
+   */
 }
