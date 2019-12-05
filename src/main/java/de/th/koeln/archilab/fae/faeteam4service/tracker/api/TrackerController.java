@@ -56,6 +56,6 @@ public class TrackerController {
 
   private Tracker createTrackerFrom(String trackerId, TrackerDto trackerDto) {
     return new Tracker(
-        trackerId, new Position(trackerDto.getLaengengrad(), trackerDto.getBreitengrad()));
+        trackerId, trackerDto.getLaengengrad(), trackerDto.getBreitengrad());
   }
 }
