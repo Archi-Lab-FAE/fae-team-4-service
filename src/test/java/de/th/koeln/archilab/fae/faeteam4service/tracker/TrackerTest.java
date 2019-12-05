@@ -17,7 +17,7 @@ public class TrackerTest {
 
   @Before
   public void setup() {
-    tracker = new Tracker(TEST_ID, new Position(0,0));
+    tracker = new Tracker(TEST_ID, new Position(0, 0));
   }
 
   @Test
@@ -28,17 +28,29 @@ public class TrackerTest {
   }
 
   @Test
-  public void shouldBeInProximityIfPositionsAreNearEnough() {
-    Position otherPositionThatIsInRange = new Position(0,0);
+  public void shouldNotBeInProximityIfItHasNoPosition() {
+    Tracker trackerWithoutPosition = new Tracker(TEST_ID);
 
-    boolean isPersonInProximity = tracker.isInProximityOfPosition(otherPositionThatIsInRange, new DistanceInMeters(1.0));
+    Position position = new Position(0, 0);
+
+    assertThat(
+        trackerWithoutPosition.isInProximityOfPosition(position, new DistanceInMeters(10)),
+            equalTo(false));
+  }
+
+  @Test
+  public void shouldBeInProximityIfPositionsAreNearEnough() {
+    Position otherPositionThatIsInRange = new Position(0, 0);
+
+    boolean isPersonInProximity =
+        tracker.isInProximityOfPosition(otherPositionThatIsInRange, new DistanceInMeters(1.0));
 
     assertThat(isPersonInProximity, equalTo(true));
   }
 
   @Test
   public void shouldNotBeInProximityOfPositionThatsTooFarAway() {
-    Position positionThatIsTooFarAway = new Position(10,10);
+    Position positionThatIsTooFarAway = new Position(10, 10);
 
     boolean isPersonInProximity =
         tracker.isInProximityOfPosition(positionThatIsTooFarAway, new DistanceInMeters(1.0));

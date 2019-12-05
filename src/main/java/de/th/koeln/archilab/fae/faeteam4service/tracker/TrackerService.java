@@ -1,13 +1,12 @@
 package de.th.koeln.archilab.fae.faeteam4service.tracker;
 
 import de.th.koeln.archilab.fae.faeteam4service.alarmknopf.persistence.Alarmknopf;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
 import de.th.koeln.archilab.fae.faeteam4service.position.DistanceInMeters;
 import de.th.koeln.archilab.fae.faeteam4service.position.persistence.Position;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class TrackerService {
@@ -29,9 +28,8 @@ public class TrackerService {
   }
 
   public List<Tracker> getTrackerInProximityOf(
-      final Alarmknopf alarmknopf, final double radiusInMeters) {
-    Iterable<Tracker> allTrackers = trackerRepository.findAll();
-    return StreamSupport.stream(allTrackers.spliterator(), false)
+          final Alarmknopf alarmknopf, final double radiusInMeters) {
+    return trackerRepository.findAll().stream()
         .filter(
             tracker ->
                 tracker.isInProximityOfPosition(
