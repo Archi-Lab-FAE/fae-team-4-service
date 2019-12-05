@@ -2,7 +2,7 @@ package de.th.koeln.archilab.fae.faeteam4service.alarmknopf;
 
 import de.th.koeln.archilab.fae.faeteam4service.alarmknopf.persistence.Alarmknopf;
 import de.th.koeln.archilab.fae.faeteam4service.alarmknopf.persistence.AlarmknopfRepository;
-import de.th.koeln.archilab.fae.faeteam4service.tracker.Tracker;
+import de.th.koeln.archilab.fae.faeteam4service.tracker.persistence.Tracker;
 import de.th.koeln.archilab.fae.faeteam4service.tracker.TrackerService;
 import java.util.List;
 import java.util.stream.Collectors;

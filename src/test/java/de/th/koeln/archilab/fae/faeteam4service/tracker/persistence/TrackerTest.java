@@ -1,8 +1,9 @@
-package de.th.koeln.archilab.fae.faeteam4service.tracker;
+package de.th.koeln.archilab.fae.faeteam4service.tracker.persistence;
 
 import de.th.koeln.archilab.fae.faeteam4service.alarmknopfhilferuf.AlarmknopfHilferuf;
 import de.th.koeln.archilab.fae.faeteam4service.position.DistanceInMeters;
 import de.th.koeln.archilab.fae.faeteam4service.position.persistence.Position;
+import de.th.koeln.archilab.fae.faeteam4service.tracker.persistence.Tracker;
 import org.junit.Before;
 import org.junit.Test;
 

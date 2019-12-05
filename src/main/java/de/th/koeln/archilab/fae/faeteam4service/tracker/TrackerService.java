@@ -2,7 +2,8 @@ package de.th.koeln.archilab.fae.faeteam4service.tracker;
 
 import de.th.koeln.archilab.fae.faeteam4service.alarmknopf.persistence.Alarmknopf;
 import de.th.koeln.archilab.fae.faeteam4service.position.DistanceInMeters;
-import de.th.koeln.archilab.fae.faeteam4service.position.persistence.Position;
+import de.th.koeln.archilab.fae.faeteam4service.tracker.persistence.Tracker;
+import de.th.koeln.archilab.fae.faeteam4service.tracker.persistence.TrackerRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,24 +19,8 @@ public class TrackerService {
     this.trackerRepository = trackerRepository;
   }
 
-  public boolean tryToUpdatePositionOfTracker(
-      String trackerId, Double newLaengengrad, Double newBreitengrad) {
-    Optional<Tracker> foundTracker = trackerRepository.findById(trackerId);
-
-    if (!foundTracker.isPresent()) {
-      return false;
-    }
-
-    Tracker tracker = foundTracker.get();
-    tracker.setPosition(new Position(newLaengengrad, newBreitengrad));
-
-    trackerRepository.save(tracker);
-    return true;
-  }
-
-  public Tracker createNewTracker(String trackerId) {
-    Tracker newTracker = new Tracker(trackerId);
-    return trackerRepository.save(newTracker);
+  public Tracker updateOrCreateTracker(Tracker tracker){
+    return trackerRepository.save(tracker);
   }
 
   public boolean deleteTracker(String trackerId) {

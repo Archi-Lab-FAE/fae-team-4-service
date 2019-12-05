@@ -3,7 +3,7 @@ package de.th.koeln.archilab.fae.faeteam4service.alarmknopf;
 import static org.mockito.Mockito.when;
 
 import de.th.koeln.archilab.fae.faeteam4service.alarmknopf.persistence.AlarmknopfRepository;
-import de.th.koeln.archilab.fae.faeteam4service.tracker.TrackerRepository;
+import de.th.koeln.archilab.fae.faeteam4service.tracker.persistence.TrackerRepository;
 import java.util.Optional;
 
 import de.th.koeln.archilab.fae.faeteam4service.tracker.TrackerService;

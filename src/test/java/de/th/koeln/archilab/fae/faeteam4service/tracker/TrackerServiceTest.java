@@ -2,10 +2,10 @@ package de.th.koeln.archilab.fae.faeteam4service.tracker;
 
 import de.th.koeln.archilab.fae.faeteam4service.alarmknopf.persistence.Alarmknopf;
 import de.th.koeln.archilab.fae.faeteam4service.position.persistence.Position;
+import de.th.koeln.archilab.fae.faeteam4service.tracker.persistence.Tracker;
+import de.th.koeln.archilab.fae.faeteam4service.tracker.persistence.TrackerRepository;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 
 import java.util.ArrayList;
@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static junit.framework.TestCase.assertTrue;
-import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.is;
@@ -28,9 +28,7 @@ public class TrackerServiceTest {
   private Tracker tracker1;
 
   private static final String TRACKER_1_ID = "tracker1";
-  private static final String ID_THAT_IS_NOT_IN_REPOSITORY = "someID";
-  private static final double UPDATED_LAENGENGRAD = 11.11;
-  private static final double UPDATED_BREITENGRAD = 107.6;
+  private static final String INCOMING_ID = "someID";
 
   @Before
   public void setUp() {
@@ -52,51 +50,15 @@ public class TrackerServiceTest {
   }
 
   @Test
-  public void updatingATrackerPositionShouldUpdateTrackerAndReturnTrueIfItIsPresent() {
-    when(mockTrackerRepository.findById(TRACKER_1_ID)).thenReturn(Optional.of(tracker1));
+  public void updatingATrackerShouldSaveTheNewTrackerToRepository() {
+    Tracker trackerThatIsReturnedByRepositoryAfterSaving = new Tracker();
+    Tracker newTracker = new Tracker(INCOMING_ID);
+    when(mockTrackerRepository.save(newTracker))
+        .thenReturn(trackerThatIsReturnedByRepositoryAfterSaving);
 
-    boolean hasUpdatingWorked =
-        trackerService.tryToUpdatePositionOfTracker(
-            TRACKER_1_ID, UPDATED_LAENGENGRAD, UPDATED_BREITENGRAD);
+    Tracker savedTracker = trackerService.updateOrCreateTracker(newTracker);
 
-    ArgumentCaptor<Tracker> argumentCaptor = ArgumentCaptor.forClass(Tracker.class);
-    verify(mockTrackerRepository).save(argumentCaptor.capture());
-    Position updatedPosition = argumentCaptor.getValue().getPosition();
-
-    assertThat(hasUpdatingWorked, equalTo(true));
-    assertThat(updatedPosition, notNullValue());
-    assertThat(
-        updatedPosition.getBreitengrad().getBreitengradDezimal(), equalTo(UPDATED_BREITENGRAD));
-    assertThat(
-        updatedPosition.getLaengengrad().getLaengengradDezimal(), equalTo(UPDATED_LAENGENGRAD));
-  }
-
-  @Test
-  public void creatingANewTrackerShouldSaveTheNewTrackerWithCorrectIdAndNoPosition() {
-    Tracker trackerReturnedByTheRepository = new Tracker();
-    when(mockTrackerRepository.save(ArgumentMatchers.any()))
-        .thenReturn(trackerReturnedByTheRepository);
-
-    Tracker createdTracker = trackerService.createNewTracker(ID_THAT_IS_NOT_IN_REPOSITORY);
-
-    assertThat(createdTracker, equalTo(trackerReturnedByTheRepository));
-
-    ArgumentCaptor<Tracker> argumentCaptor = ArgumentCaptor.forClass(Tracker.class);
-    verify(mockTrackerRepository).save(argumentCaptor.capture());
-    Tracker savedTracker = argumentCaptor.getValue();
-    assertThat(savedTracker.getId(), equalTo(ID_THAT_IS_NOT_IN_REPOSITORY));
-    assertThat(savedTracker.getPosition(), nullValue());
-  }
-
-  @Test
-  public void updatingATrackerShouldReturnFalseIfTrackerIsNotSavedInRepository() {
-    when(mockTrackerRepository.findById(TRACKER_1_ID)).thenReturn(Optional.empty());
-
-    boolean hasUpdatingWorked =
-        trackerService.tryToUpdatePositionOfTracker(
-            TRACKER_1_ID, UPDATED_LAENGENGRAD, UPDATED_BREITENGRAD);
-
-    assertThat(hasUpdatingWorked, equalTo(false));
+    assertThat(savedTracker, equalTo(trackerThatIsReturnedByRepositoryAfterSaving));
   }
 
   @Test
