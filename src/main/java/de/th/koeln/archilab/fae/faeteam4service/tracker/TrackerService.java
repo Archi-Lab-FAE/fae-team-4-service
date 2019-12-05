@@ -6,6 +6,7 @@ import de.th.koeln.archilab.fae.faeteam4service.position.persistence.Position;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -17,18 +18,41 @@ public class TrackerService {
     this.trackerRepository = trackerRepository;
   }
 
-  public void handleNewTrackerPosition(
+  public boolean tryToUpdatePositionOfTracker(
       String trackerId, Double newLaengengrad, Double newBreitengrad) {
-    Position position = new Position(newLaengengrad, newBreitengrad);
-    Tracker tracker =
-        trackerRepository.findById(trackerId).orElse(new Tracker(trackerId, position));
-    tracker.setPosition(position);
+    Optional<Tracker> foundTracker = trackerRepository.findById(trackerId);
+
+    if (!foundTracker.isPresent()) {
+      return false;
+    }
+
+    Tracker tracker = foundTracker.get();
+    tracker.setPosition(new Position(newLaengengrad, newBreitengrad));
 
     trackerRepository.save(tracker);
+    return true;
   }
 
+  public Tracker createNewTracker(String trackerId) {
+    Tracker newTracker = new Tracker(trackerId);
+    return trackerRepository.save(newTracker);
+  }
+
+  public boolean deleteTracker(String trackerId) {
+    Optional<Tracker> foundTracker = trackerRepository.findById(trackerId);
+
+    if (!foundTracker.isPresent()) {
+      return false;
+    }
+
+    Tracker tracker = foundTracker.get();
+    trackerRepository.delete(tracker);
+    return true;
+  }
+
+  // TODO: Refactor isInProximityOfPosition to alarmknopf to avoid passing of radius
   public List<Tracker> getTrackerInProximityOf(
-          final Alarmknopf alarmknopf, final double radiusInMeters) {
+      final Alarmknopf alarmknopf, final double radiusInMeters) {
     return trackerRepository.findAll().stream()
         .filter(
             tracker ->

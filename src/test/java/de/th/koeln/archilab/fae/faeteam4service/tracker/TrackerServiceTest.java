@@ -4,40 +4,118 @@ import de.th.koeln.archilab.fae.faeteam4service.alarmknopf.persistence.Alarmknop
 import de.th.koeln.archilab.fae.faeteam4service.position.persistence.Position;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static junit.framework.TestCase.assertTrue;
+import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.is;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class TrackerServiceTest {
 
-  private final TrackerRepository mockTrackerRepository;
-  private final TrackerService trackerService;
+  private TrackerRepository mockTrackerRepository;
+  private TrackerService trackerService;
   private List<Tracker> listOfTestTrackers;
+  private Tracker tracker1;
 
-  public TrackerServiceTest() {
-    mockTrackerRepository = Mockito.mock(TrackerRepository.class);
-    trackerService = new TrackerService(mockTrackerRepository);
-  }
+  private static final String TRACKER_1_ID = "tracker1";
+  private static final String ID_THAT_IS_NOT_IN_REPOSITORY = "someID";
+  private static final double UPDATED_LAENGENGRAD = 11.11;
+  private static final double UPDATED_BREITENGRAD = 107.6;
 
   @Before
   public void setUp() {
-    Tracker person1 = createTestTrackerWith("tracker1", 50.94239, 6.97128);
-    Tracker person2 = createTestTrackerWith("tracker2", 50.94232, 6.97138);
-    Tracker person3 = createTestTrackerWith("tracker3", 50.94234, 6.97136);
-    Tracker person4 = createTestTrackerWith("tracker5", 50.94239, 6.97138);
+    mockTrackerRepository = Mockito.mock(TrackerRepository.class);
+    trackerService = new TrackerService(mockTrackerRepository);
+
+    tracker1 = createTestTrackerWith(TRACKER_1_ID, 50.94239, 6.97128);
+    Tracker tracker2 = createTestTrackerWith("tracker2", 50.94232, 6.97138);
+    Tracker tracker3 = createTestTrackerWith("tracker3", 50.94234, 6.97136);
+    Tracker tracker4 = createTestTrackerWith("tracker5", 50.94239, 6.97138);
 
     listOfTestTrackers = new ArrayList<>();
-    listOfTestTrackers.add(person1);
-    listOfTestTrackers.add(person2);
-    listOfTestTrackers.add(person3);
-    listOfTestTrackers.add(person4);
+    listOfTestTrackers.add(tracker1);
+    listOfTestTrackers.add(tracker2);
+    listOfTestTrackers.add(tracker3);
+    listOfTestTrackers.add(tracker4);
+
+    when(mockTrackerRepository.findAll()).thenReturn(listOfTestTrackers);
+  }
+
+  @Test
+  public void updatingATrackerPositionShouldUpdateTrackerAndReturnTrueIfItIsPresent() {
+    when(mockTrackerRepository.findById(TRACKER_1_ID)).thenReturn(Optional.of(tracker1));
+
+    boolean hasUpdatingWorked =
+        trackerService.tryToUpdatePositionOfTracker(
+            TRACKER_1_ID, UPDATED_LAENGENGRAD, UPDATED_BREITENGRAD);
+
+    ArgumentCaptor<Tracker> argumentCaptor = ArgumentCaptor.forClass(Tracker.class);
+    verify(mockTrackerRepository).save(argumentCaptor.capture());
+    Position updatedPosition = argumentCaptor.getValue().getPosition();
+
+    assertThat(hasUpdatingWorked, equalTo(true));
+    assertThat(updatedPosition, notNullValue());
+    assertThat(
+        updatedPosition.getBreitengrad().getBreitengradDezimal(), equalTo(UPDATED_BREITENGRAD));
+    assertThat(
+        updatedPosition.getLaengengrad().getLaengengradDezimal(), equalTo(UPDATED_LAENGENGRAD));
+  }
+
+  @Test
+  public void creatingANewTrackerShouldSaveTheNewTrackerWithCorrectIdAndNoPosition() {
+    Tracker trackerReturnedByTheRepository = new Tracker();
+    when(mockTrackerRepository.save(ArgumentMatchers.any()))
+        .thenReturn(trackerReturnedByTheRepository);
+
+    Tracker createdTracker = trackerService.createNewTracker(ID_THAT_IS_NOT_IN_REPOSITORY);
+
+    assertThat(createdTracker, equalTo(trackerReturnedByTheRepository));
+
+    ArgumentCaptor<Tracker> argumentCaptor = ArgumentCaptor.forClass(Tracker.class);
+    verify(mockTrackerRepository).save(argumentCaptor.capture());
+    Tracker savedTracker = argumentCaptor.getValue();
+    assertThat(savedTracker.getId(), equalTo(ID_THAT_IS_NOT_IN_REPOSITORY));
+    assertThat(savedTracker.getPosition(), nullValue());
+  }
+
+  @Test
+  public void updatingATrackerShouldReturnFalseIfTrackerIsNotSavedInRepository() {
+    when(mockTrackerRepository.findById(TRACKER_1_ID)).thenReturn(Optional.empty());
+
+    boolean hasUpdatingWorked =
+        trackerService.tryToUpdatePositionOfTracker(
+            TRACKER_1_ID, UPDATED_LAENGENGRAD, UPDATED_BREITENGRAD);
+
+    assertThat(hasUpdatingWorked, equalTo(false));
+  }
+
+  @Test
+  public void deletingATrackerShouldReturnFalseIfThereIsNoTrackerWithTheGivenId() {
+    when(mockTrackerRepository.findById(TRACKER_1_ID)).thenReturn(Optional.empty());
+
+    boolean hasDeletingWorked = trackerService.deleteTracker(TRACKER_1_ID);
+
+    assertThat(hasDeletingWorked, equalTo(false));
+  }
+
+  @Test
+  public void deletingATrackerShouldReturnTrueIfTheTrackerIsDeleted() {
+    when(mockTrackerRepository.findById(TRACKER_1_ID)).thenReturn(Optional.of(tracker1));
+
+    boolean hasDeletingWorked = trackerService.deleteTracker(TRACKER_1_ID);
+
+    verify(mockTrackerRepository).delete(tracker1);
+    assertThat(hasDeletingWorked, equalTo(true));
   }
 
   @Test
@@ -45,9 +123,8 @@ public class TrackerServiceTest {
     Alarmknopf alarmknopf = createTestAlarmknopfWithPosition(50.94232, 6.97139);
     double radius = 5.0;
 
-    when(mockTrackerRepository.findAll()).thenReturn(listOfTestTrackers);
-
     List<Tracker> trackerInProximity = trackerService.getTrackerInProximityOf(alarmknopf, radius);
+
     assertTrue(trackerInProximity.contains(listOfTestTrackers.get(1)));
     assertTrue(trackerInProximity.contains(listOfTestTrackers.get(2)));
   }
@@ -57,9 +134,8 @@ public class TrackerServiceTest {
     Alarmknopf alarmknopf = createTestAlarmknopfWithPosition(78.0649, 14.213);
     double radius = 5.0;
 
-    when(mockTrackerRepository.findAll()).thenReturn(listOfTestTrackers);
-
     List<Tracker> trackerInProximity = trackerService.getTrackerInProximityOf(alarmknopf, radius);
+
     assertThat(trackerInProximity, is(empty()));
   }
 
@@ -69,9 +145,8 @@ public class TrackerServiceTest {
     Alarmknopf alarmknopf = createTestAlarmknopfWithPosition(50.94232, 6.97139);
     double radius = -5.0;
 
-    when(mockTrackerRepository.findAll()).thenReturn(listOfTestTrackers);
-
     List<Tracker> trackerInProximity = trackerService.getTrackerInProximityOf(alarmknopf, radius);
+
     assertThat(trackerInProximity, is(empty()));
   }
 
