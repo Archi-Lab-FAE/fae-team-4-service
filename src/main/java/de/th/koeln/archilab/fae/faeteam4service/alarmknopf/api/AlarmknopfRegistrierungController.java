@@ -33,7 +33,7 @@ public class AlarmknopfRegistrierungController {
   }
 
   @GetMapping(path = "/alarmknoepfe", produces = MediaType.APPLICATION_JSON_VALUE)
-  public Iterable<AlarmknopfDto> getAlarmknoepfe() {
+  public List<AlarmknopfDto> getAlarmknoepfe() {
     List<Alarmknopf> alarmknoepfe = alarmknopfRegistrierungServiceImpl.findAll();
     return getAlarmknoepfeDto(alarmknoepfe);
   }
@@ -57,8 +57,13 @@ public class AlarmknopfRegistrierungController {
   }
 
   @DeleteMapping(path = "/alarmknoepfe/{alarmknopfId}")
-  public void deleteOrder(@PathVariable String alarmknopfId) {
-    alarmknopfRegistrierungServiceImpl.deleteById(alarmknopfId);
+  public ResponseEntity deleteOrder(@PathVariable String alarmknopfId) {
+    boolean wasDeletionSuccessful = alarmknopfRegistrierungServiceImpl.deleteById(alarmknopfId);
+
+    if (wasDeletionSuccessful) {
+      return new ResponseEntity(HttpStatus.OK);
+    }
+    return new ResponseEntity(HttpStatus.NOT_FOUND);
   }
 
   private List<AlarmknopfDto> getAlarmknoepfeDto(Iterable<Alarmknopf> alarmknoepfe) {

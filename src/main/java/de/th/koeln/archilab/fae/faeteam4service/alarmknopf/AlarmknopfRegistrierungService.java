@@ -12,5 +12,5 @@ public interface AlarmknopfRegistrierungService {
 
   Optional<Alarmknopf> findById(String alarmknopfId);
 
-  void deleteById(String alarmknopfId);
+  boolean deleteById(String alarmknopfId);
 }

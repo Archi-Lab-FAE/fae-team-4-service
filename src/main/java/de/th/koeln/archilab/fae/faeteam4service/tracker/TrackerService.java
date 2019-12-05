@@ -4,11 +4,10 @@ import de.th.koeln.archilab.fae.faeteam4service.alarmknopf.persistence.Alarmknop
 import de.th.koeln.archilab.fae.faeteam4service.position.DistanceInMeters;
 import de.th.koeln.archilab.fae.faeteam4service.tracker.persistence.Tracker;
 import de.th.koeln.archilab.fae.faeteam4service.tracker.persistence.TrackerRepository;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import org.springframework.stereotype.Service;
 
 @Service
 public class TrackerService {
@@ -19,7 +18,7 @@ public class TrackerService {
     this.trackerRepository = trackerRepository;
   }
 
-  public Tracker updateOrCreateTracker(Tracker tracker){
+  public Tracker updateOrCreateTracker(Tracker tracker) {
     return trackerRepository.save(tracker);
   }
 

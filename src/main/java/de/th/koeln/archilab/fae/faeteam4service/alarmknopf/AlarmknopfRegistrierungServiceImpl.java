@@ -33,7 +33,16 @@ public class AlarmknopfRegistrierungServiceImpl implements AlarmknopfRegistrieru
   }
 
   @Override
-  public void deleteById(String alarmknopfId) {
-    alarmknopfRepository.deleteById(alarmknopfId);
+  public boolean deleteById(String alarmknopfId) {
+
+    Optional<Alarmknopf> foundAlarmknopf = alarmknopfRepository.findById(alarmknopfId);
+
+    if (!foundAlarmknopf.isPresent()) {
+      return false;
+    }
+
+    Alarmknopf alarmknopf = foundAlarmknopf.get();
+    alarmknopfRepository.delete(alarmknopf);
+    return true;
   }
 }
