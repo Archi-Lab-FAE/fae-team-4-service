@@ -5,9 +5,9 @@ import lombok.Getter;
 public class AlarmknopfHilferuf {
 
   @Getter
-  private final String dementiellErkranktePersonId;
+  private final String trackerId;
 
-  public AlarmknopfHilferuf(String dementiellErkranktePersonId) {
-    this.dementiellErkranktePersonId = dementiellErkranktePersonId;
+  public AlarmknopfHilferuf(String trackerId) {
+    this.trackerId = trackerId;
   }
 }

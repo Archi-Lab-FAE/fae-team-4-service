@@ -2,8 +2,8 @@ package de.th.koeln.archilab.fae.faeteam4service.alarmknopf;
 
 import de.th.koeln.archilab.fae.faeteam4service.alarmknopf.persistence.Alarmknopf;
 import de.th.koeln.archilab.fae.faeteam4service.alarmknopf.persistence.AlarmknopfRepository;
-import de.th.koeln.archilab.fae.faeteam4service.tracker.DementiellErkranktePerson;
-import de.th.koeln.archilab.fae.faeteam4service.tracker.DementiellErkranktePersonenService;
+import de.th.koeln.archilab.fae.faeteam4service.tracker.Tracker;
+import de.th.koeln.archilab.fae.faeteam4service.tracker.TrackerService;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -13,17 +13,18 @@ import org.springframework.stereotype.Service;
 public class AlarmknopfdruckService {
 
   private final AlarmknopfRepository alarmknopfRepository;
-  private final DementiellErkranktePersonenService dementiellErkranktePersonenService;
+  private final TrackerService trackerService;
   private final KafkaTemplate<String, List> kafkaTemplate;
 
   private static final String KAFKA_TOPIC = "Alarmmeldung";
 
-  public AlarmknopfdruckService(final AlarmknopfRepository alarmknopfRepository,
-      final DementiellErkranktePersonenService dementiellErkranktePersonenService,
+  public AlarmknopfdruckService(
+      final AlarmknopfRepository alarmknopfRepository,
+      final TrackerService trackerService,
       final KafkaTemplate<String, List> kafkaTemplate) {
 
     this.alarmknopfRepository = alarmknopfRepository;
-    this.dementiellErkranktePersonenService = dementiellErkranktePersonenService;
+    this.trackerService = trackerService;
     this.kafkaTemplate = kafkaTemplate;
   }
 
@@ -34,22 +35,24 @@ public class AlarmknopfdruckService {
    * @param alarmknopfdruck alarmknopfdruck
    */
   public void handleAlarmknopfdruck(final Alarmknopfdruck alarmknopfdruck) {
-    Alarmknopf pressedAlarmknopf = alarmknopfRepository.findById(alarmknopfdruck.getAlarmknopfId())
-        .orElseThrow(() -> new IllegalArgumentException("Alarmknopf not found"));
+    Alarmknopf pressedAlarmknopf =
+        alarmknopfRepository
+            .findById(alarmknopfdruck.getAlarmknopfId())
+            .orElseThrow(() -> new IllegalArgumentException("Alarmknopf not found"));
 
-    List<DementiellErkranktePerson> potentiellBetroffeneDementiellErkranktePersonen =
+    List<Tracker> potentiellBetroffeneDementiellErkranktePersonen =
         getPersonenInKnopfProximity(pressedAlarmknopf);
 
-    List createdHilferufe = potentiellBetroffeneDementiellErkranktePersonen.stream()
-        .map(DementiellErkranktePerson::createAlarmknopfHilferuf)
-        .collect(Collectors.toList());
+    List createdHilferufe =
+        potentiellBetroffeneDementiellErkranktePersonen.stream()
+            .map(Tracker::createAlarmknopfHilferuf)
+            .collect(Collectors.toList());
 
     kafkaTemplate.send(KAFKA_TOPIC, createdHilferufe);
   }
 
-
-  private List<DementiellErkranktePerson> getPersonenInKnopfProximity(final Alarmknopf alarmknopf) {
+  private List<Tracker> getPersonenInKnopfProximity(final Alarmknopf alarmknopf) {
     double radiusInMeters = 5;
-    return dementiellErkranktePersonenService.getPersonenInProximityOf(alarmknopf, radiusInMeters);
+    return trackerService.getTrackerInProximityOf(alarmknopf, radiusInMeters);
   }
 }

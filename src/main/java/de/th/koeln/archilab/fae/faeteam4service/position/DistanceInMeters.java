@@ -8,7 +8,9 @@ import lombok.NonNull;
 @AllArgsConstructor
 public class DistanceInMeters {
 
-  @NonNull
-  private double distance;
+  @NonNull private double distance;
 
+  public boolean isSmallerOrEqualAs(DistanceInMeters otherDistanceInMeters) {
+    return distance <= otherDistanceInMeters.distance;
+  }
 }

@@ -1,6 +1,5 @@
 package de.th.koeln.archilab.fae.faeteam4service.config;
 
-import de.th.koeln.archilab.fae.faeteam4service.tracker.DementiellErkranktePersonDto;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -66,31 +65,6 @@ public class KafkaConfig {
     ConcurrentKafkaListenerContainerFactory<String, String> factory =
         new ConcurrentKafkaListenerContainerFactory();
     factory.setConsumerFactory(consumerFactory());
-    return factory;
-  }
-
-  @Bean
-  public ConsumerFactory<String, DementiellErkranktePersonDto>
-      dementiellErkranktePersonConsumerFactory() {
-    Map<String, Object> config = new HashMap<>();
-
-    config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, serverAdress);
-    config.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
-    config.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-    config.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
-    return new DefaultKafkaConsumerFactory<>(config, new StringDeserializer(),
-        new JsonDeserializer<>(DementiellErkranktePersonDto.class));
-  }
-
-  @Bean
-  public ConcurrentKafkaListenerContainerFactory<String, DementiellErkranktePersonDto>
-      dementiellErkranktePersonKafkaListenerFactory() {
-
-    ConcurrentKafkaListenerContainerFactory<String, DementiellErkranktePersonDto> factory =
-        new ConcurrentKafkaListenerContainerFactory<>();
-
-    factory.setConsumerFactory(dementiellErkranktePersonConsumerFactory());
-
     return factory;
   }
 }
