@@ -1,7 +1,7 @@
 package de.th.koeln.archilab.fae.faeteam4service.alarmknopf.api;
 
+import de.th.koeln.archilab.fae.faeteam4service.alarmknopf.AlarmknopfRegistrierungServiceImpl;
 import de.th.koeln.archilab.fae.faeteam4service.alarmknopf.persistence.Alarmknopf;
-import de.th.koeln.archilab.fae.faeteam4service.alarmknopf.persistence.AlarmknopfRepository;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -21,25 +21,26 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class AlarmknopfRegistrierungController {
 
-  private final AlarmknopfRepository alarmknopfRepository;
+  private final AlarmknopfRegistrierungServiceImpl alarmknopfRegistrierungServiceImpl;
   private final ModelMapper modelMapper;
 
 
-  public AlarmknopfRegistrierungController(AlarmknopfRepository alarmknopfRepository,
+  public AlarmknopfRegistrierungController(
+      AlarmknopfRegistrierungServiceImpl alarmknopfRegistrierungServiceImpl,
       ModelMapper modelMapper) {
-    this.alarmknopfRepository = alarmknopfRepository;
+    this.alarmknopfRegistrierungServiceImpl = alarmknopfRegistrierungServiceImpl;
     this.modelMapper = modelMapper;
   }
 
   @GetMapping(path = "/alarmknoepfe", produces = MediaType.APPLICATION_JSON_VALUE)
   public Iterable<AlarmknopfDto> getAlarmknoepfe() {
-    Iterable<Alarmknopf> alarmknoepfe = alarmknopfRepository.findAll();
+    List<Alarmknopf> alarmknoepfe = alarmknopfRegistrierungServiceImpl.findAll();
     return getAlarmknoepfeDto(alarmknoepfe);
   }
 
   @GetMapping(path = "/alarmknoepfe/{alarmknopfId}", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<AlarmknopfDto> getAlarmknopf(@PathVariable String alarmknopfId) {
-    Optional<Alarmknopf> alarmknopf = alarmknopfRepository.findById(alarmknopfId);
+    Optional<Alarmknopf> alarmknopf = alarmknopfRegistrierungServiceImpl.findById(alarmknopfId);
 
     return alarmknopf
         .map(value -> new ResponseEntity<>(convertToDto(value), HttpStatus.OK))
@@ -51,13 +52,13 @@ public class AlarmknopfRegistrierungController {
   @ResponseStatus(HttpStatus.CREATED)
   public AlarmknopfDto registerAlarmknopf(@RequestBody AlarmknopfDto newAlarmknopfDto) {
     Alarmknopf alarmknopf = convertToEntity(newAlarmknopfDto);
-    alarmknopfRepository.save(alarmknopf);
+    alarmknopfRegistrierungServiceImpl.save(alarmknopf);
     return newAlarmknopfDto;
   }
 
   @DeleteMapping(path = "/alarmknoepfe/{alarmknopfId}")
   public void deleteOrder(@PathVariable String alarmknopfId) {
-    alarmknopfRepository.deleteById(alarmknopfId);
+    alarmknopfRegistrierungServiceImpl.deleteById(alarmknopfId);
   }
 
   private List<AlarmknopfDto> getAlarmknoepfeDto(Iterable<Alarmknopf> alarmknoepfe) {
