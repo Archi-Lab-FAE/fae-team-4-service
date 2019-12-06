@@ -8,7 +8,7 @@ public interface AlarmknopfRegistrierungService {
 
   List<Alarmknopf> findAll();
 
-  void save(Alarmknopf alarmknopf);
+  boolean save(Alarmknopf alarmknopf);
 
   Optional<Alarmknopf> findById(String alarmknopfId);
 

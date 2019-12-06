@@ -1,6 +1,7 @@
 package de.th.koeln.archilab.fae.faeteam4service.alarmknopf.api;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -84,7 +85,8 @@ public class AlarmknopfRegistrierungControllerTest {
 
     Alarmknopf alarmknopf = new Alarmknopf(ALARMKNOPF_ID, ALARMKNOPF_NAME, position);
     Optional<Alarmknopf> alarmknopfOptional = Optional.of(alarmknopf);
-    given(alarmknopfRegistrierungServiceImpl.findById(ALARMKNOPF_ID)).willReturn(alarmknopfOptional);
+    given(alarmknopfRegistrierungServiceImpl.findById(ALARMKNOPF_ID))
+        .willReturn(alarmknopfOptional);
 
     AlarmknopfDto alarmknopfDto = new AlarmknopfDto(ALARMKNOPF_ID, ALARMKNOPF_NAME,
         new PositionDto());
@@ -96,21 +98,35 @@ public class AlarmknopfRegistrierungControllerTest {
   }
 
   @Test
-  public void shouldDeleteAlarmknopfAndReturnOkIfSuccessful() throws Exception {
+  public void givenEmptyRequestBody_whenPostAlarmknoepfe_thenHttp405ShouldBeReturned()
+      throws Exception {
+    mockMvc.perform(post("/alarmknoepfe").contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isMethodNotAllowed());
+  }
+
+  @Test
+  public void givenValidAlarmknopfId_whenDeleteAlarmknoepfe_thenHttp200ShouldBeReturned()
+      throws Exception {
     when(alarmknopfRegistrierungServiceImpl.deleteById(ALARMKNOPF_ID)).thenReturn(true);
-    mockMvc.perform(delete("/alarmknoepfe/{alarmknopfId}", ALARMKNOPF_ID)).andExpect(status().isOk());
+    mockMvc.perform(delete("/alarmknoepfe/{alarmknopfId}", ALARMKNOPF_ID))
+        .andExpect(status().isOk());
   }
 
   @Test
-  public void shouldDeleteAlarmknopfAndReturnNotFoundIfNotSuccessful() throws Exception {
+  public void givenInvalidAlarmknopfId_whenDeleteAlarmknoepfe_thenHttp404ShouldBeReturned()
+      throws Exception {
     when(alarmknopfRegistrierungServiceImpl.deleteById(ALARMKNOPF_ID)).thenReturn(false);
-    mockMvc.perform(delete("/alarmknoepfe/{alarmknopfId}", ALARMKNOPF_ID)).andExpect(status().isNotFound());
+    mockMvc.perform(delete("/alarmknoepfe/{alarmknopfId}", ALARMKNOPF_ID))
+        .andExpect(status().isNotFound());
   }
 
   @Test
-  public void givenNone_whenRegisterAlarmknopf_thenReturnJsonWithAlarmknopf() throws Exception {
+  public void givenAlarmknopf_whenPostAlarmknopf_thenHttp201AndJsonWithAlarmknopfShouldBeReturned()
+      throws Exception {
     PositionDto positionDto = new PositionDto(3.14, 4.13);
     AlarmknopfDto alarmknopfDto = new AlarmknopfDto(ALARMKNOPF_ID, ALARMKNOPF_NAME, positionDto);
+
+    when(alarmknopfRegistrierungServiceImpl.save(any(Alarmknopf.class))).thenReturn(true);
 
     mockMvc.perform(post("/alarmknoepfe/").content(objectMapper.writeValueAsString(alarmknopfDto))
         .contentType(MediaType.APPLICATION_JSON))

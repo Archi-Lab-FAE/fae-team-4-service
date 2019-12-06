@@ -6,11 +6,15 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import org.modelmapper.MappingException;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -50,10 +54,14 @@ public class AlarmknopfRegistrierungController {
   @PostMapping(path = "/alarmknoepfe/",
       consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.CREATED)
-  public AlarmknopfDto registerAlarmknopf(@RequestBody AlarmknopfDto newAlarmknopfDto) {
-    Alarmknopf alarmknopf = convertToEntity(newAlarmknopfDto);
-    alarmknopfRegistrierungServiceImpl.save(alarmknopf);
-    return newAlarmknopfDto;
+  public ResponseEntity registerAlarmknopf(@RequestBody AlarmknopfDto alarmknopfDto) {
+    Alarmknopf alarmknopf = convertToEntity(alarmknopfDto);
+    boolean wasPersistSuccessful = alarmknopfRegistrierungServiceImpl.save(alarmknopf);
+
+    if (wasPersistSuccessful) {
+      return new ResponseEntity<>(alarmknopfDto, HttpStatus.CREATED);
+    }
+    return new ResponseEntity(HttpStatus.BAD_REQUEST);
   }
 
   @DeleteMapping(path = "/alarmknoepfe/{alarmknopfId}")
@@ -64,6 +72,15 @@ public class AlarmknopfRegistrierungController {
       return new ResponseEntity(HttpStatus.OK);
     }
     return new ResponseEntity(HttpStatus.NOT_FOUND);
+  }
+
+  @ExceptionHandler(Exception.class)
+  public ResponseEntity<AlarmknopfDto> handle(Exception ex, HttpServletRequest request,
+      HttpServletResponse response) {
+    if (ex instanceof NullPointerException || ex instanceof MappingException) {
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
   }
 
   private List<AlarmknopfDto> getAlarmknoepfeDto(Iterable<Alarmknopf> alarmknoepfe) {

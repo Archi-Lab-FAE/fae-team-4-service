@@ -23,8 +23,14 @@ public class AlarmknopfRegistrierungServiceImpl implements AlarmknopfRegistrieru
   }
 
   @Override
-  public void save(Alarmknopf alarmknopf) {
+  public boolean save(Alarmknopf alarmknopf) {
     alarmknopfRepository.save(alarmknopf);
+    Optional<Alarmknopf> foundAlarmknopf = alarmknopfRepository.findById(alarmknopf.getId());
+
+    if (foundAlarmknopf.isPresent()) {
+      return true;
+    }
+    return false;
   }
 
   @Override
