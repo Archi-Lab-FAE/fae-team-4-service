@@ -17,7 +17,7 @@ spring:
   # Spring Data Rest
   data:
     rest:
-      basePath: /shop-demo
+      basePath: /team4-service
       return-body-on-create: true
       return-body-on-update: true
       default-media-type: application/hal+json
