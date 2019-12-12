@@ -1,9 +1,9 @@
 # Database
 spring:
   datasource:
-    url: jdbc:postgresql://${SHOP_DEMO_DB}:5432/${SHOP_DEMO_DB_NAME}
-    password: ${SHOP_DEMO_DB_PW}
-    username: ${SHOP_DEMO_DB_USER}
+    url: jdbc:postgresql://${TEAM4_DB}:5432/${TEAM4_DB_NAME}
+    password: ${TEAM4_DB_PW}
+    username: ${TEAM4_DB_USER}
   # kafka servers
   kafka:
     bootstrap-servers: kafka:9092
