@@ -27,10 +27,7 @@ public class AlarmknopfRegistrierungServiceImpl implements AlarmknopfRegistrieru
     alarmknopfRepository.save(alarmknopf);
     Optional<Alarmknopf> foundAlarmknopf = alarmknopfRepository.findById(alarmknopf.getId());
 
-    if (foundAlarmknopf.isPresent()) {
-      return true;
-    }
-    return false;
+    return foundAlarmknopf.isPresent();
   }
 
   @Override
