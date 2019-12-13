@@ -1,8 +1,0 @@
-{"namespace": "de.th.koeln.archilab.fae.faeteam4service.alarmknopfhilferuf",
-  "type": "record",
-  "name": "AlarmknopfHilferufAvro",
-  "fields": [
-    {"name": "message", "type": "string"},
-    {"name": "trackers", "type": {"type": "array", "items": "string"}}
-  ]
-}
