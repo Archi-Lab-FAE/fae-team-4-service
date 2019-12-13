@@ -2,6 +2,7 @@ package de.th.koeln.archilab.fae.faeteam4service.alarmknopf.api;
 
 import de.th.koeln.archilab.fae.faeteam4service.alarmknopf.AlarmknopfRegistrierungServiceImpl;
 import de.th.koeln.archilab.fae.faeteam4service.alarmknopf.persistence.Alarmknopf;
+import io.swagger.v3.oas.annotations.Operation;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,12 +37,14 @@ public class AlarmknopfRegistrierungController {
     this.modelMapper = modelMapper;
   }
 
+  @Operation(summary = "Alle Alarmknöpfe als Liste", description = "")
   @GetMapping(path = "/alarmknoepfe", produces = MediaType.APPLICATION_JSON_VALUE)
   public List<AlarmknopfDto> getAlarmknoepfe() {
     List<Alarmknopf> alarmknoepfe = alarmknopfRegistrierungServiceImpl.findAll();
     return getAlarmknoepfeDto(alarmknoepfe);
   }
 
+  @Operation(summary = "Informationen zu Alarmknopf dessen ID übermittelt wird", description = "")
   @GetMapping(path = "/alarmknoepfe/{alarmknopfId}", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<AlarmknopfDto> getAlarmknopf(@PathVariable String alarmknopfId) {
     Optional<Alarmknopf> alarmknopf = alarmknopfRegistrierungServiceImpl.findById(alarmknopfId);
@@ -51,19 +54,18 @@ public class AlarmknopfRegistrierungController {
         .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
   }
 
-  @PostMapping(path = "/alarmknoepfe/",
+  @Operation(summary = "Registrierung eines Alarmknopfes", description = "")
+  @PutMapping(path = "/alarmknoepfe/",
       consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-  @ResponseStatus(HttpStatus.CREATED)
+  @ResponseStatus(HttpStatus.OK)
   public ResponseEntity registerAlarmknopf(@RequestBody AlarmknopfDto alarmknopfDto) {
     Alarmknopf alarmknopf = convertToEntity(alarmknopfDto);
-    boolean wasPersistSuccessful = alarmknopfRegistrierungServiceImpl.save(alarmknopf);
+    alarmknopfRegistrierungServiceImpl.save(alarmknopf);
 
-    if (wasPersistSuccessful) {
-      return new ResponseEntity<>(alarmknopfDto, HttpStatus.CREATED);
-    }
-    return new ResponseEntity(HttpStatus.BAD_REQUEST);
+    return new ResponseEntity<>(alarmknopfDto, HttpStatus.OK);
   }
 
+  @Operation(summary = "Löschen des Alarmknopfs dessen ID übermittelt wird", description = "")
   @DeleteMapping(path = "/alarmknoepfe/{alarmknopfId}")
   public ResponseEntity deleteOrder(@PathVariable String alarmknopfId) {
     boolean wasDeletionSuccessful = alarmknopfRegistrierungServiceImpl.deleteById(alarmknopfId);
@@ -75,9 +77,8 @@ public class AlarmknopfRegistrierungController {
   }
 
   @ExceptionHandler(Exception.class)
-  public ResponseEntity<AlarmknopfDto> handle(Exception ex, HttpServletRequest request,
-      HttpServletResponse response) {
-    if (ex instanceof NullPointerException || ex instanceof MappingException) {
+  public ResponseEntity<AlarmknopfDto> handle(Exception ex) {
+    if (ex instanceof MappingException) {
       return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

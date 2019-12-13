@@ -7,6 +7,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -103,7 +104,7 @@ public class AlarmknopfRegistrierungControllerTest {
   }
 
   @Test
-  public void givenEmptyRequestBody_whenPostAlarmknoepfe_thenHttp405ShouldBeReturned()
+  public void givenEmptyRequestBody_whenPutAlarmknoepfe_thenHttp405ShouldBeReturned()
       throws Exception {
     mockMvc.perform(post("/alarmknoepfe").contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isMethodNotAllowed());
@@ -126,23 +127,23 @@ public class AlarmknopfRegistrierungControllerTest {
   }
 
   @Test
-  public void givenAlarmknopf_whenPostAlarmknopf_thenHttp201AndJsonWithAlarmknopfShouldBeReturned()
+  public void givenAlarmknopf_whenPutAlarmknopf_thenHttp200AndJsonWithAlarmknopfShouldBeReturned()
       throws Exception {
     PositionDto positionDto = new PositionDto(3.14, 4.13);
     AlarmknopfDto alarmknopfDto = new AlarmknopfDto(ALARMKNOPF_ID, ALARMKNOPF_NAME, positionDto);
 
     when(alarmknopfRegistrierungServiceImpl.save(any(Alarmknopf.class))).thenReturn(true);
 
-    mockMvc.perform(post("/alarmknoepfe/").content(objectMapper.writeValueAsString(alarmknopfDto))
+    mockMvc.perform(put("/alarmknoepfe/").content(objectMapper.writeValueAsString(alarmknopfDto))
         .contentType(MediaType.APPLICATION_JSON))
-        .andExpect(status().isCreated())
+        .andExpect(status().isOk())
         .andExpect(jsonPath("$.id", is(alarmknopfDto.getId())))
         .andExpect(jsonPath("$.position.breitengrad", is(positionDto.getBreitengrad())))
         .andExpect(jsonPath("$.position.laengengrad", is(positionDto.getLaengengrad())));
   }
 
   @Test
-  public void givenNotMapableObject_whenPostInvalidJson_thenHttp400ShouldBeReturned()
+  public void givenNotMapableObject_whenPutInvalidJson_thenHttp400ShouldBeReturned()
       throws Exception {
     File file = ResourceUtils.getFile("classpath:AlarmknopfInvalidRequestBody.json");
     String requestBody = new String(Files.readAllBytes(file.toPath()));
@@ -152,7 +153,7 @@ public class AlarmknopfRegistrierungControllerTest {
 
     when(alarmknopfRegistrierungServiceImpl.save(any())).thenThrow(new MappingException(errorMessages));
 
-    mockMvc.perform(post("/alarmknoepfe/")
+    mockMvc.perform(put("/alarmknoepfe/")
         .contentType(MediaType.APPLICATION_JSON)
         .content(requestBody)
         .accept(MediaType.APPLICATION_JSON))
