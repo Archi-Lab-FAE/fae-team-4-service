@@ -23,17 +23,21 @@ import org.springframework.kafka.support.serializer.JsonSerializer;
 @Configuration
 public class KafkaConfig {
 
-  @Value("${spring.kafka.bootstrap-servers}")
-  private String serverAdress;
+  private final String servers;
+  private final String groupId;
 
-  @Value("${spring.kafka.group-id}")
-  private String groupId;
+
+  public KafkaConfig(@Value("${spring.kafka.bootstrap-servers}") final String servers,
+      @Value("${spring.kafka.group-id}") final String groupId) {
+    this.servers = servers;
+    this.groupId = groupId;
+  }
 
   @Bean
   public ProducerFactory<String, List> producerFactory() {
     Map<String, Object> config = new HashMap<>();
 
-    config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, serverAdress);
+    config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, servers);
     config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
     config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
 
@@ -49,7 +53,7 @@ public class KafkaConfig {
   public ConsumerFactory<String, String> consumerFactory() {
     Map<String, Object> config = new HashMap<>();
 
-    config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, serverAdress);
+    config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, servers);
     config.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
     config.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
     config.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
