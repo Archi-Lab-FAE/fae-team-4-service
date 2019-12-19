@@ -1,7 +1,7 @@
 package de.th.koeln.archilab.fae.faeteam4service.tracker.persistence;
 
+import de.th.koeln.archilab.fae.faeteam4service.DistanceInMeters;
 import de.th.koeln.archilab.fae.faeteam4service.alarmknopfhilferuf.AlarmknopfHilferuf;
-import de.th.koeln.archilab.fae.faeteam4service.position.DistanceInMeters;
 import de.th.koeln.archilab.fae.faeteam4service.position.persistence.Position;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -32,7 +32,7 @@ public class Tracker {
     this(id);
 
     if (laengengrad != null && breitengrad != null) {
-      this.position = new Position(laengengrad, breitengrad);
+      this.position = new Position(breitengrad, laengengrad);
     }
   }
 

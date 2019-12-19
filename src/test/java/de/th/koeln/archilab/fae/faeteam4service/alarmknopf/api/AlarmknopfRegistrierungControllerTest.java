@@ -12,6 +12,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import de.th.koeln.archilab.fae.faeteam4service.DistanceInMeters;
 import de.th.koeln.archilab.fae.faeteam4service.FaeTeam4ServiceApplication;
 import de.th.koeln.archilab.fae.faeteam4service.alarmknopf.AlarmknopfRegistrierungServiceImpl;
 import de.th.koeln.archilab.fae.faeteam4service.alarmknopf.persistence.Alarmknopf;
@@ -20,6 +21,7 @@ import de.th.koeln.archilab.fae.faeteam4service.position.persistence.Breitengrad
 import de.th.koeln.archilab.fae.faeteam4service.position.persistence.Laengengrad;
 import de.th.koeln.archilab.fae.faeteam4service.position.persistence.Position;
 import java.io.File;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +36,10 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpInputMessage;
 import org.springframework.http.MediaType;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.util.ResourceUtils;
@@ -56,6 +61,7 @@ public class AlarmknopfRegistrierungControllerTest {
 
   private static final String ALARMKNOPF_ID = "1337";
   private static final String ALARMKNOPF_NAME = "myName";
+  private static final double MELDUNGSRELEVANTER_RADIUS = 123.2;
 
 
   @Test
@@ -65,11 +71,15 @@ public class AlarmknopfRegistrierungControllerTest {
     double latitude1 = 33.14;
     double longitude1 = 44.13;
 
-    Position position = getPositionFromLatitudeAndLongitude(latitude, longitude);
-    Alarmknopf alarmknopf = new Alarmknopf(ALARMKNOPF_ID, ALARMKNOPF_NAME, position);
+    Position position = getPositionFromBreitengradAndLaengengrad(latitude, longitude);
+    DistanceInMeters meldungsrelevanterRadius = new DistanceInMeters(5.0);
+    Alarmknopf alarmknopf = new Alarmknopf(ALARMKNOPF_ID, ALARMKNOPF_NAME, position,
+        meldungsrelevanterRadius);
 
-    Position position1 = getPositionFromLatitudeAndLongitude(latitude1, longitude1);
-    Alarmknopf alarmknopf1 = new Alarmknopf(ALARMKNOPF_ID + "1", ALARMKNOPF_NAME + "1", position1);
+    Position position1 = getPositionFromBreitengradAndLaengengrad(latitude1, longitude1);
+    DistanceInMeters meldungsrelevanterRadius1 = new DistanceInMeters(5.0);
+    Alarmknopf alarmknopf1 = new Alarmknopf(ALARMKNOPF_ID + "1", ALARMKNOPF_NAME + "1", position1,
+        meldungsrelevanterRadius1);
 
     List<Alarmknopf> alarmknoepfe = new ArrayList<>();
     alarmknoepfe.add(alarmknopf);
@@ -78,24 +88,28 @@ public class AlarmknopfRegistrierungControllerTest {
     when(alarmknopfRegistrierungServiceImpl.findAll()).thenReturn(alarmknoepfe);
     mockMvc.perform(get("/alarmknoepfe")
         .contentType(MediaType.APPLICATION_JSON))
-        .andExpect(status().isOk());
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$[0].id", is(alarmknopf.getId())))
+        .andExpect(jsonPath("$[1].id", is(alarmknopf1.getId())));
   }
 
   @Test
-  public void givenAlarmknopf_whenGetAlarmknoepfe_thenReturnJsonWithAlarmknopfById()
+  public void givenAlarmknopf_whenGetAlarmknopfById_thenReturnJsonWithAlarmknopf()
       throws Exception {
-    double latitude = 3.14;
-    double longitude = 4.13;
+    final double latitude = 3.14;
+    final double longitude = 4.13;
 
-    Position position = getPositionFromLatitudeAndLongitude(latitude, longitude);
+    Position position = getPositionFromBreitengradAndLaengengrad(latitude, longitude);
+    DistanceInMeters meldungsrelevanterRadius = new DistanceInMeters(5.14);
 
-    Alarmknopf alarmknopf = new Alarmknopf(ALARMKNOPF_ID, ALARMKNOPF_NAME, position);
+    Alarmknopf alarmknopf = new Alarmknopf(ALARMKNOPF_ID, ALARMKNOPF_NAME, position,
+        meldungsrelevanterRadius);
     Optional<Alarmknopf> alarmknopfOptional = Optional.of(alarmknopf);
     given(alarmknopfRegistrierungServiceImpl.findById(ALARMKNOPF_ID))
         .willReturn(alarmknopfOptional);
 
     AlarmknopfDto alarmknopfDto = new AlarmknopfDto(ALARMKNOPF_ID, ALARMKNOPF_NAME,
-        new PositionDto());
+        new PositionDto(), MELDUNGSRELEVANTER_RADIUS);
 
     mockMvc.perform(get("/alarmknoepfe/{alarmknopfId}", ALARMKNOPF_ID)
         .contentType(MediaType.APPLICATION_JSON))
@@ -130,7 +144,8 @@ public class AlarmknopfRegistrierungControllerTest {
   public void givenAlarmknopf_whenPutAlarmknopf_thenHttp200AndJsonWithAlarmknopfShouldBeReturned()
       throws Exception {
     PositionDto positionDto = new PositionDto(3.14, 4.13);
-    AlarmknopfDto alarmknopfDto = new AlarmknopfDto(ALARMKNOPF_ID, ALARMKNOPF_NAME, positionDto);
+    AlarmknopfDto alarmknopfDto = new AlarmknopfDto(ALARMKNOPF_ID, ALARMKNOPF_NAME, positionDto,
+        MELDUNGSRELEVANTER_RADIUS);
 
     when(alarmknopfRegistrierungServiceImpl.save(any(Alarmknopf.class))).thenReturn(true);
 
@@ -151,7 +166,8 @@ public class AlarmknopfRegistrierungControllerTest {
     List<ErrorMessage> errorMessages = new ArrayList<>();
     errorMessages.add(new ErrorMessage("mapping failed"));
 
-    when(alarmknopfRegistrierungServiceImpl.save(any())).thenThrow(new MappingException(errorMessages));
+    when(alarmknopfRegistrierungServiceImpl.save(any()))
+        .thenThrow(new MappingException(errorMessages));
 
     mockMvc.perform(put("/alarmknoepfe/")
         .contentType(MediaType.APPLICATION_JSON)
@@ -160,15 +176,46 @@ public class AlarmknopfRegistrierungControllerTest {
         .andExpect(status().isBadRequest());
   }
 
-  private Position getPositionFromLatitudeAndLongitude(final double latitude,
-      final double longitude) {
+  @Test
+  public void givenNotReadable_whenPutNotReadableJson_thenHttp400ShouldBeReturned()
+      throws Exception {
+    File file = ResourceUtils.getFile("classpath:AlarmknopfNotReadableRequestBody.json");
+    String requestBody = new String(Files.readAllBytes(file.toPath()));
+
+    HttpInputMessage httpInputMessage = getMockHttpInputMessage();
+
+    when(alarmknopfRegistrierungServiceImpl.save(any()))
+        .thenThrow(new HttpMessageNotReadableException("not readable", httpInputMessage));
+
+    mockMvc.perform(put("/alarmknoepfe/")
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(requestBody)
+        .accept(MediaType.APPLICATION_JSON))
+        .andExpect(status().isBadRequest());
+  }
+
+  private HttpInputMessage getMockHttpInputMessage() {
+    return new HttpInputMessage() {
+        @Override
+        public InputStream getBody() {
+          return null;
+        }
+
+        @Override
+        public HttpHeaders getHeaders() {
+          return null;
+        }
+      };
+  }
+
+  private Position getPositionFromBreitengradAndLaengengrad(final double breitengradToSet,
+      final double laengengradToSet) {
     Breitengrad breitengrad = new Breitengrad();
-    breitengrad.setBreitengradDezimal(latitude);
+    breitengrad.setBreitengradDezimal(breitengradToSet);
 
     Laengengrad laengengrad = new Laengengrad();
-    laengengrad.setLaengengradDezimal(longitude);
+    laengengrad.setLaengengradDezimal(laengengradToSet);
 
     return new Position(breitengrad, laengengrad);
   }
-
 }

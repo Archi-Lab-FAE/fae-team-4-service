@@ -12,6 +12,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,14 +36,14 @@ public class AlarmknopfRegistrierungController {
     this.modelMapper = modelMapper;
   }
 
-  @Operation(summary = "Alle Alarmknöpfe als Liste", description = "")
+  @Operation(summary = "Alle Alarmknöpfe als Liste")
   @GetMapping(path = "/alarmknoepfe", produces = MediaType.APPLICATION_JSON_VALUE)
   public List<AlarmknopfDto> getAlarmknoepfe() {
     List<Alarmknopf> alarmknoepfe = alarmknopfRegistrierungServiceImpl.findAll();
     return getAlarmknoepfeDto(alarmknoepfe);
   }
 
-  @Operation(summary = "Informationen zu Alarmknopf dessen ID übermittelt wird", description = "")
+  @Operation(summary = "Informationen zu Alarmknopf dessen ID übermittelt wird")
   @GetMapping(path = "/alarmknoepfe/{alarmknopfId}", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<AlarmknopfDto> getAlarmknopf(@PathVariable String alarmknopfId) {
     Optional<Alarmknopf> alarmknopf = alarmknopfRegistrierungServiceImpl.findById(alarmknopfId);
@@ -52,7 +53,7 @@ public class AlarmknopfRegistrierungController {
         .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
   }
 
-  @Operation(summary = "Registrierung eines Alarmknopfes", description = "")
+  @Operation(summary = "Registrierung eines Alarmknopfes")
   @PutMapping(path = "/alarmknoepfe/",
       consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.OK)
@@ -63,9 +64,9 @@ public class AlarmknopfRegistrierungController {
     return new ResponseEntity<>(alarmknopfDto, HttpStatus.OK);
   }
 
-  @Operation(summary = "Löschen des Alarmknopfs dessen ID übermittelt wird", description = "")
+  @Operation(summary = "Löschen des Alarmknopfs dessen ID übermittelt wird")
   @DeleteMapping(path = "/alarmknoepfe/{alarmknopfId}")
-  public ResponseEntity deleteOrder(@PathVariable String alarmknopfId) {
+  public ResponseEntity deleteAlarmknopf(@PathVariable String alarmknopfId) {
     boolean wasDeletionSuccessful = alarmknopfRegistrierungServiceImpl.deleteById(alarmknopfId);
 
     if (wasDeletionSuccessful) {
@@ -76,7 +77,7 @@ public class AlarmknopfRegistrierungController {
 
   @ExceptionHandler(Exception.class)
   public ResponseEntity<AlarmknopfDto> handle(Exception ex) {
-    if (ex instanceof MappingException) {
+    if (ex instanceof MappingException || ex instanceof HttpMessageNotReadableException) {
       return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

@@ -1,5 +1,6 @@
 package de.th.koeln.archilab.fae.faeteam4service.tracker;
 
+import de.th.koeln.archilab.fae.faeteam4service.DistanceInMeters;
 import de.th.koeln.archilab.fae.faeteam4service.alarmknopf.persistence.Alarmknopf;
 import de.th.koeln.archilab.fae.faeteam4service.position.persistence.Position;
 import de.th.koeln.archilab.fae.faeteam4service.tracker.persistence.Tracker;
@@ -112,13 +113,13 @@ public class TrackerServiceTest {
     assertThat(trackerInProximity, is(empty()));
   }
 
-  private Alarmknopf createTestAlarmknopfWithPosition(
-      final double latitude, final double longitude) {
-    return new Alarmknopf("id", "myName", new Position(longitude, latitude));
-  }
-
   private Tracker createTestTrackerWith(
       final String trackerId, final double latitude, final double longitude) {
-    return new Tracker(trackerId, new Position(longitude, latitude));
+    return new Tracker(trackerId, new Position(latitude, longitude));
+  }
+
+  private Alarmknopf createTestAlarmknopfWithPosition(
+      final double latitude, final double longitude) {
+    return new Alarmknopf("id", "myName", new Position(latitude, longitude), new DistanceInMeters());
   }
 }

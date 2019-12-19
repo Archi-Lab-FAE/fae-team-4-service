@@ -21,4 +21,7 @@ public class AlarmknopfDto {
 
   @NonNull
   private PositionDto position;
+
+  @NonNull
+  private double meldungsrelevanterRadiusInMetern;
 }

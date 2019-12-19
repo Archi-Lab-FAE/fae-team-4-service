@@ -14,5 +14,4 @@ public class PositionDto {
   private double breitengrad;
 
   private double laengengrad;
-
 }

@@ -2,29 +2,29 @@ package de.th.koeln.archilab.fae.faeteam4service.position.persistence;
 
 import static org.junit.Assert.assertEquals;
 
-import de.th.koeln.archilab.fae.faeteam4service.position.DistanceInMeters;
+import de.th.koeln.archilab.fae.faeteam4service.DistanceInMeters;
 import org.junit.Test;
 
 public class PositionTest {
 
   @Test
   public void givenTwoPositionsTheCorrespondingDistanceInMetersShouldBeReturned() {
-    Position bahnhofKoelnMesse = getPositionFromLatitudeAndLongitude(50.9417015, 6.9738248);
-    Position deutzerFreiheit = getPositionFromLatitudeAndLongitude(50.93684, 6.97523);
+    Position bahnhofKoelnMesse = getPositionFromBreitengradAndLaengengrad(50.9417015, 6.9738248);
+    Position deutzerFreiheit = getPositionFromBreitengradAndLaengengrad(50.93684, 6.97523);
     DistanceInMeters expectedDistanceBetweenBahnhofKoelnMesseAndDeutzerFreiheit =
         new DistanceInMeters(549.7730131900543);
     assertDistanceInMetersBetweenTwoPositions(bahnhofKoelnMesse, deutzerFreiheit,
         expectedDistanceBetweenBahnhofKoelnMesseAndDeutzerFreiheit);
 
-    Position koelnerDomSuedturm = getPositionFromLatitudeAndLongitude(50.94112, 6.95728);
-    Position koelnerDomNordturm = getPositionFromLatitudeAndLongitude(50.94144, 6.95727);
+    Position koelnerDomSuedturm = getPositionFromBreitengradAndLaengengrad(50.94112, 6.95728);
+    Position koelnerDomNordturm = getPositionFromBreitengradAndLaengengrad(50.94144, 6.95727);
     DistanceInMeters expectedDistanceBetweenKoelnerDomSuedturmAndKoelnerDomNordturm =
         new DistanceInMeters(35.60602665403109);
     assertDistanceInMetersBetweenTwoPositions(koelnerDomSuedturm, koelnerDomNordturm,
         expectedDistanceBetweenKoelnerDomSuedturmAndKoelnerDomNordturm);
 
-    Position coffeeFellows = getPositionFromLatitudeAndLongitude(50.9432138, 6.9583567);
-    Position pizzaHut = getPositionFromLatitudeAndLongitude(50.9431768, 6.9583621);
+    Position coffeeFellows = getPositionFromBreitengradAndLaengengrad(50.9432138, 6.9583567);
+    Position pizzaHut = getPositionFromBreitengradAndLaengengrad(50.9431768, 6.9583621);
     DistanceInMeters expectedDistanceBetweenCoffeeFellowsAndPizzaHut =
         new DistanceInMeters(4.133606288021513);
     assertDistanceInMetersBetweenTwoPositions(coffeeFellows, pizzaHut,
@@ -40,13 +40,13 @@ public class PositionTest {
         toleratedDelta);
   }
 
-  private Position getPositionFromLatitudeAndLongitude(final double latitude,
-      final double longitude) {
+  private Position getPositionFromBreitengradAndLaengengrad(final double breitengradToSet,
+      final double laengengradToSet) {
     Breitengrad breitengrad = new Breitengrad();
-    breitengrad.setBreitengradDezimal(latitude);
+    breitengrad.setBreitengradDezimal(breitengradToSet);
 
     Laengengrad laengengrad = new Laengengrad();
-    laengengrad.setLaengengradDezimal(longitude);
+    laengengrad.setLaengengradDezimal(laengengradToSet);
 
     return new Position(breitengrad, laengengrad);
   }

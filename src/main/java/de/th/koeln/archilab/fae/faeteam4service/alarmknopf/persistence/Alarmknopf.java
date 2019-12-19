@@ -1,5 +1,6 @@
 package de.th.koeln.archilab.fae.faeteam4service.alarmknopf.persistence;
 
+import de.th.koeln.archilab.fae.faeteam4service.DistanceInMeters;
 import de.th.koeln.archilab.fae.faeteam4service.position.persistence.Position;
 import io.swagger.v3.oas.annotations.Hidden;
 import javax.persistence.Embedded;
@@ -27,4 +28,8 @@ public class Alarmknopf {
   @Embedded
   @NonNull
   private Position position;
+
+  @Embedded
+  @NonNull
+  private DistanceInMeters meldungsrelevanterRadius;
 }

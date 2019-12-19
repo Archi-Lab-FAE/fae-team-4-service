@@ -1,7 +1,7 @@
 package de.th.koeln.archilab.fae.faeteam4service.tracker;
 
+import de.th.koeln.archilab.fae.faeteam4service.DistanceInMeters;
 import de.th.koeln.archilab.fae.faeteam4service.alarmknopf.persistence.Alarmknopf;
-import de.th.koeln.archilab.fae.faeteam4service.position.DistanceInMeters;
 import de.th.koeln.archilab.fae.faeteam4service.tracker.persistence.Tracker;
 import de.th.koeln.archilab.fae.faeteam4service.tracker.persistence.TrackerRepository;
 import java.util.List;

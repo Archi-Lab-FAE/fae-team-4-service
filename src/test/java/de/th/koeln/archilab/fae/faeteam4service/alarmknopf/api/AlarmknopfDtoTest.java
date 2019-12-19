@@ -2,9 +2,10 @@ package de.th.koeln.archilab.fae.faeteam4service.alarmknopf.api;
 
 import static org.junit.Assert.assertEquals;
 
+import de.th.koeln.archilab.fae.faeteam4service.DistanceInMeters;
+import de.th.koeln.archilab.fae.faeteam4service.alarmknopf.persistence.Alarmknopf;
 import de.th.koeln.archilab.fae.faeteam4service.config.ModelMapperConfig;
 import de.th.koeln.archilab.fae.faeteam4service.position.api.PositionDto;
-import de.th.koeln.archilab.fae.faeteam4service.alarmknopf.persistence.Alarmknopf;
 import de.th.koeln.archilab.fae.faeteam4service.position.persistence.Breitengrad;
 import de.th.koeln.archilab.fae.faeteam4service.position.persistence.Laengengrad;
 import de.th.koeln.archilab.fae.faeteam4service.position.persistence.Position;
@@ -24,27 +25,34 @@ public class AlarmknopfDtoTest {
   }
 
   @Test
-  public void whenConvertAlarmknopfEntityToPostDto_thenCorrect() {
+  public void whenConvertAlarmknopfEntityToAlarmknopfDto_thenCorrect() {
     Position position =
-        getPositionFromLatitudeAndLongitude(50.9432138, 6.9583567);
+        getPositionFromBreitengradAndLaengengrad(50.9432138, 6.9583567);
+
+    DistanceInMeters meldungsrelevanterRadius = new DistanceInMeters(5.0);
 
     Alarmknopf alarmknopf = new Alarmknopf();
     alarmknopf.setId("1234Id");
     alarmknopf.setName("myName");
     alarmknopf.setPosition(position);
-
+    alarmknopf.setMeldungsrelevanterRadius(meldungsrelevanterRadius);
 
     AlarmknopfDto alarmknopfDto = modelMapper.map(alarmknopf, AlarmknopfDto.class);
 
-    double alarmknopfBreitengrad = alarmknopf.getPosition().getBreitengrad().getBreitengradDezimal();
-    double alarmknopfLaengengrad = alarmknopf.getPosition().getLaengengrad().getLaengengradDezimal();
+    double alarmknopfBreitengrad = alarmknopf.getPosition().getBreitengrad()
+        .getBreitengradDezimal();
+    double alarmknopfLaengengrad = alarmknopf.getPosition().getLaengengrad()
+        .getLaengengradDezimal();
+    double alarmknopfRadius = alarmknopf.getMeldungsrelevanterRadius().getDistance();
     double alarmknopfDtoBreitengrad = alarmknopfDto.getPosition().getBreitengrad();
     double alarmknopfDtoLaengengrad = alarmknopfDto.getPosition().getLaengengrad();
+    double alarmknopfDtoRadius = alarmknopfDto.getMeldungsrelevanterRadiusInMetern();
 
     assertEquals(alarmknopf.getId(), alarmknopfDto.getId());
     assertEquals(alarmknopf.getName(), alarmknopfDto.getName());
     assertEquals(alarmknopfBreitengrad, alarmknopfDtoBreitengrad, toleratedDelta);
     assertEquals(alarmknopfLaengengrad, alarmknopfDtoLaengengrad, toleratedDelta);
+    assertEquals(alarmknopfRadius, alarmknopfDtoRadius, toleratedDelta);
   }
 
   @Test
@@ -55,27 +63,35 @@ public class AlarmknopfDtoTest {
     alarmknopfDto.setId("1234Id");
     alarmknopfDto.setName("myName");
     alarmknopfDto.setPosition(positionDto);
+    alarmknopfDto.setMeldungsrelevanterRadiusInMetern(32.413);
 
     Alarmknopf alarmknopf = modelMapper.map(alarmknopfDto, Alarmknopf.class);
+    modelMapper.validate();
 
     double alarmknopfDtoBreitengrad = alarmknopfDto.getPosition().getBreitengrad();
     double alarmknopfDtoLaengengrad = alarmknopfDto.getPosition().getLaengengrad();
-    double alarmknopfBreitengrad = alarmknopf.getPosition().getBreitengrad().getBreitengradDezimal();
-    double alarmknopfLaengengrad = alarmknopf.getPosition().getLaengengrad().getLaengengradDezimal();
+    double alarmknopfDtoRadius = alarmknopfDto.getMeldungsrelevanterRadiusInMetern();
+
+    double alarmknopfBreitengrad = alarmknopf.getPosition().getBreitengrad()
+        .getBreitengradDezimal();
+    double alarmknopfLaengengrad = alarmknopf.getPosition().getLaengengrad()
+        .getLaengengradDezimal();
+    double alarmknopfRadius = alarmknopf.getMeldungsrelevanterRadius().getDistance();
 
     assertEquals(alarmknopfDto.getId(), alarmknopf.getId());
     assertEquals(alarmknopfDto.getName(), alarmknopf.getName());
     assertEquals(alarmknopfDtoBreitengrad, alarmknopfBreitengrad, toleratedDelta);
     assertEquals(alarmknopfDtoLaengengrad, alarmknopfLaengengrad, toleratedDelta);
+    assertEquals(alarmknopfDtoRadius, alarmknopfRadius, toleratedDelta);
   }
 
-  private Position getPositionFromLatitudeAndLongitude(final double latitude,
-      final double longitude) {
+  private Position getPositionFromBreitengradAndLaengengrad(final double breitengradToSet,
+      final double laengengradToSet) {
     Breitengrad breitengrad = new Breitengrad();
-    breitengrad.setBreitengradDezimal(latitude);
+    breitengrad.setBreitengradDezimal(breitengradToSet);
 
     Laengengrad laengengrad = new Laengengrad();
-    laengengrad.setLaengengradDezimal(longitude);
+    laengengrad.setLaengengradDezimal(laengengradToSet);
 
     return new Position(breitengrad, laengengrad);
   }

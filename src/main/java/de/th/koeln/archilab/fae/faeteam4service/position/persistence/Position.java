@@ -1,6 +1,6 @@
 package de.th.koeln.archilab.fae.faeteam4service.position.persistence;
 
-import de.th.koeln.archilab.fae.faeteam4service.position.DistanceInMeters;
+import de.th.koeln.archilab.fae.faeteam4service.DistanceInMeters;
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
 import lombok.AllArgsConstructor;
@@ -23,9 +23,9 @@ public class Position {
   @Embedded
   private Laengengrad laengengrad;
 
-  public Position(double laengengrad, double breitengrad) {
-    this.laengengrad = new Laengengrad(laengengrad);
+  public Position(double breitengrad, double laengengrad) {
     this.breitengrad = new Breitengrad(breitengrad);
+    this.laengengrad = new Laengengrad(laengengrad);
   }
 
   public DistanceInMeters getDistanceInMetersTo(final Position otherPosition) {

@@ -4,13 +4,14 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import de.th.koeln.archilab.fae.faeteam4service.DistanceInMeters;
 import de.th.koeln.archilab.fae.faeteam4service.FaeTeam4ServiceApplication;
+import de.th.koeln.archilab.fae.faeteam4service.alarmknopf.AlarmknopfdruckService;
 import de.th.koeln.archilab.fae.faeteam4service.alarmknopf.persistence.Alarmknopf;
 import de.th.koeln.archilab.fae.faeteam4service.alarmknopf.persistence.AlarmknopfRepository;
 import de.th.koeln.archilab.fae.faeteam4service.position.persistence.Breitengrad;
 import de.th.koeln.archilab.fae.faeteam4service.position.persistence.Laengengrad;
 import de.th.koeln.archilab.fae.faeteam4service.position.persistence.Position;
-import de.th.koeln.archilab.fae.faeteam4service.alarmknopf.AlarmknopfdruckService;
 import java.util.Optional;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -42,9 +43,10 @@ public class AlarmknopfHilferufControllerTest {
   public void givenAlarmknopfId_whenHilferufMethodIsCalled_thenReturnHttp200() throws Exception {
     String alarmknopfId = "1337";
     String alarmknopfName = "myName";
-    Position position = getPositionFromLatitudeAndLongitude(3.14, 4.13);
+    Position position = getPositionFromBreitengradAndLaengengrad(3.14, 4.13);
 
-    Alarmknopf alarmknopf = new Alarmknopf(alarmknopfId, alarmknopfName, position);
+    Alarmknopf alarmknopf = new Alarmknopf(alarmknopfId, alarmknopfName, position,
+        new DistanceInMeters());
     Optional<Alarmknopf> alarmknopfOptional = Optional.of(alarmknopf);
     given(alarmknopfRepository.findById(alarmknopfId)).willReturn(alarmknopfOptional);
 
@@ -52,13 +54,13 @@ public class AlarmknopfHilferufControllerTest {
         .andExpect(status().isOk());
   }
 
-  private Position getPositionFromLatitudeAndLongitude(final double latitude,
-      final double longitude) {
+  private Position getPositionFromBreitengradAndLaengengrad(final double breitengradToSet,
+      final double laengengradToSet) {
     Breitengrad breitengrad = new Breitengrad();
-    breitengrad.setBreitengradDezimal(latitude);
+    breitengrad.setBreitengradDezimal(breitengradToSet);
 
     Laengengrad laengengrad = new Laengengrad();
-    laengengrad.setLaengengradDezimal(longitude);
+    laengengrad.setLaengengradDezimal(laengengradToSet);
 
     return new Position(breitengrad, laengengrad);
   }
