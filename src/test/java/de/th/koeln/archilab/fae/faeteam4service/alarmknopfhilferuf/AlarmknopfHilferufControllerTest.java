@@ -4,7 +4,7 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import de.th.koeln.archilab.fae.faeteam4service.DistanceInMeters;
+import de.th.koeln.archilab.fae.faeteam4service.Distance;
 import de.th.koeln.archilab.fae.faeteam4service.FaeTeam4ServiceApplication;
 import de.th.koeln.archilab.fae.faeteam4service.alarmknopf.AlarmknopfdruckService;
 import de.th.koeln.archilab.fae.faeteam4service.alarmknopf.persistence.Alarmknopf;
@@ -46,7 +46,7 @@ public class AlarmknopfHilferufControllerTest {
     Position position = getPositionFromBreitengradAndLaengengrad(3.14, 4.13);
 
     Alarmknopf alarmknopf = new Alarmknopf(alarmknopfId, alarmknopfName, position,
-        new DistanceInMeters());
+        new Distance());
     Optional<Alarmknopf> alarmknopfOptional = Optional.of(alarmknopf);
     given(alarmknopfRepository.findById(alarmknopfId)).willReturn(alarmknopfOptional);
 

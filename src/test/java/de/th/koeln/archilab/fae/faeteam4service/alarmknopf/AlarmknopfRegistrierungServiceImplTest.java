@@ -6,7 +6,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 
-import de.th.koeln.archilab.fae.faeteam4service.DistanceInMeters;
+import de.th.koeln.archilab.fae.faeteam4service.Distance;
 import de.th.koeln.archilab.fae.faeteam4service.alarmknopf.persistence.Alarmknopf;
 import de.th.koeln.archilab.fae.faeteam4service.alarmknopf.persistence.AlarmknopfRepository;
 import de.th.koeln.archilab.fae.faeteam4service.position.persistence.Position;
@@ -124,7 +124,7 @@ public class AlarmknopfRegistrierungServiceImplTest {
   }
 
   private Alarmknopf createTestAlarmknopfWithName(final String id) {
-    return new Alarmknopf(id, "myName", new Position(), new DistanceInMeters());
+    return new Alarmknopf(id, "myName", new Position(), new Distance());
   }
 
 }

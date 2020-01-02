@@ -12,7 +12,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import de.th.koeln.archilab.fae.faeteam4service.DistanceInMeters;
+import de.th.koeln.archilab.fae.faeteam4service.Distance;
 import de.th.koeln.archilab.fae.faeteam4service.FaeTeam4ServiceApplication;
 import de.th.koeln.archilab.fae.faeteam4service.alarmknopf.AlarmknopfRegistrierungServiceImpl;
 import de.th.koeln.archilab.fae.faeteam4service.alarmknopf.persistence.Alarmknopf;
@@ -72,12 +72,12 @@ public class AlarmknopfRegistrierungControllerTest {
     double longitude1 = 44.13;
 
     Position position = getPositionFromBreitengradAndLaengengrad(latitude, longitude);
-    DistanceInMeters meldungsrelevanterRadius = new DistanceInMeters(5.0);
+    Distance meldungsrelevanterRadius = new Distance(5.0);
     Alarmknopf alarmknopf = new Alarmknopf(ALARMKNOPF_ID, ALARMKNOPF_NAME, position,
         meldungsrelevanterRadius);
 
     Position position1 = getPositionFromBreitengradAndLaengengrad(latitude1, longitude1);
-    DistanceInMeters meldungsrelevanterRadius1 = new DistanceInMeters(5.0);
+    Distance meldungsrelevanterRadius1 = new Distance(5.0);
     Alarmknopf alarmknopf1 = new Alarmknopf(ALARMKNOPF_ID + "1", ALARMKNOPF_NAME + "1", position1,
         meldungsrelevanterRadius1);
 
@@ -100,7 +100,7 @@ public class AlarmknopfRegistrierungControllerTest {
     final double longitude = 4.13;
 
     Position position = getPositionFromBreitengradAndLaengengrad(latitude, longitude);
-    DistanceInMeters meldungsrelevanterRadius = new DistanceInMeters(5.14);
+    Distance meldungsrelevanterRadius = new Distance(5.14);
 
     Alarmknopf alarmknopf = new Alarmknopf(ALARMKNOPF_ID, ALARMKNOPF_NAME, position,
         meldungsrelevanterRadius);

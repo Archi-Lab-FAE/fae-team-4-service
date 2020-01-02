@@ -1,6 +1,5 @@
 package de.th.koeln.archilab.fae.faeteam4service.tracker.persistence;
 
-import de.th.koeln.archilab.fae.faeteam4service.DistanceInMeters;
 import de.th.koeln.archilab.fae.faeteam4service.alarmknopfhilferuf.AlarmknopfHilferuf;
 import de.th.koeln.archilab.fae.faeteam4service.position.persistence.Position;
 import lombok.AllArgsConstructor;

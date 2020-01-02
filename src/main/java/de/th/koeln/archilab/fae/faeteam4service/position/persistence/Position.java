@@ -1,6 +1,6 @@
 package de.th.koeln.archilab.fae.faeteam4service.position.persistence;
 
-import de.th.koeln.archilab.fae.faeteam4service.DistanceInMeters;
+import de.th.koeln.archilab.fae.faeteam4service.Distance;
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
 import lombok.AllArgsConstructor;
@@ -28,12 +28,12 @@ public class Position {
     this.laengengrad = new Laengengrad(laengengrad);
   }
 
-  public DistanceInMeters getDistanceInMetersTo(final Position otherPosition) {
+  public Distance getDistanceInMetersTo(final Position otherPosition) {
     GeodeticCurve geodeticCurve = getGeodeticCurve(this, otherPosition);
 
     double tempDistanceInMeters = geodeticCurve.getEllipsoidalDistance();
 
-    return new DistanceInMeters(tempDistanceInMeters);
+    return new Distance(tempDistanceInMeters);
   }
 
   private GeodeticCurve getGeodeticCurve(

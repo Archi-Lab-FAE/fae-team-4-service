@@ -10,11 +10,11 @@ import lombok.NonNull;
 @AllArgsConstructor
 @NoArgsConstructor
 @Embeddable
-public class DistanceInMeters {
+public class Distance {
 
-  @NonNull private double distance;
+  @NonNull private double distanceInMeters;
 
-  public boolean isSmallerOrEqualAs(DistanceInMeters otherDistanceInMeters) {
-    return distance <= otherDistanceInMeters.distance;
+  public boolean isSmallerOrEqualAs(Distance otherDistance) {
+    return distanceInMeters <= otherDistance.distanceInMeters;
   }
 }

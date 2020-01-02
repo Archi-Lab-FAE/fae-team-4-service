@@ -1,6 +1,6 @@
 package de.th.koeln.archilab.fae.faeteam4service.tracker;
 
-import de.th.koeln.archilab.fae.faeteam4service.DistanceInMeters;
+import de.th.koeln.archilab.fae.faeteam4service.Distance;
 import de.th.koeln.archilab.fae.faeteam4service.alarmknopf.persistence.Alarmknopf;
 import de.th.koeln.archilab.fae.faeteam4service.position.persistence.Position;
 import de.th.koeln.archilab.fae.faeteam4service.tracker.persistence.Tracker;
@@ -84,7 +84,7 @@ public class TrackerServiceTest {
   @Test
   public void givenAlarmknopfAndTrackerRepoAndRadiusThenReturnTrackerInProximity_2_InRange() {
     Alarmknopf alarmknopf = createTestAlarmknopfWithPosition(50.94232, 6.97139);
-    alarmknopf.setMeldungsrelevanterRadius(new DistanceInMeters(5));
+    alarmknopf.setMeldungsrelevanterRadius(new Distance(5));
 
     List<Tracker> trackerInProximity = trackerService.getTrackerInProximityOf(alarmknopf);
 
@@ -95,7 +95,7 @@ public class TrackerServiceTest {
   @Test
   public void givenAlarmknopfAndTrackerRepoAndRadiusThenReturnTrackerInProximity_0_InRange() {
     Alarmknopf alarmknopf = createTestAlarmknopfWithPosition(78.0649, 14.213);
-    alarmknopf.setMeldungsrelevanterRadius(new DistanceInMeters(5));
+    alarmknopf.setMeldungsrelevanterRadius(new Distance(5));
 
     List<Tracker> trackerInProximity = trackerService.getTrackerInProximityOf(alarmknopf);
 
@@ -106,7 +106,7 @@ public class TrackerServiceTest {
   public void
       givenAlarmknopfAndTrackerRepoAndRadiusThenReturnTrackerInProxy_IncorrectRadius_0_InRange() {
     Alarmknopf alarmknopf = createTestAlarmknopfWithPosition(50.94232, 6.97139);
-    alarmknopf.setMeldungsrelevanterRadius(new DistanceInMeters(-5));
+    alarmknopf.setMeldungsrelevanterRadius(new Distance(-5));
 
     List<Tracker> trackerInProximity = trackerService.getTrackerInProximityOf(alarmknopf);
 
@@ -120,6 +120,6 @@ public class TrackerServiceTest {
 
   private Alarmknopf createTestAlarmknopfWithPosition(
       final double latitude, final double longitude) {
-    return new Alarmknopf("id", "myName", new Position(latitude, longitude), new DistanceInMeters());
+    return new Alarmknopf("id", "myName", new Position(latitude, longitude), new Distance());
   }
 }

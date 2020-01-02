@@ -1,6 +1,6 @@
 package de.th.koeln.archilab.fae.faeteam4service.config;
 
-import de.th.koeln.archilab.fae.faeteam4service.DistanceInMeters;
+import de.th.koeln.archilab.fae.faeteam4service.Distance;
 import de.th.koeln.archilab.fae.faeteam4service.alarmknopf.api.AlarmknopfDto;
 import de.th.koeln.archilab.fae.faeteam4service.alarmknopf.persistence.Alarmknopf;
 import de.th.koeln.archilab.fae.faeteam4service.position.api.PositionDto;
@@ -40,9 +40,9 @@ public class ModelMapperConfig {
       return new Position(latitude, longitude);
     };
 
-    Converter<Double, DistanceInMeters> raidusDtoConverter = mappingContext -> {
+    Converter<Double, Distance> raidusDtoConverter = mappingContext -> {
       double radius = mappingContext.getSource();
-      return new DistanceInMeters(radius);
+      return new Distance(radius);
     };
 
     PropertyMap<AlarmknopfDto, Alarmknopf> alarmknopfDtoMapping =
@@ -52,7 +52,7 @@ public class ModelMapperConfig {
         using(positionDtoConverter).map(source.getPosition())
             .setPosition(new Position(FALLBACK_BREITENGRAD, FALLBACK_LAENGENGRAD));
         using(raidusDtoConverter).map(source.getMeldungsrelevanterRadiusInMetern())
-            .setMeldungsrelevanterRadius(new DistanceInMeters(FALLBACK_RADIUS));
+            .setMeldungsrelevanterRadius(new Distance(FALLBACK_RADIUS));
       }
     };
     modelMapper.addMappings(alarmknopfDtoMapping);
@@ -71,7 +71,7 @@ public class ModelMapperConfig {
       protected void configure() {
         using(positionConverter).map(source.getPosition())
             .setPosition(new PositionDto(FALLBACK_BREITENGRAD, FALLBACK_LAENGENGRAD));
-        map(source.getMeldungsrelevanterRadius().getDistance())
+        map(source.getMeldungsrelevanterRadius().getDistanceInMeters())
             .setMeldungsrelevanterRadiusInMetern(FALLBACK_RADIUS);
       }
     };

@@ -2,7 +2,7 @@ package de.th.koeln.archilab.fae.faeteam4service.alarmknopf.api;
 
 import static org.junit.Assert.assertEquals;
 
-import de.th.koeln.archilab.fae.faeteam4service.DistanceInMeters;
+import de.th.koeln.archilab.fae.faeteam4service.Distance;
 import de.th.koeln.archilab.fae.faeteam4service.alarmknopf.persistence.Alarmknopf;
 import de.th.koeln.archilab.fae.faeteam4service.config.ModelMapperConfig;
 import de.th.koeln.archilab.fae.faeteam4service.position.api.PositionDto;
@@ -29,7 +29,7 @@ public class AlarmknopfDtoTest {
     Position position =
         getPositionFromBreitengradAndLaengengrad(50.9432138, 6.9583567);
 
-    DistanceInMeters meldungsrelevanterRadius = new DistanceInMeters(5.0);
+    Distance meldungsrelevanterRadius = new Distance(5.0);
 
     Alarmknopf alarmknopf = new Alarmknopf();
     alarmknopf.setId("1234Id");
@@ -43,7 +43,7 @@ public class AlarmknopfDtoTest {
         .getBreitengradDezimal();
     double alarmknopfLaengengrad = alarmknopf.getPosition().getLaengengrad()
         .getLaengengradDezimal();
-    double alarmknopfRadius = alarmknopf.getMeldungsrelevanterRadius().getDistance();
+    double alarmknopfRadius = alarmknopf.getMeldungsrelevanterRadius().getDistanceInMeters();
     double alarmknopfDtoBreitengrad = alarmknopfDto.getPosition().getBreitengrad();
     double alarmknopfDtoLaengengrad = alarmknopfDto.getPosition().getLaengengrad();
     double alarmknopfDtoRadius = alarmknopfDto.getMeldungsrelevanterRadiusInMetern();
@@ -76,7 +76,7 @@ public class AlarmknopfDtoTest {
         .getBreitengradDezimal();
     double alarmknopfLaengengrad = alarmknopf.getPosition().getLaengengrad()
         .getLaengengradDezimal();
-    double alarmknopfRadius = alarmknopf.getMeldungsrelevanterRadius().getDistance();
+    double alarmknopfRadius = alarmknopf.getMeldungsrelevanterRadius().getDistanceInMeters();
 
     assertEquals(alarmknopfDto.getId(), alarmknopf.getId());
     assertEquals(alarmknopfDto.getName(), alarmknopf.getName());

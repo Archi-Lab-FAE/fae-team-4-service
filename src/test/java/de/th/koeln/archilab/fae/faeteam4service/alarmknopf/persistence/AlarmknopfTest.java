@@ -1,6 +1,6 @@
 package de.th.koeln.archilab.fae.faeteam4service.alarmknopf.persistence;
 
-import de.th.koeln.archilab.fae.faeteam4service.DistanceInMeters;
+import de.th.koeln.archilab.fae.faeteam4service.Distance;
 import de.th.koeln.archilab.fae.faeteam4service.position.persistence.Position;
 import de.th.koeln.archilab.fae.faeteam4service.tracker.persistence.Tracker;
 import org.junit.Before;
@@ -19,7 +19,7 @@ public class AlarmknopfTest {
   @Before
   public void setUp() {
     alarmknopf = new Alarmknopf();
-    alarmknopf.setMeldungsrelevanterRadius(new DistanceInMeters(10));
+    alarmknopf.setMeldungsrelevanterRadius(new Distance(10));
     alarmknopf.setPosition(new Position(0, 0));
 
     tracker = new Tracker();
