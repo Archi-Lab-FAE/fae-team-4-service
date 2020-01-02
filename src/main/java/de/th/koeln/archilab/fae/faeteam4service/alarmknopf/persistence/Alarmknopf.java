@@ -2,6 +2,7 @@ package de.th.koeln.archilab.fae.faeteam4service.alarmknopf.persistence;
 
 import de.th.koeln.archilab.fae.faeteam4service.DistanceInMeters;
 import de.th.koeln.archilab.fae.faeteam4service.position.persistence.Position;
+import de.th.koeln.archilab.fae.faeteam4service.tracker.persistence.Tracker;
 import io.swagger.v3.oas.annotations.Hidden;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -32,4 +33,13 @@ public class Alarmknopf {
   @Embedded
   @NonNull
   private DistanceInMeters meldungsrelevanterRadius;
+
+  public boolean isTrackerInProximity(Tracker tracker){
+    if(tracker.hasNoPosition()){
+      return false;
+    }
+
+    DistanceInMeters distanceToTracker = position.getDistanceInMetersTo(tracker.getPosition());
+    return distanceToTracker.isSmallerOrEqualAs(meldungsrelevanterRadius);
+  }
 }

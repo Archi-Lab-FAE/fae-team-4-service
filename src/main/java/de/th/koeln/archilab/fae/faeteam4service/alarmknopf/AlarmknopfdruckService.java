@@ -52,7 +52,6 @@ public class AlarmknopfdruckService {
   }
 
   private List<Tracker> getPersonenInKnopfProximity(final Alarmknopf alarmknopf) {
-    double radiusInMeters = 5;
-    return trackerService.getTrackerInProximityOf(alarmknopf, radiusInMeters);
+    return trackerService.getTrackerInProximityOf(alarmknopf);
   }
 }

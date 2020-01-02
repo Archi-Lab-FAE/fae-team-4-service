@@ -57,33 +57,14 @@ public class TrackerTest {
   }
 
   @Test
-  public void shouldNotBeInProximityIfItHasNoPosition() {
-    Tracker trackerWithoutPosition = new Tracker(TEST_ID);
+  public void hasNoPositionShouldBeTrueIfNoPositionIsSaved() {
+    tracker.setPosition(null);
 
-    Position position = new Position(0, 0);
-
-    assertThat(
-        trackerWithoutPosition.isInProximityOfPosition(position, new DistanceInMeters(10)),
-        equalTo(false));
+    assertThat(tracker.hasNoPosition(), equalTo(true));
   }
 
   @Test
-  public void shouldBeInProximityIfPositionsAreNearEnough() {
-    Position otherPositionThatIsInRange = new Position(0, 0);
-
-    boolean isPersonInProximity =
-        tracker.isInProximityOfPosition(otherPositionThatIsInRange, new DistanceInMeters(1.0));
-
-    assertThat(isPersonInProximity, equalTo(true));
-  }
-
-  @Test
-  public void shouldNotBeInProximityOfPositionThatsTooFarAway() {
-    Position positionThatIsTooFarAway = new Position(10, 10);
-
-    boolean isPersonInProximity =
-        tracker.isInProximityOfPosition(positionThatIsTooFarAway, new DistanceInMeters(1.0));
-
-    assertThat(isPersonInProximity, equalTo(false));
+  public void hasNoPositionShouldBeFalseIfPositionIsSaved() {
+    assertThat(tracker.hasNoPosition(), equalTo(false));
   }
 }

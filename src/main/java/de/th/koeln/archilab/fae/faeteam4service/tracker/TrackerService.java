@@ -1,6 +1,5 @@
 package de.th.koeln.archilab.fae.faeteam4service.tracker;
 
-import de.th.koeln.archilab.fae.faeteam4service.DistanceInMeters;
 import de.th.koeln.archilab.fae.faeteam4service.alarmknopf.persistence.Alarmknopf;
 import de.th.koeln.archilab.fae.faeteam4service.tracker.persistence.Tracker;
 import de.th.koeln.archilab.fae.faeteam4service.tracker.persistence.TrackerRepository;
@@ -34,14 +33,9 @@ public class TrackerService {
     return true;
   }
 
-  // TODO: Refactor isInProximityOfPosition to alarmknopf to avoid passing of radius
-  public List<Tracker> getTrackerInProximityOf(
-      final Alarmknopf alarmknopf, final double radiusInMeters) {
+  public List<Tracker> getTrackerInProximityOf(final Alarmknopf alarmknopf) {
     return trackerRepository.findAll().stream()
-        .filter(
-            tracker ->
-                tracker.isInProximityOfPosition(
-                    alarmknopf.getPosition(), new DistanceInMeters(radiusInMeters)))
+        .filter(alarmknopf::isTrackerInProximity)
         .collect(Collectors.toList());
   }
 }

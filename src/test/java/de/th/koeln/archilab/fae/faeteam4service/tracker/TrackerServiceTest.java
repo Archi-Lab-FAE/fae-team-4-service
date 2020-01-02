@@ -84,9 +84,9 @@ public class TrackerServiceTest {
   @Test
   public void givenAlarmknopfAndTrackerRepoAndRadiusThenReturnTrackerInProximity_2_InRange() {
     Alarmknopf alarmknopf = createTestAlarmknopfWithPosition(50.94232, 6.97139);
-    double radius = 5.0;
+    alarmknopf.setMeldungsrelevanterRadius(new DistanceInMeters(5));
 
-    List<Tracker> trackerInProximity = trackerService.getTrackerInProximityOf(alarmknopf, radius);
+    List<Tracker> trackerInProximity = trackerService.getTrackerInProximityOf(alarmknopf);
 
     assertTrue(trackerInProximity.contains(listOfTestTrackers.get(1)));
     assertTrue(trackerInProximity.contains(listOfTestTrackers.get(2)));
@@ -95,9 +95,9 @@ public class TrackerServiceTest {
   @Test
   public void givenAlarmknopfAndTrackerRepoAndRadiusThenReturnTrackerInProximity_0_InRange() {
     Alarmknopf alarmknopf = createTestAlarmknopfWithPosition(78.0649, 14.213);
-    double radius = 5.0;
+    alarmknopf.setMeldungsrelevanterRadius(new DistanceInMeters(5));
 
-    List<Tracker> trackerInProximity = trackerService.getTrackerInProximityOf(alarmknopf, radius);
+    List<Tracker> trackerInProximity = trackerService.getTrackerInProximityOf(alarmknopf);
 
     assertThat(trackerInProximity, is(empty()));
   }
@@ -106,9 +106,9 @@ public class TrackerServiceTest {
   public void
       givenAlarmknopfAndTrackerRepoAndRadiusThenReturnTrackerInProxy_IncorrectRadius_0_InRange() {
     Alarmknopf alarmknopf = createTestAlarmknopfWithPosition(50.94232, 6.97139);
-    double radius = -5.0;
+    alarmknopf.setMeldungsrelevanterRadius(new DistanceInMeters(-5));
 
-    List<Tracker> trackerInProximity = trackerService.getTrackerInProximityOf(alarmknopf, radius);
+    List<Tracker> trackerInProximity = trackerService.getTrackerInProximityOf(alarmknopf);
 
     assertThat(trackerInProximity, is(empty()));
   }
