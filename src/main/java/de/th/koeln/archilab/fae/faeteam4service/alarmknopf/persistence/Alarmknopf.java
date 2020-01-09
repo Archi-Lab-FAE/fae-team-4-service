@@ -34,8 +34,8 @@ public class Alarmknopf {
   @NonNull
   private Distance meldungsrelevanterRadius;
 
-  public boolean isTrackerInProximity(Tracker tracker){
-    if(tracker.hasNoPosition()){
+  public boolean isTrackerInProximity(Tracker tracker) {
+    if (Boolean.TRUE.equals(tracker.hasNoPosition())) {
       return false;
     }
 

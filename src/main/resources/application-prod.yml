@@ -5,6 +5,7 @@ spring:
     username: ${TEAM4_DB_USER}
   # kafka servers
   kafka:
+    enabled: true
     bootstrap-servers: kafka-1:9092,kafka-2:9092,kafka-3:9092
 # Eureka
 eureka:

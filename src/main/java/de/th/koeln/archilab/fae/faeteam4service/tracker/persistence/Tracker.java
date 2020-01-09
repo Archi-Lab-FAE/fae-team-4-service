@@ -2,14 +2,13 @@ package de.th.koeln.archilab.fae.faeteam4service.tracker.persistence;
 
 import de.th.koeln.archilab.fae.faeteam4service.alarmknopfhilferuf.AlarmknopfHilferuf;
 import de.th.koeln.archilab.fae.faeteam4service.position.persistence.Position;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.lang.Nullable;
-
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.Id;
 
 @Entity
 @Data
@@ -17,9 +16,12 @@ import javax.persistence.Id;
 @NoArgsConstructor
 public class Tracker {
 
-  @Id private String id;
+  @Id
+  private String id;
 
-  @Embedded @Nullable private Position position;
+  @Embedded
+  @Nullable
+  private Position position;
 
   public Tracker(String id) {
     this.id = id;
