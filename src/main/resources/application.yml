@@ -1,7 +1,7 @@
 # Spring
 spring:
   application:
-    name: team4-service-ms
+    name: fae-team-4-service
   profiles:
     active: local
   # Hibernate ddl auto
@@ -17,7 +17,7 @@ spring:
   # Spring Data Rest
   data:
     rest:
-      basePath: /team4-service
+      basePath: /fae-team-4-service
       return-body-on-create: true
       return-body-on-update: true
       default-media-type: application/hal+json
@@ -28,7 +28,7 @@ spring:
     deserialization:
       accept-empty-array-as-null-object: true
   kafka:
-    group-id: "team-4-service"
+    group-id: "fae-team-4-service"
 
 # Server
 server:
