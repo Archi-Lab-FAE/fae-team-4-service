@@ -10,7 +10,7 @@
     <!-- lookup parent from repository -->
   </parent>
 
-  <groupId>de.th.koeln.archilab.fae</groupId>
+  <groupId>io.archilab.fae</groupId>
   <artifactId>fae-team-4-service</artifactId>
   <version>0.0.1-SNAPSHOT</version>
 
