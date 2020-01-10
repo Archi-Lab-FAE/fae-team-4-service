@@ -12,7 +12,7 @@
 
   <groupId>io.archilab.fae</groupId>
   <artifactId>fae-team-4-service</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>${revision}${changelist}</version>
 
   <name>fae-team-4-service</name>
   <description>Microservice Project for Team 4 FAE 2019/20</description>
@@ -25,7 +25,6 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <revision>0.1.0</revision>
     <changelist>-SNAPSHOT</changelist>
-    <spring-cloud.version>Greenwich.SR2</spring-cloud.version>
     <tidy-maven.version>1.1.0</tidy-maven.version>
   </properties>
 
