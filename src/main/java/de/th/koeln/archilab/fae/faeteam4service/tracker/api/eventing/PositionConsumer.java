@@ -1,4 +1,4 @@
-package de.th.koeln.archilab.fae.faeteam4service.tracker.kafka;
+package de.th.koeln.archilab.fae.faeteam4service.tracker.api.eventing;
 
 import de.th.koeln.archilab.fae.faeteam4service.position.persistence.Position;
 import de.th.koeln.archilab.fae.faeteam4service.tracker.persistence.Tracker;
@@ -7,11 +7,11 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
 @Service
-public class KafkaConsumer {
+public class PositionConsumer {
 
   private final TrackerRepository trackerRepository;
 
-  public KafkaConsumer(TrackerRepository trackerRepository) {
+  public PositionConsumer(TrackerRepository trackerRepository) {
     this.trackerRepository = trackerRepository;
   }
 

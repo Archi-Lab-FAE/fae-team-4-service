@@ -1,7 +1,6 @@
 package de.th.koeln.archilab.fae.faeteam4service.config;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
@@ -34,7 +33,7 @@ public class KafkaConfig {
   }
 
   @Bean
-  public ProducerFactory<String, List> producerFactory() {
+  public ProducerFactory<String, String> producerFactory() {
     Map<String, Object> config = new HashMap<>();
 
     config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, servers);
@@ -45,7 +44,7 @@ public class KafkaConfig {
   }
 
   @Bean
-  public KafkaTemplate<String, List> kafkaTemplate() {
+  public KafkaTemplate<String, String> kafkaTemplate() {
     return new KafkaTemplate<>(producerFactory());
   }
 

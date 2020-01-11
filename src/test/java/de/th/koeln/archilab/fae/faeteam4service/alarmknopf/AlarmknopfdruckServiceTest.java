@@ -2,6 +2,8 @@ package de.th.koeln.archilab.fae.faeteam4service.alarmknopf;
 
 import static org.mockito.Mockito.when;
 
+import de.th.koeln.archilab.fae.faeteam4service.alarmknopfhilferuf.AlarmknopfdruckService;
+import de.th.koeln.archilab.fae.faeteam4service.alarmknopfhilferuf.api.eventing.KafkaPublisher;
 import de.th.koeln.archilab.fae.faeteam4service.alarmknopf.persistence.AlarmknopfRepository;
 import de.th.koeln.archilab.fae.faeteam4service.tracker.persistence.TrackerRepository;
 import java.util.Optional;
@@ -9,17 +11,16 @@ import java.util.Optional;
 import de.th.koeln.archilab.fae.faeteam4service.tracker.TrackerService;
 import org.junit.Test;
 import org.mockito.Mockito;
-import org.springframework.kafka.core.KafkaTemplate;
 
 public class AlarmknopfdruckServiceTest {
 
   private final AlarmknopfdruckService alarmknopfdruckService;
-  private final AlarmknopfRepository mockAlarmknopfRepository;
-
-  private final TrackerRepository mockTrackerRepository;
   private final TrackerService trackerService;
 
-  private final KafkaTemplate mockKafkaTemplate;
+  private final AlarmknopfRepository mockAlarmknopfRepository;
+  private final TrackerRepository mockTrackerRepository;
+  private final KafkaPublisher mockKafkaPublisher;
+
 
   private static final String ALARMKNOPF_ID = "someId";
 
@@ -27,12 +28,12 @@ public class AlarmknopfdruckServiceTest {
     mockAlarmknopfRepository = Mockito.mock(AlarmknopfRepository.class);
     mockTrackerRepository = Mockito
         .mock(TrackerRepository.class);
-    mockKafkaTemplate = Mockito.mock(KafkaTemplate.class);
+    mockKafkaPublisher = Mockito.mock(KafkaPublisher.class);
 
     trackerService = new TrackerService(
             mockTrackerRepository);
     alarmknopfdruckService = new AlarmknopfdruckService(mockAlarmknopfRepository,
-            trackerService, mockKafkaTemplate);
+            trackerService, mockKafkaPublisher);
   }
 
   @Test(expected = IllegalArgumentException.class)

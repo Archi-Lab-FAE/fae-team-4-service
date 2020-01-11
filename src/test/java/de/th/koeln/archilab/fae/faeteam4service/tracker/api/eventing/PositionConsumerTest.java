@@ -1,4 +1,4 @@
-package de.th.koeln.archilab.fae.faeteam4service.tracker.kafka;
+package de.th.koeln.archilab.fae.faeteam4service.tracker.api.eventing;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
@@ -30,7 +30,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @TestPropertySource(properties = {
     "spring.kafka.bootstrap-servers=${spring.embedded.kafka.brokers}",
     "spring.kafka.enabled=true"})
-public class KafkaConsumerTest {
+public class PositionConsumerTest {
 
   private static String TOPIC = "tracker";
 

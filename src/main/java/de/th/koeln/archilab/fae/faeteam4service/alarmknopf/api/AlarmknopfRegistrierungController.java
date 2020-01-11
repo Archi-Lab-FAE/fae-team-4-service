@@ -76,24 +76,24 @@ public class AlarmknopfRegistrierungController {
   }
 
   @ExceptionHandler(Exception.class)
-  public ResponseEntity<AlarmknopfDto> handle(Exception ex) {
+  public ResponseEntity<AlarmknopfDto> handle(final Exception ex) {
     if (ex instanceof MappingException || ex instanceof HttpMessageNotReadableException) {
       return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
   }
 
-  private List<AlarmknopfDto> getAlarmknoepfeDto(Iterable<Alarmknopf> alarmknoepfe) {
+  private List<AlarmknopfDto> getAlarmknoepfeDto(final Iterable<Alarmknopf> alarmknoepfe) {
     return StreamSupport.stream(alarmknoepfe.spliterator(), false)
         .map(this::convertToDto)
         .collect(Collectors.toList());
   }
 
-  private AlarmknopfDto convertToDto(Alarmknopf alarmknopf) {
+  private AlarmknopfDto convertToDto(final Alarmknopf alarmknopf) {
     return modelMapper.map(alarmknopf, AlarmknopfDto.class);
   }
 
-  private Alarmknopf convertToEntity(AlarmknopfDto alarmknopfDto) {
+  private Alarmknopf convertToEntity(final AlarmknopfDto alarmknopfDto) {
     return modelMapper.map(alarmknopfDto, Alarmknopf.class);
   }
 }
