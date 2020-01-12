@@ -16,11 +16,11 @@ public class KafkaPublisherTest {
 
   private final KafkaPublisher kafkaPublisher;
 
-  private final KafkaGateway mockEventpublisher = mock(KafkaGateway.class);
+  private final KafkaGateway mockEventPublisher = mock(KafkaGateway.class);
   private final ModelMapper mockModelMapper = mock(ModelMapper.class);
 
   public KafkaPublisherTest() {
-    this.kafkaPublisher = new KafkaPublisher(mockModelMapper, mockEventpublisher);
+    this.kafkaPublisher = new KafkaPublisher(mockModelMapper, mockEventPublisher);
   }
 
   @Test
@@ -37,7 +37,7 @@ public class KafkaPublisherTest {
     HilferufEvent hilferufEvent = new HilferufEvent(alarmknopfHilferufDto);
     ArgumentCaptor<HilferufEvent> argument = ArgumentCaptor.forClass(HilferufEvent.class);
 
-    verify(mockEventpublisher, times(1)).publishAlarmknopfHilferufAusgeloestEvent(argument.capture());
+    verify(mockEventPublisher, times(1)).publishAlarmknopfHilferufAusgeloestEvent(argument.capture());
     assertEquals(hilferufEvent.getPayload(), argument.getValue().getPayload());
   }
 }

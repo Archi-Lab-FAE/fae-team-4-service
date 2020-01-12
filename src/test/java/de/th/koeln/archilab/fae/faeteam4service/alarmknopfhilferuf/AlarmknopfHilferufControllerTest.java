@@ -6,6 +6,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import de.th.koeln.archilab.fae.faeteam4service.Distance;
 import de.th.koeln.archilab.fae.faeteam4service.FaeTeam4ServiceApplication;
+import de.th.koeln.archilab.fae.faeteam4service.alarmknopf.AlarmknopfdruckService;
 import de.th.koeln.archilab.fae.faeteam4service.alarmknopf.persistence.Alarmknopf;
 import de.th.koeln.archilab.fae.faeteam4service.alarmknopf.persistence.AlarmknopfRepository;
 import de.th.koeln.archilab.fae.faeteam4service.position.persistence.Breitengrad;

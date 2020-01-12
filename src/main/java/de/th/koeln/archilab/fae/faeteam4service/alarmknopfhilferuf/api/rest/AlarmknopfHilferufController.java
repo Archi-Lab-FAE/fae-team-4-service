@@ -1,7 +1,7 @@
 package de.th.koeln.archilab.fae.faeteam4service.alarmknopfhilferuf.api.rest;
 
 import de.th.koeln.archilab.fae.faeteam4service.alarmknopf.Alarmknopfdruck;
-import de.th.koeln.archilab.fae.faeteam4service.alarmknopfhilferuf.AlarmknopfdruckService;
+import de.th.koeln.archilab.fae.faeteam4service.alarmknopf.AlarmknopfdruckService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
