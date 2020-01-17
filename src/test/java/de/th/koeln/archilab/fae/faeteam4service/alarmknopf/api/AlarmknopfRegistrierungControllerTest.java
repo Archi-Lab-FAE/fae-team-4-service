@@ -100,7 +100,8 @@ public class AlarmknopfRegistrierungControllerTest {
     final double longitude = 4.13;
 
     Position position = getPositionFromBreitengradAndLaengengrad(latitude, longitude);
-    Distance meldungsrelevanterRadius = new Distance(5.14);
+    Distance meldungsrelevanterRadius = new Distance();
+    meldungsrelevanterRadius.setDistanceInMeters(5.14);
 
     Alarmknopf alarmknopf = new Alarmknopf(ALARMKNOPF_ID, ALARMKNOPF_NAME, position,
         meldungsrelevanterRadius);
@@ -179,7 +180,7 @@ public class AlarmknopfRegistrierungControllerTest {
   @Test
   public void givenNotReadable_whenPutNotReadableJson_thenHttp400ShouldBeReturned()
       throws Exception {
-    File file = ResourceUtils.getFile("classpath:AlarmknopfNotReadableRequestBody.json");
+    File file = ResourceUtils.getFile("classpath:GenericNotReadableRequestBody.json");
     String requestBody = new String(Files.readAllBytes(file.toPath()));
 
     HttpInputMessage httpInputMessage = getMockHttpInputMessage();

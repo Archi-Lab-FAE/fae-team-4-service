@@ -6,6 +6,6 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 class TrackerDto {
-  private Double laengengrad;
   private Double breitengrad;
+  private Double laengengrad;
 }
