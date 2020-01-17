@@ -1,13 +1,16 @@
 package de.th.koeln.archilab.fae.faeteam4service.alarmknopfhilferuf.api.eventing;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.th.koeln.archilab.fae.faeteam4service.alarmknopfhilferuf.AlarmknopfHilferufDto;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 public class HilferufEvent {
 
   private final String id = UUID.randomUUID().toString();
@@ -22,6 +25,7 @@ public class HilferufEvent {
 
   private AlarmknopfHilferufDto payload;
 
+  @JsonCreator
   public HilferufEvent(final AlarmknopfHilferufDto payload) {
     this.key = payload.getId();
     this.payload = payload;
