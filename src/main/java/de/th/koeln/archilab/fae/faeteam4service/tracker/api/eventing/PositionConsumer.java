@@ -11,7 +11,7 @@ public class PositionConsumer {
 
   private final TrackerRepository trackerRepository;
 
-  public PositionConsumer(TrackerRepository trackerRepository) {
+  public PositionConsumer(final TrackerRepository trackerRepository) {
     this.trackerRepository = trackerRepository;
   }
 

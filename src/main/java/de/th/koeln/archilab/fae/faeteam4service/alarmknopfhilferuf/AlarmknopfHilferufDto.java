@@ -14,7 +14,7 @@ public class AlarmknopfHilferufDto {
   private final String trackerId;
 
   @JsonCreator
-  public AlarmknopfHilferufDto(String trackerId) {
+  public AlarmknopfHilferufDto(final String trackerId) {
     this.trackerId = trackerId;
   }
 

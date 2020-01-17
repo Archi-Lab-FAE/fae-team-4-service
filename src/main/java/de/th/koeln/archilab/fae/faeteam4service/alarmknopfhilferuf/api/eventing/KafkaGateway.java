@@ -35,7 +35,7 @@ public class KafkaGateway {
   }
 
   public ListenableFuture<SendResult<String, String>> publishAlarmknopfHilferufAusgeloestEvent(
-      HilferufEvent hilferufEvent) {
+      final HilferufEvent hilferufEvent) {
     LOGGER.info("publishing event {} to topic {}", hilferufEvent.getId(), topic);
     return kafkaTemplate.send(topic, hilferufEvent.getKey(), toHilferufMessage(hilferufEvent));
   }

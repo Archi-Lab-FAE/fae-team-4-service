@@ -31,7 +31,7 @@ public class HilferufEvent {
     this.payload = payload;
   }
 
-  public byte[] getPayload(ObjectMapper objectMapper) throws JsonProcessingException {
+  public byte[] getPayload(final ObjectMapper objectMapper) throws JsonProcessingException {
     return objectMapper.writeValueAsBytes(payload);
   }
 }
