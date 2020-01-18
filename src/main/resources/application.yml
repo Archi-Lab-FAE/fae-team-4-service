@@ -39,6 +39,9 @@ server:
 # Kafka-topic
 product.topic: alarmknopfhilferuf
 
+# Messaging system
+messagingSystem.url: "https://some.url/"
+
 # Logging Level
 logging:
   level:
