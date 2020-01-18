@@ -38,6 +38,8 @@ server:
 
 # Kafka-topic
 product.topic: alarmknopfhilferuf
+alarmknopf.updateType: "alarmknopf-created"
+alarmknopf.deleteType: "alarmknopf-deleted"
 
 # Messaging system
 messagingSystem.url: "https://some.url/"

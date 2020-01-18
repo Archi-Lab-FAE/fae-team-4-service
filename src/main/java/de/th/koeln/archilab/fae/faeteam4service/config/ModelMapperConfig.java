@@ -20,6 +20,7 @@ public class ModelMapperConfig {
   private static final double FALLBACK_RADIUS = 0.0;
   private static final double FALLBACK_BREITENGRAD = 0.0;
   private static final double FALLBACK_LAENGENGRAD = 0.0;
+  private static final Long FALLBACK_VERSION = 0L;
 
   @Bean
   public ModelMapper modelMapper() {
@@ -34,48 +35,53 @@ public class ModelMapperConfig {
   }
 
   private void dtoToAlarmknopfMapping() {
-    Converter<PositionDto, Position> positionDtoConverter = mappingContext -> {
-      double latitude = mappingContext.getSource().getBreitengrad();
-      double longitude = mappingContext.getSource().getLaengengrad();
-      return new Position(latitude, longitude);
-    };
+    Converter<PositionDto, Position> positionDtoConverter =
+        mappingContext -> {
+          double latitude = mappingContext.getSource().getBreitengrad();
+          double longitude = mappingContext.getSource().getLaengengrad();
+          return new Position(latitude, longitude);
+        };
 
-    Converter<Double, Distance> raidusDtoConverter = mappingContext -> {
-      double radius = mappingContext.getSource();
-      return new Distance(radius);
-    };
+    Converter<Double, Distance> raidusDtoConverter =
+        mappingContext -> {
+          double radius = mappingContext.getSource();
+          return new Distance(radius);
+        };
 
     PropertyMap<AlarmknopfDto, Alarmknopf> alarmknopfDtoMapping =
         new PropertyMap<AlarmknopfDto, Alarmknopf>() {
-      @Override
-      protected void configure() {
-        using(positionDtoConverter).map(source.getPosition())
-            .setPosition(new Position(FALLBACK_BREITENGRAD, FALLBACK_LAENGENGRAD));
-        using(raidusDtoConverter).map(source.getMeldungsrelevanterRadiusInMetern())
-            .setMeldungsrelevanterRadius(new Distance(FALLBACK_RADIUS));
-      }
-    };
+          @Override
+          protected void configure() {
+            using(positionDtoConverter)
+                .map(source.getPosition())
+                .setPosition(new Position(FALLBACK_BREITENGRAD, FALLBACK_LAENGENGRAD));
+            using(raidusDtoConverter)
+                .map(source.getMeldungsrelevanterRadiusInMetern())
+                .setMeldungsrelevanterRadius(new Distance(FALLBACK_RADIUS));
+          }
+        };
     modelMapper.addMappings(alarmknopfDtoMapping);
   }
 
   private void alarmknopfToDtoMapping() {
-    Converter<Position, PositionDto> positionConverter = mappingContext -> {
-      double latitude = mappingContext.getSource().getBreitengrad().getBreitengradDezimal();
-      double longitude = mappingContext.getSource().getLaengengrad().getLaengengradDezimal();
-      return new PositionDto(latitude, longitude);
-    };
+    Converter<Position, PositionDto> positionConverter =
+        mappingContext -> {
+          double latitude = mappingContext.getSource().getBreitengrad().getBreitengradDezimal();
+          double longitude = mappingContext.getSource().getLaengengrad().getLaengengradDezimal();
+          return new PositionDto(latitude, longitude);
+        };
 
     PropertyMap<Alarmknopf, AlarmknopfDto> alarmknopfMapping =
         new PropertyMap<Alarmknopf, AlarmknopfDto>() {
-      @Override
-      protected void configure() {
-        using(positionConverter).map(source.getPosition())
-            .setPosition(new PositionDto(FALLBACK_BREITENGRAD, FALLBACK_LAENGENGRAD));
-        map(source.getMeldungsrelevanterRadius().getDistanceInMeters())
-            .setMeldungsrelevanterRadiusInMetern(FALLBACK_RADIUS);
-      }
-    };
+          @Override
+          protected void configure() {
+            using(positionConverter)
+                .map(source.getPosition())
+                .setPosition(new PositionDto(FALLBACK_BREITENGRAD, FALLBACK_LAENGENGRAD));
+            map(source.getMeldungsrelevanterRadius().getDistanceInMeters())
+                .setMeldungsrelevanterRadiusInMetern(FALLBACK_RADIUS);
+          }
+        };
     modelMapper.addMappings(alarmknopfMapping);
   }
-
 }

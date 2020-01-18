@@ -45,24 +45,22 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.util.ResourceUtils;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT, classes = FaeTeam4ServiceApplication.class)
+@SpringBootTest(
+    webEnvironment = WebEnvironment.RANDOM_PORT,
+    classes = FaeTeam4ServiceApplication.class)
 @AutoConfigureMockMvc
 @AutoConfigureTestDatabase
 public class AlarmknopfRegistrierungControllerTest {
 
-  @Autowired
-  private MockMvc mockMvc;
+  @Autowired private MockMvc mockMvc;
 
-  @MockBean
-  private AlarmknopfRegistrierungServiceImpl alarmknopfRegistrierungServiceImpl;
+  @MockBean private AlarmknopfRegistrierungServiceImpl alarmknopfRegistrierungServiceImpl;
 
-  @Autowired
-  private ObjectMapper objectMapper;
+  @Autowired private ObjectMapper objectMapper;
 
   private static final String ALARMKNOPF_ID = "1337";
   private static final String ALARMKNOPF_NAME = "myName";
   private static final double MELDUNGSRELEVANTER_RADIUS = 123.2;
-
 
   @Test
   public void shouldGetAllAlarmknoepfeAndReturnListIfSuccessful() throws Exception {
@@ -73,21 +71,22 @@ public class AlarmknopfRegistrierungControllerTest {
 
     Position position = getPositionFromBreitengradAndLaengengrad(latitude, longitude);
     Distance meldungsrelevanterRadius = new Distance(5.0);
-    Alarmknopf alarmknopf = new Alarmknopf(ALARMKNOPF_ID, ALARMKNOPF_NAME, position,
-        meldungsrelevanterRadius);
+    Alarmknopf alarmknopf =
+        new Alarmknopf(ALARMKNOPF_ID, ALARMKNOPF_NAME, position, meldungsrelevanterRadius);
 
     Position position1 = getPositionFromBreitengradAndLaengengrad(latitude1, longitude1);
     Distance meldungsrelevanterRadius1 = new Distance(5.0);
-    Alarmknopf alarmknopf1 = new Alarmknopf(ALARMKNOPF_ID + "1", ALARMKNOPF_NAME + "1", position1,
-        meldungsrelevanterRadius1);
+    Alarmknopf alarmknopf1 =
+        new Alarmknopf(
+            ALARMKNOPF_ID + "1", ALARMKNOPF_NAME + "1", position1, meldungsrelevanterRadius1);
 
     List<Alarmknopf> alarmknoepfe = new ArrayList<>();
     alarmknoepfe.add(alarmknopf);
     alarmknoepfe.add(alarmknopf1);
 
     when(alarmknopfRegistrierungServiceImpl.findAll()).thenReturn(alarmknoepfe);
-    mockMvc.perform(get("/alarmknoepfe")
-        .contentType(MediaType.APPLICATION_JSON))
+    mockMvc
+        .perform(get("/alarmknoepfe").contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$[0].id", is(alarmknopf.getId())))
         .andExpect(jsonPath("$[1].id", is(alarmknopf1.getId())));
@@ -103,17 +102,20 @@ public class AlarmknopfRegistrierungControllerTest {
     Distance meldungsrelevanterRadius = new Distance();
     meldungsrelevanterRadius.setDistanceInMeters(5.14);
 
-    Alarmknopf alarmknopf = new Alarmknopf(ALARMKNOPF_ID, ALARMKNOPF_NAME, position,
-        meldungsrelevanterRadius);
+    Alarmknopf alarmknopf =
+        new Alarmknopf(ALARMKNOPF_ID, ALARMKNOPF_NAME, position, meldungsrelevanterRadius);
     Optional<Alarmknopf> alarmknopfOptional = Optional.of(alarmknopf);
     given(alarmknopfRegistrierungServiceImpl.findById(ALARMKNOPF_ID))
         .willReturn(alarmknopfOptional);
 
-    AlarmknopfDto alarmknopfDto = new AlarmknopfDto(ALARMKNOPF_ID, ALARMKNOPF_NAME,
-        new PositionDto(), MELDUNGSRELEVANTER_RADIUS);
+    AlarmknopfDto alarmknopfDto =
+        new AlarmknopfDto(
+            ALARMKNOPF_ID, ALARMKNOPF_NAME, new PositionDto(), MELDUNGSRELEVANTER_RADIUS);
 
-    mockMvc.perform(get("/alarmknoepfe/{alarmknopfId}", ALARMKNOPF_ID)
-        .contentType(MediaType.APPLICATION_JSON))
+    mockMvc
+        .perform(
+            get("/alarmknoepfe/{alarmknopfId}", ALARMKNOPF_ID)
+                .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.id", is(alarmknopfDto.getId())));
   }
@@ -121,7 +123,8 @@ public class AlarmknopfRegistrierungControllerTest {
   @Test
   public void givenEmptyRequestBody_whenPutAlarmknoepfe_thenHttp405ShouldBeReturned()
       throws Exception {
-    mockMvc.perform(post("/alarmknoepfe").contentType(MediaType.APPLICATION_JSON))
+    mockMvc
+        .perform(post("/alarmknoepfe").contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isMethodNotAllowed());
   }
 
@@ -129,7 +132,8 @@ public class AlarmknopfRegistrierungControllerTest {
   public void givenValidAlarmknopfId_whenDeleteAlarmknoepfe_thenHttp200ShouldBeReturned()
       throws Exception {
     when(alarmknopfRegistrierungServiceImpl.deleteById(ALARMKNOPF_ID)).thenReturn(true);
-    mockMvc.perform(delete("/alarmknoepfe/{alarmknopfId}", ALARMKNOPF_ID))
+    mockMvc
+        .perform(delete("/alarmknoepfe/{alarmknopfId}", ALARMKNOPF_ID))
         .andExpect(status().isOk());
   }
 
@@ -137,7 +141,8 @@ public class AlarmknopfRegistrierungControllerTest {
   public void givenInvalidAlarmknopfId_whenDeleteAlarmknoepfe_thenHttp404ShouldBeReturned()
       throws Exception {
     when(alarmknopfRegistrierungServiceImpl.deleteById(ALARMKNOPF_ID)).thenReturn(false);
-    mockMvc.perform(delete("/alarmknoepfe/{alarmknopfId}", ALARMKNOPF_ID))
+    mockMvc
+        .perform(delete("/alarmknoepfe/{alarmknopfId}", ALARMKNOPF_ID))
         .andExpect(status().isNotFound());
   }
 
@@ -145,13 +150,16 @@ public class AlarmknopfRegistrierungControllerTest {
   public void givenAlarmknopf_whenPutAlarmknopf_thenHttp200AndJsonWithAlarmknopfShouldBeReturned()
       throws Exception {
     PositionDto positionDto = new PositionDto(3.14, 4.13);
-    AlarmknopfDto alarmknopfDto = new AlarmknopfDto(ALARMKNOPF_ID, ALARMKNOPF_NAME, positionDto,
-        MELDUNGSRELEVANTER_RADIUS);
+    AlarmknopfDto alarmknopfDto =
+        new AlarmknopfDto(ALARMKNOPF_ID, ALARMKNOPF_NAME, positionDto, MELDUNGSRELEVANTER_RADIUS);
 
     when(alarmknopfRegistrierungServiceImpl.save(any(Alarmknopf.class))).thenReturn(true);
 
-    mockMvc.perform(put("/alarmknoepfe/").content(objectMapper.writeValueAsString(alarmknopfDto))
-        .contentType(MediaType.APPLICATION_JSON))
+    mockMvc
+        .perform(
+            put("/alarmknoepfe/")
+                .content(objectMapper.writeValueAsString(alarmknopfDto))
+                .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.id", is(alarmknopfDto.getId())))
         .andExpect(jsonPath("$.position.breitengrad", is(positionDto.getBreitengrad())))
@@ -170,10 +178,12 @@ public class AlarmknopfRegistrierungControllerTest {
     when(alarmknopfRegistrierungServiceImpl.save(any()))
         .thenThrow(new MappingException(errorMessages));
 
-    mockMvc.perform(put("/alarmknoepfe/")
-        .contentType(MediaType.APPLICATION_JSON)
-        .content(requestBody)
-        .accept(MediaType.APPLICATION_JSON))
+    mockMvc
+        .perform(
+            put("/alarmknoepfe/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestBody)
+                .accept(MediaType.APPLICATION_JSON))
         .andExpect(status().isBadRequest());
   }
 
@@ -188,29 +198,31 @@ public class AlarmknopfRegistrierungControllerTest {
     when(alarmknopfRegistrierungServiceImpl.save(any()))
         .thenThrow(new HttpMessageNotReadableException("not readable", httpInputMessage));
 
-    mockMvc.perform(put("/alarmknoepfe/")
-        .contentType(MediaType.APPLICATION_JSON)
-        .content(requestBody)
-        .accept(MediaType.APPLICATION_JSON))
+    mockMvc
+        .perform(
+            put("/alarmknoepfe/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestBody)
+                .accept(MediaType.APPLICATION_JSON))
         .andExpect(status().isBadRequest());
   }
 
   private HttpInputMessage getMockHttpInputMessage() {
     return new HttpInputMessage() {
-        @Override
-        public InputStream getBody() {
-          return null;
-        }
+      @Override
+      public InputStream getBody() {
+        return null;
+      }
 
-        @Override
-        public HttpHeaders getHeaders() {
-          return null;
-        }
-      };
+      @Override
+      public HttpHeaders getHeaders() {
+        return null;
+      }
+    };
   }
 
-  private Position getPositionFromBreitengradAndLaengengrad(final double breitengradToSet,
-      final double laengengradToSet) {
+  private Position getPositionFromBreitengradAndLaengengrad(
+      final double breitengradToSet, final double laengengradToSet) {
     Breitengrad breitengrad = new Breitengrad();
     breitengrad.setBreitengradDezimal(breitengradToSet);
 
