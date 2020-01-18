@@ -4,15 +4,14 @@ import de.th.koeln.archilab.fae.faeteam4service.Distance;
 import de.th.koeln.archilab.fae.faeteam4service.position.persistence.Position;
 import de.th.koeln.archilab.fae.faeteam4service.tracker.persistence.Tracker;
 import io.swagger.v3.oas.annotations.Hidden;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Version;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
 @Hidden
 @Entity
@@ -21,20 +20,13 @@ import lombok.NonNull;
 @NoArgsConstructor
 public class Alarmknopf {
 
-  @Id
-  @NonNull
-  private String id;
+  @Id @NonNull private String id;
 
-  @NonNull
-  private String name;
+  @NonNull private String name;
 
-  @Embedded
-  @NonNull
-  private Position position;
+  @Embedded @NonNull private Position position;
 
-  @Embedded
-  @NonNull
-  private Distance meldungsrelevanterRadius;
+  @Embedded @NonNull private Distance meldungsrelevanterRadius;
 
   public boolean isTrackerInProximity(Tracker tracker) {
     if (Boolean.TRUE.equals(tracker.hasNoPosition())) {

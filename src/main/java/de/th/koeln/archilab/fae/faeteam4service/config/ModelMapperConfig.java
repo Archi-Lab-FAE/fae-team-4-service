@@ -20,7 +20,6 @@ public class ModelMapperConfig {
   private static final double FALLBACK_RADIUS = 0.0;
   private static final double FALLBACK_BREITENGRAD = 0.0;
   private static final double FALLBACK_LAENGENGRAD = 0.0;
-  private static final Long FALLBACK_VERSION = 0L;
 
   @Bean
   public ModelMapper modelMapper() {
