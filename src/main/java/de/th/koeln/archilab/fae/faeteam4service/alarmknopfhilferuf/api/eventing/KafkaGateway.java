@@ -2,10 +2,6 @@ package de.th.koeln.archilab.fae.faeteam4service.alarmknopfhilferuf.api.eventing
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import de.th.koeln.archilab.fae.faeteam4service.alarmknopfhilferuf.AlarmknopfHilferufDto;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,20 +38,9 @@ public class KafkaGateway {
 
   private String toHilferufMessage(HilferufEvent hilferufEvent) {
     try {
-      final Map<String, Object> message = new HashMap<>();
-      message.put("id", hilferufEvent.getId());
-      message.put("key", hilferufEvent.getKey());
-      message.put("time", hilferufEvent.getTimestamp());
-      message.put("type", HilferufEvent.TYPE);
-      message.put("version", HilferufEvent.VERSION);
-      message.put("payload", objectMapper
-          .readValue(hilferufEvent.getPayload(objectMapper), AlarmknopfHilferufDto.class));
-      return objectMapper.writeValueAsString(message);
+      return objectMapper.writeValueAsString(hilferufEvent);
     } catch (final JsonProcessingException e) {
       LOGGER.error("Could not serialize event with id {}", hilferufEvent.getId(), e);
-      return "";
-    } catch (IOException e) {
-      LOGGER.error("Could not read payload for event with id {}", hilferufEvent.getId(), e);
       return "";
     }
   }
