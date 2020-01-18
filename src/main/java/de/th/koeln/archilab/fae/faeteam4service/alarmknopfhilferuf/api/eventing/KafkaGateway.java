@@ -2,6 +2,7 @@ package de.th.koeln.archilab.fae.faeteam4service.alarmknopfhilferuf.api.eventing
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import de.th.koeln.archilab.fae.faeteam4service.alarmknopf.eventing.AlarmknopfEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,31 +17,42 @@ public class KafkaGateway {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(KafkaGateway.class);
 
-
   private final KafkaTemplate<String, String> kafkaTemplate;
   private final ObjectMapper objectMapper;
-  private final String topic;
+  private final String alarmknopfHilferufTopic;
+  private final String alarmknopfTopic;
 
   @Autowired
-  public KafkaGateway(final KafkaTemplate<String, String> kafkaTemplate,
+  public KafkaGateway(
+      final KafkaTemplate<String, String> kafkaTemplate,
       final ObjectMapper objectMapper,
-      @Value("${product.topic}") final String topic) {
+      @Value("${product.topic}") final String alarmknopfHilferufTopic,
+      @Value("${alarmknopf.topic}") final String alarmknopfTopic) {
     this.kafkaTemplate = kafkaTemplate;
     this.objectMapper = objectMapper;
-    this.topic = topic;
+    this.alarmknopfHilferufTopic = alarmknopfHilferufTopic;
+    this.alarmknopfTopic = alarmknopfTopic;
   }
 
   public ListenableFuture<SendResult<String, String>> publishAlarmknopfHilferufAusgeloestEvent(
       final HilferufEvent hilferufEvent) {
-    LOGGER.info("publishing event {} to topic {}", hilferufEvent.getId(), topic);
-    return kafkaTemplate.send(topic, hilferufEvent.getKey(), toHilferufMessage(hilferufEvent));
+    LOGGER.info("publishing event {} to topic {}", hilferufEvent.getId(), alarmknopfHilferufTopic);
+    return kafkaTemplate.send(
+        alarmknopfHilferufTopic, hilferufEvent.getKey(), toMessageString(hilferufEvent));
   }
 
-  private String toHilferufMessage(HilferufEvent hilferufEvent) {
+  public ListenableFuture<SendResult<String, String>> publishAlarmknopfEvent(
+      final AlarmknopfEvent alarmknopfEvent) {
+    LOGGER.info("publishing event {} to topic {}", alarmknopfEvent.getId(), alarmknopfTopic);
+    return kafkaTemplate.send(
+        alarmknopfHilferufTopic, alarmknopfEvent.getKey(), toMessageString(alarmknopfEvent));
+  }
+
+  private String toMessageString(Object event) {
     try {
-      return objectMapper.writeValueAsString(hilferufEvent);
+      return objectMapper.writeValueAsString(event);
     } catch (final JsonProcessingException e) {
-      LOGGER.error("Could not serialize event with id {}", hilferufEvent.getId(), e);
+      LOGGER.error("Could not serialize event {}", event.toString(), e);
       return "";
     }
   }

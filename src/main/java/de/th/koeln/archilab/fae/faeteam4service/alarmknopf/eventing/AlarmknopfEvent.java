@@ -11,7 +11,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @JsonPropertyOrder({"id", "key", "version", "timestamp", "type", "payload"})
-class AlarmknopfEvent {
+public class AlarmknopfEvent {
   private final String id = UUID.randomUUID().toString();
   private String key;
   private Long version;

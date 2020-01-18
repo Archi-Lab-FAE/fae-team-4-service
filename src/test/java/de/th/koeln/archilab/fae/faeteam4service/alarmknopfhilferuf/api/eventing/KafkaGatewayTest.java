@@ -21,21 +21,22 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest
 public class KafkaGatewayTest {
 
-  @Mock
-  private KafkaTemplate<String, String> mockKafkaTemplate;
+  @Mock private KafkaTemplate<String, String> mockKafkaTemplate;
 
-  @Autowired
-  private ObjectMapper objectMapper;
+  @Autowired private ObjectMapper objectMapper;
 
-  private static final String TOPIC = "TestTopic";
+  private static final String ALARMKNOPF_HILFERUF_TOPIC = "TestTopic";
+  private static final String ALARMKNOPF_TOPIC = "TestTopic2";
   private static final String TRACKER_ID = "myTestTrackerId";
 
   @Test
-  public void publish() {
+  public void publishAlarmknopfHilferuf() {
     AlarmknopfHilferufDto alarmknopfHilferufDto = new AlarmknopfHilferufDto(TRACKER_ID);
 
     HilferufEvent expectedHilferufEvent = new HilferufEvent(alarmknopfHilferufDto);
-    KafkaGateway kafkaGateway = new KafkaGateway(mockKafkaTemplate, objectMapper, TOPIC);
+    KafkaGateway kafkaGateway =
+        new KafkaGateway(
+            mockKafkaTemplate, objectMapper, ALARMKNOPF_HILFERUF_TOPIC, ALARMKNOPF_TOPIC);
 
     kafkaGateway.publishAlarmknopfHilferufAusgeloestEvent(expectedHilferufEvent);
 
@@ -43,11 +44,12 @@ public class KafkaGatewayTest {
     ArgumentCaptor<String> keyArgument = ArgumentCaptor.forClass(String.class);
     ArgumentCaptor<String> messageArgument = ArgumentCaptor.forClass(String.class);
 
-    verify(mockKafkaTemplate, times(1)).send(topicArgument.capture(), keyArgument.capture(), messageArgument.capture());
+    verify(mockKafkaTemplate, times(1))
+        .send(topicArgument.capture(), keyArgument.capture(), messageArgument.capture());
 
     String expectedTrackerIdLineInJson = "\"trackerId\" : \"" + TRACKER_ID + "\",";
 
-    assertEquals(TOPIC, topicArgument.getValue());
+    assertEquals(ALARMKNOPF_HILFERUF_TOPIC, topicArgument.getValue());
     assertNotNull(keyArgument.getValue());
     assertTrue(messageArgument.getValue().contains(expectedTrackerIdLineInJson));
   }

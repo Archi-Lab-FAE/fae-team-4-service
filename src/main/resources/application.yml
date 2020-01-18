@@ -38,6 +38,7 @@ server:
 
 # Kafka-topic
 product.topic: alarmknopfhilferuf
+alarmknopf.topic: "alarmknopf"
 alarmknopf.updateType: "alarmknopf-created"
 alarmknopf.deleteType: "alarmknopf-deleted"
 
