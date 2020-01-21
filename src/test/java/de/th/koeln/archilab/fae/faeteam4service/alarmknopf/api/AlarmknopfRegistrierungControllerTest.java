@@ -121,10 +121,10 @@ public class AlarmknopfRegistrierungControllerTest {
   }
 
   @Test
-  public void givenEmptyRequestBody_whenPutAlarmknoepfe_thenHttp405ShouldBeReturned()
+  public void givenEmptyRequestBody_whenPostlarmknoepfe_thenHttp405ShouldBeReturned()
       throws Exception {
     mockMvc
-        .perform(post("/alarmknoepfe").contentType(MediaType.APPLICATION_JSON))
+        .perform(post("/alarmknoepfe/" + ALARMKNOPF_ID).contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isMethodNotAllowed());
   }
 
@@ -151,17 +151,38 @@ public class AlarmknopfRegistrierungControllerTest {
       throws Exception {
     PositionDto positionDto = new PositionDto(3.14, 4.13);
     AlarmknopfDto alarmknopfDto =
-        new AlarmknopfDto(ALARMKNOPF_ID, ALARMKNOPF_NAME, positionDto, MELDUNGSRELEVANTER_RADIUS);
+        new AlarmknopfDto(ALARMKNOPF_NAME, positionDto, MELDUNGSRELEVANTER_RADIUS);
 
     when(alarmknopfRegistrierungServiceImpl.save(any(Alarmknopf.class))).thenReturn(true);
 
     mockMvc
         .perform(
-            put("/alarmknoepfe/")
+            put("/alarmknoepfe/" + ALARMKNOPF_ID)
                 .content(objectMapper.writeValueAsString(alarmknopfDto))
                 .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.id", is(alarmknopfDto.getId())))
+        .andExpect(jsonPath("$.id", is(ALARMKNOPF_ID)))
+        .andExpect(jsonPath("$.position.breitengrad", is(positionDto.getBreitengrad())))
+        .andExpect(jsonPath("$.position.laengengrad", is(positionDto.getLaengengrad())));
+  }
+
+  @Test
+  public void givenAlarmknopf_whenPutAlarmknopfWithDifferentIdInJsonThanPathParam_thenOverwriteIdInJsonAndHttp200AndJsonWithAlarmknopfShouldBeReturned()
+      throws Exception {
+    String idToOverwrite = "overwriteMe";
+    PositionDto positionDto = new PositionDto(3.14, 4.13);
+    AlarmknopfDto alarmknopfDto =
+        new AlarmknopfDto(idToOverwrite, ALARMKNOPF_NAME, positionDto, MELDUNGSRELEVANTER_RADIUS);
+
+    when(alarmknopfRegistrierungServiceImpl.save(any(Alarmknopf.class))).thenReturn(true);
+
+    mockMvc
+        .perform(
+            put("/alarmknoepfe/" + ALARMKNOPF_ID)
+                .content(objectMapper.writeValueAsString(alarmknopfDto))
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.id", is(ALARMKNOPF_ID)))
         .andExpect(jsonPath("$.position.breitengrad", is(positionDto.getBreitengrad())))
         .andExpect(jsonPath("$.position.laengengrad", is(positionDto.getLaengengrad())));
   }
@@ -180,7 +201,7 @@ public class AlarmknopfRegistrierungControllerTest {
 
     mockMvc
         .perform(
-            put("/alarmknoepfe/")
+            put("/alarmknoepfe/" + ALARMKNOPF_ID)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(requestBody)
                 .accept(MediaType.APPLICATION_JSON))
@@ -200,7 +221,7 @@ public class AlarmknopfRegistrierungControllerTest {
 
     mockMvc
         .perform(
-            put("/alarmknoepfe/")
+            put("/alarmknoepfe/" + ALARMKNOPF_ID)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(requestBody)
                 .accept(MediaType.APPLICATION_JSON))

@@ -54,11 +54,12 @@ public class AlarmknopfRegistrierungController {
   }
 
   @Operation(summary = "Registrierung eines Alarmknopfes")
-  @PutMapping(path = "/alarmknoepfe/",
+  @PutMapping(path = "/alarmknoepfe/{alarmknopfId}",
       consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.OK)
-  public ResponseEntity registerAlarmknopf(@RequestBody AlarmknopfDto alarmknopfDto) {
-    Alarmknopf alarmknopf = convertToEntity(alarmknopfDto);
+  public ResponseEntity registerAlarmknopf(@PathVariable String alarmknopfId,
+      @RequestBody AlarmknopfDto alarmknopfDto) {
+    Alarmknopf alarmknopf = convertToEntity(alarmknopfId, alarmknopfDto);
     alarmknopfRegistrierungServiceImpl.save(alarmknopf);
 
     return new ResponseEntity<>(alarmknopfDto, HttpStatus.OK);
@@ -93,7 +94,8 @@ public class AlarmknopfRegistrierungController {
     return modelMapper.map(alarmknopf, AlarmknopfDto.class);
   }
 
-  private Alarmknopf convertToEntity(final AlarmknopfDto alarmknopfDto) {
+  private Alarmknopf convertToEntity(final String alarmknopfId, final AlarmknopfDto alarmknopfDto) {
+    alarmknopfDto.setId(alarmknopfId);
     return modelMapper.map(alarmknopfDto, Alarmknopf.class);
   }
 }

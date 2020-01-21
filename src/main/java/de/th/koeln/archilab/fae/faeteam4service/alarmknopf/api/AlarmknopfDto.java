@@ -6,14 +6,15 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 @Schema(name = "Alarmknopf")
 @Data
 @AllArgsConstructor
+@RequiredArgsConstructor
 @NoArgsConstructor
 public class AlarmknopfDto {
 
-  @NonNull
   private String id;
 
   @NonNull
@@ -24,4 +25,5 @@ public class AlarmknopfDto {
 
   @NonNull
   private double meldungsrelevanterRadiusInMetern;
+
 }
