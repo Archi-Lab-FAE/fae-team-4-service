@@ -45,7 +45,7 @@ public class KafkaGateway {
       final AlarmknopfEvent alarmknopfEvent) {
     LOGGER.info("publishing event {} to topic {}", alarmknopfEvent.getId(), alarmknopfTopic);
     return kafkaTemplate.send(
-        alarmknopfHilferufTopic, alarmknopfEvent.getKey(), toMessageString(alarmknopfEvent));
+        alarmknopfTopic, alarmknopfEvent.getKey(), toMessageString(alarmknopfEvent));
   }
 
   private String toMessageString(Object event) {

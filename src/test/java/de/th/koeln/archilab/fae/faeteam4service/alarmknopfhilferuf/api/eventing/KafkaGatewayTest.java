@@ -3,10 +3,13 @@ package de.th.koeln.archilab.fae.faeteam4service.alarmknopfhilferuf.api.eventing
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import de.th.koeln.archilab.fae.faeteam4service.alarmknopf.eventing.AlarmknopfEvent;
 import de.th.koeln.archilab.fae.faeteam4service.alarmknopfhilferuf.AlarmknopfHilferufDto;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -52,5 +55,17 @@ public class KafkaGatewayTest {
     assertEquals(ALARMKNOPF_HILFERUF_TOPIC, topicArgument.getValue());
     assertNotNull(keyArgument.getValue());
     assertTrue(messageArgument.getValue().contains(expectedTrackerIdLineInJson));
+  }
+
+  @Test
+  public void publishAlarmknopf() {
+    AlarmknopfEvent alarmknopfEvent = new AlarmknopfEvent();
+    KafkaGateway kafkaGateway =
+        new KafkaGateway(
+            mockKafkaTemplate, objectMapper, ALARMKNOPF_HILFERUF_TOPIC, ALARMKNOPF_TOPIC);
+
+    kafkaGateway.publishAlarmknopfEvent(alarmknopfEvent);
+
+    verify(mockKafkaTemplate, times(1)).send(eq(ALARMKNOPF_TOPIC), any(), any());
   }
 }
