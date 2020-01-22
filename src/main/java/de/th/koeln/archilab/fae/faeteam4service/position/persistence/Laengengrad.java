@@ -1,11 +1,13 @@
 package de.th.koeln.archilab.fae.faeteam4service.position.persistence;
 
 import javax.persistence.Embeddable;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @Embeddable
 @NoArgsConstructor
 public class Laengengrad {

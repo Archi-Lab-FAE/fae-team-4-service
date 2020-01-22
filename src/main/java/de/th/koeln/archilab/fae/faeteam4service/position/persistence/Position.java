@@ -4,14 +4,16 @@ import de.th.koeln.archilab.fae.faeteam4service.Distance;
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.gavaghan.geodesy.Ellipsoid;
 import org.gavaghan.geodesy.GeodeticCalculator;
 import org.gavaghan.geodesy.GeodeticCurve;
 import org.gavaghan.geodesy.GlobalPosition;
 
-@Data
+@Getter
+@Setter
 @Embeddable
 @AllArgsConstructor
 @NoArgsConstructor
