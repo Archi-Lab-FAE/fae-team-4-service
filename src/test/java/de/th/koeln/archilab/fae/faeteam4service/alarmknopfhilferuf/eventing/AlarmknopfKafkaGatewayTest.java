@@ -22,7 +22,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class AlarmknopfHilferufKafkaGatewayTest {
+public class AlarmknopfKafkaGatewayTest {
 
   @Mock
   private KafkaTemplate<String, String> mockKafkaTemplate;
@@ -39,11 +39,11 @@ public class AlarmknopfHilferufKafkaGatewayTest {
     AlarmknopfHilferufDto alarmknopfHilferufDto = new AlarmknopfHilferufDto(TRACKER_ID);
 
     HilferufEvent expectedHilferufEvent = new HilferufEvent(alarmknopfHilferufDto);
-    AlarmknopfHilferufKafkaGateway alarmknopfHilferufKafkaGateway =
-        new AlarmknopfHilferufKafkaGateway(
+    AlarmknopfKafkaGateway alarmknopfKafkaGateway =
+        new AlarmknopfKafkaGateway(
             mockKafkaTemplate, objectMapper, ALARMKNOPF_HILFERUF_TOPIC, ALARMKNOPF_TOPIC);
 
-    alarmknopfHilferufKafkaGateway.publishAlarmknopfHilferufAusgeloestEvent(expectedHilferufEvent);
+    alarmknopfKafkaGateway.publishAlarmknopfHilferufAusgeloestEvent(expectedHilferufEvent);
 
     ArgumentCaptor<String> topicArgument = ArgumentCaptor.forClass(String.class);
     ArgumentCaptor<String> keyArgument = ArgumentCaptor.forClass(String.class);
@@ -62,11 +62,11 @@ public class AlarmknopfHilferufKafkaGatewayTest {
   @Test
   public void publishAlarmknopf() {
     AlarmknopfEvent alarmknopfEvent = new AlarmknopfEvent();
-    AlarmknopfHilferufKafkaGateway alarmknopfHilferufKafkaGateway =
-        new AlarmknopfHilferufKafkaGateway(
+    AlarmknopfKafkaGateway alarmknopfKafkaGateway =
+        new AlarmknopfKafkaGateway(
             mockKafkaTemplate, objectMapper, ALARMKNOPF_HILFERUF_TOPIC, ALARMKNOPF_TOPIC);
 
-    alarmknopfHilferufKafkaGateway.publishAlarmknopfEvent(alarmknopfEvent);
+    alarmknopfKafkaGateway.publishAlarmknopfEvent(alarmknopfEvent);
 
     verify(mockKafkaTemplate, times(1)).send(eq(ALARMKNOPF_TOPIC), any(), any());
   }

@@ -16,8 +16,8 @@ public class AlarmknopfHilferufKafkaPublisherTest {
 
   private final AlarmknopfHilferufKafkaPublisher alarmknopfHilferufKafkaPublisher;
 
-  private final AlarmknopfHilferufKafkaGateway mockEventPublisher = mock(
-      AlarmknopfHilferufKafkaGateway.class);
+  private final AlarmknopfKafkaGateway mockEventPublisher = mock(
+      AlarmknopfKafkaGateway.class);
   private final ModelMapper mockModelMapper = mock(ModelMapper.class);
 
   public AlarmknopfHilferufKafkaPublisherTest() {

@@ -10,11 +10,11 @@ import org.springframework.stereotype.Component;
 public class AlarmknopfHilferufKafkaPublisher {
 
   private final ModelMapper modelMapper;
-  private final AlarmknopfHilferufKafkaGateway eventPublisher;
+  private final AlarmknopfKafkaGateway eventPublisher;
 
   @Autowired
   public AlarmknopfHilferufKafkaPublisher(final ModelMapper modelMapper,
-      final AlarmknopfHilferufKafkaGateway eventPublisher) {
+      final AlarmknopfKafkaGateway eventPublisher) {
     this.modelMapper = modelMapper;
     this.eventPublisher = eventPublisher;
   }

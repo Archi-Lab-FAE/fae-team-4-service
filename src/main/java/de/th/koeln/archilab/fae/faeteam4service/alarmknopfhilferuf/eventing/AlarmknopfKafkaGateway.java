@@ -13,10 +13,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.concurrent.ListenableFuture;
 
 @Component
-public class AlarmknopfHilferufKafkaGateway {
+public class AlarmknopfKafkaGateway {
 
   private static final Logger LOGGER = LoggerFactory
-      .getLogger(AlarmknopfHilferufKafkaGateway.class);
+      .getLogger(AlarmknopfKafkaGateway.class);
 
   private final KafkaTemplate<String, String> kafkaTemplate;
   private final ObjectMapper objectMapper;
@@ -24,7 +24,7 @@ public class AlarmknopfHilferufKafkaGateway {
   private final String alarmknopfTopic;
 
   @Autowired
-  public AlarmknopfHilferufKafkaGateway(
+  public AlarmknopfKafkaGateway(
       final KafkaTemplate<String, String> kafkaTemplate,
       final ObjectMapper objectMapper,
       @Value("${product.topic}") final String alarmknopfHilferufTopic,

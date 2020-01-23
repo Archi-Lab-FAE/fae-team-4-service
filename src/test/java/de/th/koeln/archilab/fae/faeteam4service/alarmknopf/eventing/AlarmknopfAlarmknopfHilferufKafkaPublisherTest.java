@@ -5,24 +5,24 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import de.th.koeln.archilab.fae.faeteam4service.alarmknopf.persistence.Alarmknopf;
-import de.th.koeln.archilab.fae.faeteam4service.alarmknopfhilferuf.eventing.AlarmknopfHilferufKafkaGateway;
+import de.th.koeln.archilab.fae.faeteam4service.alarmknopfhilferuf.eventing.AlarmknopfKafkaGateway;
 import org.junit.Before;
 import org.junit.Test;
 
 public class AlarmknopfAlarmknopfHilferufKafkaPublisherTest {
 
   private AlarmknopfKafkaPublisher alarmknopfKafkaPublisher;
-  private AlarmknopfHilferufKafkaGateway mockAlarmknopfHilferufKafkaGateway;
+  private AlarmknopfKafkaGateway mockAlarmknopfKafkaGateway;
 
   private AlarmknopfEventFactory mockAlarmknopfEventFactory;
 
   @Before
   public void setUp() {
     mockAlarmknopfEventFactory = mock(AlarmknopfEventFactory.class);
-    mockAlarmknopfHilferufKafkaGateway = mock(AlarmknopfHilferufKafkaGateway.class);
+    mockAlarmknopfKafkaGateway = mock(AlarmknopfKafkaGateway.class);
 
     alarmknopfKafkaPublisher =
-        new AlarmknopfKafkaPublisher(mockAlarmknopfHilferufKafkaGateway,
+        new AlarmknopfKafkaPublisher(mockAlarmknopfKafkaGateway,
             mockAlarmknopfEventFactory);
   }
 
@@ -35,7 +35,7 @@ public class AlarmknopfAlarmknopfHilferufKafkaPublisherTest {
 
     alarmknopfKafkaPublisher.publishDeletedAlarmknopf(alarmknopf);
 
-    verify(mockAlarmknopfHilferufKafkaGateway).publishAlarmknopfEvent(alarmknopfDeletedEvent);
+    verify(mockAlarmknopfKafkaGateway).publishAlarmknopfEvent(alarmknopfDeletedEvent);
   }
 
   @Test
@@ -47,6 +47,6 @@ public class AlarmknopfAlarmknopfHilferufKafkaPublisherTest {
 
     alarmknopfKafkaPublisher.publishUpdatedAlarmknopf(alarmknopf);
 
-    verify(mockAlarmknopfHilferufKafkaGateway).publishAlarmknopfEvent(alarmknopfUpdatedEvent);
+    verify(mockAlarmknopfKafkaGateway).publishAlarmknopfEvent(alarmknopfUpdatedEvent);
   }
 }
