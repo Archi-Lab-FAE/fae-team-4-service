@@ -1,28 +1,29 @@
 package de.th.koeln.archilab.fae.faeteam4service.alarmknopf.eventing;
 
 import de.th.koeln.archilab.fae.faeteam4service.alarmknopf.persistence.Alarmknopf;
-import de.th.koeln.archilab.fae.faeteam4service.alarmknopfhilferuf.api.eventing.KafkaGateway;
+import de.th.koeln.archilab.fae.faeteam4service.alarmknopfhilferuf.eventing.AlarmknopfHilferufKafkaGateway;
 import org.springframework.stereotype.Component;
 
 @Component
 public class AlarmknopfKafkaPublisher {
 
-  private KafkaGateway kafkaGateway;
+  private AlarmknopfHilferufKafkaGateway alarmknopfHilferufKafkaGateway;
   private AlarmknopfEventFactory alarmknopfEventFactory;
 
   public AlarmknopfKafkaPublisher(
-      KafkaGateway kafkaGateway, AlarmknopfEventFactory alarmknopfEventFactory) {
-    this.kafkaGateway = kafkaGateway;
+      AlarmknopfHilferufKafkaGateway alarmknopfHilferufKafkaGateway,
+      AlarmknopfEventFactory alarmknopfEventFactory) {
+    this.alarmknopfHilferufKafkaGateway = alarmknopfHilferufKafkaGateway;
     this.alarmknopfEventFactory = alarmknopfEventFactory;
   }
 
   public void publishDeletedAlarmknopf(Alarmknopf alarmknopf) {
     AlarmknopfEvent event = alarmknopfEventFactory.createAlarmknopfDeletedEvent(alarmknopf);
-    kafkaGateway.publishAlarmknopfEvent(event);
+    alarmknopfHilferufKafkaGateway.publishAlarmknopfEvent(event);
   }
 
   public void publishUpdatedAlarmknopf(Alarmknopf alarmknopf) {
     AlarmknopfEvent event = alarmknopfEventFactory.createAlarmknopfUpdatedEvent(alarmknopf);
-    kafkaGateway.publishAlarmknopfEvent(event);
+    alarmknopfHilferufKafkaGateway.publishAlarmknopfEvent(event);
   }
 }

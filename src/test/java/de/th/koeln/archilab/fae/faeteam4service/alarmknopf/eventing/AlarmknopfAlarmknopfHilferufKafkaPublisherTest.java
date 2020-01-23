@@ -1,26 +1,29 @@
 package de.th.koeln.archilab.fae.faeteam4service.alarmknopf.eventing;
 
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import de.th.koeln.archilab.fae.faeteam4service.alarmknopf.persistence.Alarmknopf;
-import de.th.koeln.archilab.fae.faeteam4service.alarmknopfhilferuf.api.eventing.KafkaGateway;
+import de.th.koeln.archilab.fae.faeteam4service.alarmknopfhilferuf.eventing.AlarmknopfHilferufKafkaGateway;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.mockito.Mockito.*;
-
-public class AlarmknopfKafkaPublisherTest {
+public class AlarmknopfAlarmknopfHilferufKafkaPublisherTest {
 
   private AlarmknopfKafkaPublisher alarmknopfKafkaPublisher;
-  private KafkaGateway mockKafkaGateway;
+  private AlarmknopfHilferufKafkaGateway mockAlarmknopfHilferufKafkaGateway;
 
   private AlarmknopfEventFactory mockAlarmknopfEventFactory;
 
   @Before
   public void setUp() {
     mockAlarmknopfEventFactory = mock(AlarmknopfEventFactory.class);
-    mockKafkaGateway = mock(KafkaGateway.class);
+    mockAlarmknopfHilferufKafkaGateway = mock(AlarmknopfHilferufKafkaGateway.class);
 
     alarmknopfKafkaPublisher =
-        new AlarmknopfKafkaPublisher(mockKafkaGateway, mockAlarmknopfEventFactory);
+        new AlarmknopfKafkaPublisher(mockAlarmknopfHilferufKafkaGateway,
+            mockAlarmknopfEventFactory);
   }
 
   @Test
@@ -32,7 +35,7 @@ public class AlarmknopfKafkaPublisherTest {
 
     alarmknopfKafkaPublisher.publishDeletedAlarmknopf(alarmknopf);
 
-    verify(mockKafkaGateway).publishAlarmknopfEvent(alarmknopfDeletedEvent);
+    verify(mockAlarmknopfHilferufKafkaGateway).publishAlarmknopfEvent(alarmknopfDeletedEvent);
   }
 
   @Test
@@ -44,6 +47,6 @@ public class AlarmknopfKafkaPublisherTest {
 
     alarmknopfKafkaPublisher.publishUpdatedAlarmknopf(alarmknopf);
 
-    verify(mockKafkaGateway).publishAlarmknopfEvent(alarmknopfUpdatedEvent);
+    verify(mockAlarmknopfHilferufKafkaGateway).publishAlarmknopfEvent(alarmknopfUpdatedEvent);
   }
 }

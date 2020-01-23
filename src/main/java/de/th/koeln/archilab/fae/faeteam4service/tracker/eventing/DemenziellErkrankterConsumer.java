@@ -1,8 +1,7 @@
-package de.th.koeln.archilab.fae.faeteam4service.tracker.api.eventing;
+package de.th.koeln.archilab.fae.faeteam4service.tracker.eventing;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.handler.annotation.Headers;
 import org.springframework.messaging.handler.annotation.Payload;

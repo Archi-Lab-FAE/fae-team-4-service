@@ -1,4 +1,4 @@
-package de.th.koeln.archilab.fae.faeteam4service.tracker.api.eventing;
+package de.th.koeln.archilab.fae.faeteam4service.tracker.eventing;
 
 import lombok.Getter;
 

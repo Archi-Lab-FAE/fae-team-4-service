@@ -1,4 +1,4 @@
-package de.th.koeln.archilab.fae.faeteam4service.alarmknopfhilferuf.api.eventing;
+package de.th.koeln.archilab.fae.faeteam4service.alarmknopfhilferuf.eventing;
 
 import de.th.koeln.archilab.fae.faeteam4service.alarmknopfhilferuf.AlarmknopfHilferuf;
 import de.th.koeln.archilab.fae.faeteam4service.alarmknopfhilferuf.AlarmknopfHilferufDto;
@@ -7,13 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class KafkaPublisher {
+public class AlarmknopfHilferufKafkaPublisher {
 
   private final ModelMapper modelMapper;
-  private final KafkaGateway eventPublisher;
+  private final AlarmknopfHilferufKafkaGateway eventPublisher;
 
   @Autowired
-  public KafkaPublisher(final ModelMapper modelMapper, final KafkaGateway eventPublisher) {
+  public AlarmknopfHilferufKafkaPublisher(final ModelMapper modelMapper,
+      final AlarmknopfHilferufKafkaGateway eventPublisher) {
     this.modelMapper = modelMapper;
     this.eventPublisher = eventPublisher;
   }

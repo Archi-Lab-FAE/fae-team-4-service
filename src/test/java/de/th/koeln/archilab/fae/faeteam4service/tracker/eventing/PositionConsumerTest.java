@@ -1,4 +1,4 @@
-package de.th.koeln.archilab.fae.faeteam4service.tracker.api.eventing;
+package de.th.koeln.archilab.fae.faeteam4service.tracker.eventing;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;

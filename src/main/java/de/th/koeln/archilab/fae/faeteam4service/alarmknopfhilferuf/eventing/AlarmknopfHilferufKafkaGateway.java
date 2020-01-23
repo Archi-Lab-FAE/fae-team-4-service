@@ -1,4 +1,4 @@
-package de.th.koeln.archilab.fae.faeteam4service.alarmknopfhilferuf.api.eventing;
+package de.th.koeln.archilab.fae.faeteam4service.alarmknopfhilferuf.eventing;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -13,9 +13,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.concurrent.ListenableFuture;
 
 @Component
-public class KafkaGateway {
+public class AlarmknopfHilferufKafkaGateway {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(KafkaGateway.class);
+  private static final Logger LOGGER = LoggerFactory
+      .getLogger(AlarmknopfHilferufKafkaGateway.class);
 
   private final KafkaTemplate<String, String> kafkaTemplate;
   private final ObjectMapper objectMapper;
@@ -23,7 +24,7 @@ public class KafkaGateway {
   private final String alarmknopfTopic;
 
   @Autowired
-  public KafkaGateway(
+  public AlarmknopfHilferufKafkaGateway(
       final KafkaTemplate<String, String> kafkaTemplate,
       final ObjectMapper objectMapper,
       @Value("${product.topic}") final String alarmknopfHilferufTopic,

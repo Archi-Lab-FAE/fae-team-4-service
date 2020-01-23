@@ -1,4 +1,4 @@
-package de.th.koeln.archilab.fae.faeteam4service.alarmknopfhilferuf.api.eventing;
+package de.th.koeln.archilab.fae.faeteam4service.alarmknopfhilferuf.eventing;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;

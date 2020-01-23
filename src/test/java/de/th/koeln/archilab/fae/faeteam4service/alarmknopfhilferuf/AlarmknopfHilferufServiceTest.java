@@ -1,30 +1,31 @@
 package de.th.koeln.archilab.fae.faeteam4service.alarmknopfhilferuf;
 
-import de.th.koeln.archilab.fae.faeteam4service.alarmknopfhilferuf.api.eventing.KafkaPublisher;
-import de.th.koeln.archilab.fae.faeteam4service.alarmknopfhilferuf.restpublish.AlarmknopfHilferufAlerter;
-import de.th.koeln.archilab.fae.faeteam4service.tracker.persistence.Tracker;
-import org.junit.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import de.th.koeln.archilab.fae.faeteam4service.alarmknopfhilferuf.eventing.AlarmknopfHilferufKafkaPublisher;
+import de.th.koeln.archilab.fae.faeteam4service.alarmknopfhilferuf.restpublish.AlarmknopfHilferufAlerter;
+import de.th.koeln.archilab.fae.faeteam4service.tracker.persistence.Tracker;
+import java.util.ArrayList;
+import java.util.List;
+import org.junit.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Mockito;
+
 public class AlarmknopfHilferufServiceTest {
 
-  private final KafkaPublisher mockKafkaPublisher;
+  private final AlarmknopfHilferufKafkaPublisher mockAlarmknopfHilferufKafkaPublisher;
   private final AlarmknopfHilferufAlerter mockAlarmknopfHilferufAlerter;
   private final AlarmknopfHilferufService alarmknopfHilferufService;
 
   public AlarmknopfHilferufServiceTest() {
-    this.mockKafkaPublisher = Mockito.mock(KafkaPublisher.class);
+    this.mockAlarmknopfHilferufKafkaPublisher = Mockito
+        .mock(AlarmknopfHilferufKafkaPublisher.class);
     this.mockAlarmknopfHilferufAlerter = Mockito.mock(AlarmknopfHilferufAlerter.class);
     this.alarmknopfHilferufService =
-            new AlarmknopfHilferufService(mockKafkaPublisher, mockAlarmknopfHilferufAlerter);
+        new AlarmknopfHilferufService(mockAlarmknopfHilferufKafkaPublisher,
+            mockAlarmknopfHilferufAlerter);
   }
 
   @Test
@@ -40,7 +41,7 @@ public class AlarmknopfHilferufServiceTest {
 
     ArgumentCaptor<AlarmknopfHilferuf> argument = ArgumentCaptor.forClass(AlarmknopfHilferuf.class);
 
-    verify(mockKafkaPublisher, times(4))
+    verify(mockAlarmknopfHilferufKafkaPublisher, times(4))
         .publishAlarmknopfHilferufAusgeloestEvent(argument.capture());
 
     List<AlarmknopfHilferuf> capturedTrackersToSend = argument.getAllValues();

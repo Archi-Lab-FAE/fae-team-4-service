@@ -1,4 +1,4 @@
-package de.th.koeln.archilab.fae.faeteam4service.tracker.api.eventing;
+package de.th.koeln.archilab.fae.faeteam4service.tracker.eventing;
 
 import de.th.koeln.archilab.fae.faeteam4service.position.persistence.Position;
 import de.th.koeln.archilab.fae.faeteam4service.tracker.persistence.Tracker;

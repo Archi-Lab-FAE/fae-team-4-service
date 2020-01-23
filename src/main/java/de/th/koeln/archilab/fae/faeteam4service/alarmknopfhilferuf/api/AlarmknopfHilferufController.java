@@ -1,4 +1,4 @@
-package de.th.koeln.archilab.fae.faeteam4service.alarmknopfhilferuf.api.rest;
+package de.th.koeln.archilab.fae.faeteam4service.alarmknopfhilferuf.api;
 
 import de.th.koeln.archilab.fae.faeteam4service.alarmknopf.Alarmknopfdruck;
 import de.th.koeln.archilab.fae.faeteam4service.alarmknopf.AlarmknopfdruckService;

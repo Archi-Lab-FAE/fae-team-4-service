@@ -1,4 +1,4 @@
-package de.th.koeln.archilab.fae.faeteam4service.alarmknopfhilferuf.api.eventing;
+package de.th.koeln.archilab.fae.faeteam4service.alarmknopfhilferuf.eventing;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -22,11 +22,13 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class KafkaGatewayTest {
+public class AlarmknopfHilferufKafkaGatewayTest {
 
-  @Mock private KafkaTemplate<String, String> mockKafkaTemplate;
+  @Mock
+  private KafkaTemplate<String, String> mockKafkaTemplate;
 
-  @Autowired private ObjectMapper objectMapper;
+  @Autowired
+  private ObjectMapper objectMapper;
 
   private static final String ALARMKNOPF_HILFERUF_TOPIC = "TestTopic";
   private static final String ALARMKNOPF_TOPIC = "TestTopic2";
@@ -37,11 +39,11 @@ public class KafkaGatewayTest {
     AlarmknopfHilferufDto alarmknopfHilferufDto = new AlarmknopfHilferufDto(TRACKER_ID);
 
     HilferufEvent expectedHilferufEvent = new HilferufEvent(alarmknopfHilferufDto);
-    KafkaGateway kafkaGateway =
-        new KafkaGateway(
+    AlarmknopfHilferufKafkaGateway alarmknopfHilferufKafkaGateway =
+        new AlarmknopfHilferufKafkaGateway(
             mockKafkaTemplate, objectMapper, ALARMKNOPF_HILFERUF_TOPIC, ALARMKNOPF_TOPIC);
 
-    kafkaGateway.publishAlarmknopfHilferufAusgeloestEvent(expectedHilferufEvent);
+    alarmknopfHilferufKafkaGateway.publishAlarmknopfHilferufAusgeloestEvent(expectedHilferufEvent);
 
     ArgumentCaptor<String> topicArgument = ArgumentCaptor.forClass(String.class);
     ArgumentCaptor<String> keyArgument = ArgumentCaptor.forClass(String.class);
@@ -60,11 +62,11 @@ public class KafkaGatewayTest {
   @Test
   public void publishAlarmknopf() {
     AlarmknopfEvent alarmknopfEvent = new AlarmknopfEvent();
-    KafkaGateway kafkaGateway =
-        new KafkaGateway(
+    AlarmknopfHilferufKafkaGateway alarmknopfHilferufKafkaGateway =
+        new AlarmknopfHilferufKafkaGateway(
             mockKafkaTemplate, objectMapper, ALARMKNOPF_HILFERUF_TOPIC, ALARMKNOPF_TOPIC);
 
-    kafkaGateway.publishAlarmknopfEvent(alarmknopfEvent);
+    alarmknopfHilferufKafkaGateway.publishAlarmknopfEvent(alarmknopfEvent);
 
     verify(mockKafkaTemplate, times(1)).send(eq(ALARMKNOPF_TOPIC), any(), any());
   }

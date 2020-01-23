@@ -1,6 +1,6 @@
 package de.th.koeln.archilab.fae.faeteam4service.alarmknopfhilferuf;
 
-import de.th.koeln.archilab.fae.faeteam4service.alarmknopfhilferuf.api.eventing.KafkaPublisher;
+import de.th.koeln.archilab.fae.faeteam4service.alarmknopfhilferuf.eventing.AlarmknopfHilferufKafkaPublisher;
 import de.th.koeln.archilab.fae.faeteam4service.alarmknopfhilferuf.restpublish.AlarmknopfHilferufAlerter;
 import de.th.koeln.archilab.fae.faeteam4service.tracker.persistence.Tracker;
 import java.util.List;
@@ -11,14 +11,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class AlarmknopfHilferufService {
 
-  private final KafkaPublisher kafkaPublisher;
+  private final AlarmknopfHilferufKafkaPublisher alarmknopfHilferufKafkaPublisher;
   private final AlarmknopfHilferufAlerter alarmknopfHilferufAlerter;
 
   @Autowired
   public AlarmknopfHilferufService(
-      final KafkaPublisher kafkaPublisher,
+      final AlarmknopfHilferufKafkaPublisher alarmknopfHilferufKafkaPublisher,
       final AlarmknopfHilferufAlerter alarmknopfHilferufAlerter) {
-    this.kafkaPublisher = kafkaPublisher;
+    this.alarmknopfHilferufKafkaPublisher = alarmknopfHilferufKafkaPublisher;
     this.alarmknopfHilferufAlerter = alarmknopfHilferufAlerter;
   }
 
@@ -39,7 +39,7 @@ public class AlarmknopfHilferufService {
 
   private void publishOnKafka(final List<AlarmknopfHilferuf> createdHilferufe) {
     for (AlarmknopfHilferuf alarmknopfHilferuf : createdHilferufe) {
-      kafkaPublisher.publishAlarmknopfHilferufAusgeloestEvent(alarmknopfHilferuf);
+      alarmknopfHilferufKafkaPublisher.publishAlarmknopfHilferufAusgeloestEvent(alarmknopfHilferuf);
     }
   }
 
