@@ -1,13 +1,13 @@
 package de.th.koeln.archilab.fae.faeteam4service.alarmknopf.persistence;
 
-import de.th.koeln.archilab.fae.faeteam4service.Distance;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertThat;
+
+import de.th.koeln.archilab.fae.faeteam4service.common.Distance;
 import de.th.koeln.archilab.fae.faeteam4service.position.persistence.Position;
 import de.th.koeln.archilab.fae.faeteam4service.tracker.persistence.Tracker;
 import org.junit.Before;
 import org.junit.Test;
-
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.assertThat;
 
 public class AlarmknopfTest {
 

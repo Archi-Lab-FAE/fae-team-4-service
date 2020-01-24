@@ -1,0 +1,28 @@
+{
+  "id": "eventId",
+  "key": null,
+  "version": 1,
+  "timestamp": "2020-12-02T12:12:00",
+  "type": "created",
+  "payload": {
+    "id": null,
+    "name": "payName",
+    "vorname": "payVorname",
+    "zustimmung": true,
+    "kontaktpersonen": [
+      {
+        "id": "kontaktId",
+        "name": "kontaktName",
+        "vorname": "kontaktVorname",
+        "telefonnummer": "kontaktTel1234",
+        "aktiv": true
+      }
+    ],
+    "positionssender": [
+      {
+        "id": "posiSenderId",
+        "letzteWartung": "2001-04-13T01:06:27.123+0000"
+      }
+    ]
+  }
+}

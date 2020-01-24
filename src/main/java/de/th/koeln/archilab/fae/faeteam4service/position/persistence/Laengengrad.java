@@ -3,7 +3,6 @@ package de.th.koeln.archilab.fae.faeteam4service.position.persistence;
 import javax.persistence.Embeddable;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 import lombok.Setter;
 
 @Getter
@@ -12,8 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Laengengrad {
 
-  @NonNull
-  private double laengengradDezimal;
+  private Double laengengradDezimal;
 
   Laengengrad(double laengengradDezimal) {
     if (laengengradDezimal < -85 || laengengradDezimal > 85) {

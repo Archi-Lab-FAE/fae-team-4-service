@@ -2,8 +2,8 @@ package de.th.koeln.archilab.fae.faeteam4service.alarmknopf.api;
 
 import static org.junit.Assert.assertEquals;
 
-import de.th.koeln.archilab.fae.faeteam4service.Distance;
 import de.th.koeln.archilab.fae.faeteam4service.alarmknopf.persistence.Alarmknopf;
+import de.th.koeln.archilab.fae.faeteam4service.common.Distance;
 import de.th.koeln.archilab.fae.faeteam4service.config.ModelMapperConfig;
 import de.th.koeln.archilab.fae.faeteam4service.position.api.PositionDto;
 import de.th.koeln.archilab.fae.faeteam4service.position.persistence.Breitengrad;

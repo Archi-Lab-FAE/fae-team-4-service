@@ -1,6 +1,6 @@
 package de.th.koeln.archilab.fae.faeteam4service.alarmknopf.persistence;
 
-import de.th.koeln.archilab.fae.faeteam4service.Distance;
+import de.th.koeln.archilab.fae.faeteam4service.common.Distance;
 import de.th.koeln.archilab.fae.faeteam4service.position.persistence.Position;
 import de.th.koeln.archilab.fae.faeteam4service.tracker.persistence.Tracker;
 import io.swagger.v3.oas.annotations.Hidden;

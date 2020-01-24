@@ -1,4 +1,4 @@
-package de.th.koeln.archilab.fae.faeteam4service;
+package de.th.koeln.archilab.fae.faeteam4service.common;
 
 import javax.persistence.Embeddable;
 import lombok.AllArgsConstructor;

@@ -1,6 +1,6 @@
 package de.th.koeln.archilab.fae.faeteam4service.position.persistence;
 
-import de.th.koeln.archilab.fae.faeteam4service.Distance;
+import de.th.koeln.archilab.fae.faeteam4service.common.Distance;
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
 import lombok.AllArgsConstructor;
@@ -11,6 +11,7 @@ import org.gavaghan.geodesy.Ellipsoid;
 import org.gavaghan.geodesy.GeodeticCalculator;
 import org.gavaghan.geodesy.GeodeticCurve;
 import org.gavaghan.geodesy.GlobalPosition;
+import org.springframework.lang.Nullable;
 
 @Getter
 @Setter
@@ -20,9 +21,11 @@ import org.gavaghan.geodesy.GlobalPosition;
 public class Position {
 
   @Embedded
+  @Nullable
   private Breitengrad breitengrad;
 
   @Embedded
+  @Nullable
   private Laengengrad laengengrad;
 
   public Position(double breitengrad, double laengengrad) {
@@ -44,10 +47,14 @@ public class Position {
     double elevation = 0.0;
     Ellipsoid representingModelOfEarth = Ellipsoid.WGS84;
 
+    assert otherPosition.breitengrad != null;
     double otherBreitengrad = otherPosition.breitengrad.getBreitengradDezimal();
+    assert otherPosition.laengengrad != null;
     double otherLaengengrad = otherPosition.laengengrad.getLaengengradDezimal();
 
+    assert thisPosition.breitengrad != null;
     double thisBreitengrad = thisPosition.breitengrad.getBreitengradDezimal();
+    assert thisPosition.laengengrad != null;
     double thisLaengengrad = thisPosition.laengengrad.getLaengengradDezimal();
 
     GlobalPosition thisGlobalPosition =

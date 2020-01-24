@@ -2,7 +2,7 @@ package de.th.koeln.archilab.fae.faeteam4service.position.persistence;
 
 import static org.junit.Assert.assertEquals;
 
-import de.th.koeln.archilab.fae.faeteam4service.Distance;
+import de.th.koeln.archilab.fae.faeteam4service.common.Distance;
 import org.junit.Test;
 
 public class PositionTest {

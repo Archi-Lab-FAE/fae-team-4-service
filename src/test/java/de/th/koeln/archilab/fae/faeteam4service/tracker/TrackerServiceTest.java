@@ -1,18 +1,5 @@
 package de.th.koeln.archilab.fae.faeteam4service.tracker;
 
-import de.th.koeln.archilab.fae.faeteam4service.Distance;
-import de.th.koeln.archilab.fae.faeteam4service.alarmknopf.persistence.Alarmknopf;
-import de.th.koeln.archilab.fae.faeteam4service.position.persistence.Position;
-import de.th.koeln.archilab.fae.faeteam4service.tracker.persistence.Tracker;
-import de.th.koeln.archilab.fae.faeteam4service.tracker.persistence.TrackerRepository;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mockito;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
 import static junit.framework.TestCase.assertTrue;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -20,6 +7,18 @@ import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
+import de.th.koeln.archilab.fae.faeteam4service.alarmknopf.persistence.Alarmknopf;
+import de.th.koeln.archilab.fae.faeteam4service.common.Distance;
+import de.th.koeln.archilab.fae.faeteam4service.position.persistence.Position;
+import de.th.koeln.archilab.fae.faeteam4service.tracker.persistence.Tracker;
+import de.th.koeln.archilab.fae.faeteam4service.tracker.persistence.TrackerRepository;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mockito;
 
 public class TrackerServiceTest {
 

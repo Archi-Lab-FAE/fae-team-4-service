@@ -12,10 +12,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import de.th.koeln.archilab.fae.faeteam4service.Distance;
 import de.th.koeln.archilab.fae.faeteam4service.FaeTeam4ServiceApplication;
 import de.th.koeln.archilab.fae.faeteam4service.alarmknopf.AlarmknopfRegistrierungServiceImpl;
 import de.th.koeln.archilab.fae.faeteam4service.alarmknopf.persistence.Alarmknopf;
+import de.th.koeln.archilab.fae.faeteam4service.common.Distance;
 import de.th.koeln.archilab.fae.faeteam4service.position.api.PositionDto;
 import de.th.koeln.archilab.fae.faeteam4service.position.persistence.Breitengrad;
 import de.th.koeln.archilab.fae.faeteam4service.position.persistence.Laengengrad;
