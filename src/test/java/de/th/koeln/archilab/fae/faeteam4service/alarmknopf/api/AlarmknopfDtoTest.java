@@ -39,8 +39,10 @@ public class AlarmknopfDtoTest {
 
     AlarmknopfDto alarmknopfDto = modelMapper.map(alarmknopf, AlarmknopfDto.class);
 
+    assert alarmknopf.getPosition().getBreitengrad() != null;
     double alarmknopfBreitengrad = alarmknopf.getPosition().getBreitengrad()
         .getBreitengradDezimal();
+    assert alarmknopf.getPosition().getLaengengrad() != null;
     double alarmknopfLaengengrad = alarmknopf.getPosition().getLaengengrad()
         .getLaengengradDezimal();
     double alarmknopfRadius = alarmknopf.getMeldungsrelevanterRadius().getDistanceInMeters();
@@ -72,8 +74,10 @@ public class AlarmknopfDtoTest {
     double alarmknopfDtoLaengengrad = alarmknopfDto.getPosition().getLaengengrad();
     double alarmknopfDtoRadius = alarmknopfDto.getMeldungsrelevanterRadiusInMetern();
 
+    assert alarmknopf.getPosition().getBreitengrad() != null;
     double alarmknopfBreitengrad = alarmknopf.getPosition().getBreitengrad()
         .getBreitengradDezimal();
+    assert alarmknopf.getPosition().getLaengengrad() != null;
     double alarmknopfLaengengrad = alarmknopf.getPosition().getLaengengrad()
         .getLaengengradDezimal();
     double alarmknopfRadius = alarmknopf.getMeldungsrelevanterRadius().getDistanceInMeters();
