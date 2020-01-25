@@ -39,6 +39,11 @@
       "name": "spring.kafka.consumer.position.topic",
       "type": "java.lang.String",
       "description": "Description for spring.kafka.consumer.position.topic."
+    },
+    {
+      "name": "spring.kafka.enabled",
+      "type": "java.lang.Boolean",
+      "description": "Description for spring.kafka.enabled."
     }
   ]
 }

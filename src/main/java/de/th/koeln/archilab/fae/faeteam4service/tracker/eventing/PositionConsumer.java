@@ -15,7 +15,7 @@ public class PositionConsumer {
     this.trackerRepository = trackerRepository;
   }
 
-  @KafkaListener(topics = "${spring.kafka.consumer.position.topic}", groupId = "${spring.kafka.group-id}")
+  @KafkaListener(topics = "${spring.kafka.consumer.position.topic}", groupId = "${spring.kafka.group-id}", autoStartup = "${spring.kafka.enabled}")
   public void consumeTracker(final String message) {
     //TODO persist tracker
     Tracker tracker = new Tracker();

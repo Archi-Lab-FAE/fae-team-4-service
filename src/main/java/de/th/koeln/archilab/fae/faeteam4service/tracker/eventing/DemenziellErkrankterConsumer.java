@@ -25,7 +25,7 @@ public class DemenziellErkrankterConsumer {
     this.objectMapper = objectMapper;
   }
 
-  @KafkaListener(topics = "${spring.kafka.consumer.tracker.topic}", groupId = "${spring.kafka.group-id}")
+  @KafkaListener(topics = "${spring.kafka.consumer.tracker.topic}", groupId = "${spring.kafka.group-id}", autoStartup = "${spring.kafka.enabled}")
   public void consumeDemenziellErkrankte(final String message) throws IOException {
 
     DemenziellErkrankterEvent demenziellErkrankterEvent = objectMapper.readValue(message,

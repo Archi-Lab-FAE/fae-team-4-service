@@ -28,6 +28,7 @@ spring:
     deserialization:
       accept-empty-array-as-null-object: true
   kafka:
+    enabled: false
     group-id: "fae-team-4-service"
     producer:
       product:
