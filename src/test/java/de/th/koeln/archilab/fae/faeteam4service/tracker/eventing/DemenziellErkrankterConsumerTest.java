@@ -73,7 +73,7 @@ public class DemenziellErkrankterConsumerTest {
 
     DemenziellErkrankterEvent demenziellErkrankterEvent = objectMapper.readValue(kafkaMessage,
         DemenziellErkrankterEvent.class);
-    String trackerId = demenziellErkrankterEvent.getKey();
+    String trackerId = demenziellErkrankterEvent.getPayload().getPositionssender().get(0).getId();
 
     demenziellErkrankterConsumer.consumeDemenziellErkrankte(kafkaMessage);
 
@@ -92,7 +92,7 @@ public class DemenziellErkrankterConsumerTest {
 
     DemenziellErkrankterEvent demenziellErkrankterEvent = objectMapper.readValue(kafkaMessage,
         DemenziellErkrankterEvent.class);
-    String trackerId = demenziellErkrankterEvent.getKey();
+    String trackerId = demenziellErkrankterEvent.getPayload().getPositionssender().get(0).getId();
 
     Tracker tracker = new Tracker(trackerId);
     when(mockTrackerRepository.findById(trackerId)).thenReturn(Optional.of(tracker));
@@ -153,10 +153,9 @@ public class DemenziellErkrankterConsumerTest {
       final String trackerId, final String event, final boolean zustimmung) {
     List<KontaktpersonDto> kontaktpersonDtoList = getKontaktpersonDtoList();
 
-    List<PositionssenderDto> positionssenderDtoList = getPositionssenderDtoList();
+    List<PositionssenderDto> positionssenderDtoList = getPositionssenderDtoList(trackerId);
 
-    DemenziellErkrankterDto demenziellErkrankterDto = getDemenziellErkrankterDto(trackerId,
-        zustimmung,
+    DemenziellErkrankterDto demenziellErkrankterDto = getDemenziellErkrankterDto(zustimmung,
         kontaktpersonDtoList, positionssenderDtoList);
 
     return getDemenziellErkrankterEvent(trackerId, event, demenziellErkrankterDto);
@@ -176,12 +175,11 @@ public class DemenziellErkrankterConsumerTest {
     return demenziellErkrankterEvent;
   }
 
-  private DemenziellErkrankterDto getDemenziellErkrankterDto(final String trackerId,
-      final boolean zustimmung,
+  private DemenziellErkrankterDto getDemenziellErkrankterDto(final boolean zustimmung,
       final List<KontaktpersonDto> kontaktpersonDtoList,
       final List<PositionssenderDto> positionssenderDtoList) {
     DemenziellErkrankterDto demenziellErkrankterDto = new DemenziellErkrankterDto();
-    demenziellErkrankterDto.setId(trackerId);
+    demenziellErkrankterDto.setId("payId");
     demenziellErkrankterDto.setName("payName");
     demenziellErkrankterDto.setVorname("payVorname");
     demenziellErkrankterDto.setZustimmung(zustimmung);
@@ -190,10 +188,10 @@ public class DemenziellErkrankterConsumerTest {
     return demenziellErkrankterDto;
   }
 
-  private List<PositionssenderDto> getPositionssenderDtoList() {
+  private List<PositionssenderDto> getPositionssenderDtoList(final String trackerId) {
     Date datePositionssender = new Date(987123987123L);
     PositionssenderDto positionssenderDto = new PositionssenderDto();
-    positionssenderDto.setId("posiSenderId");
+    positionssenderDto.setId(trackerId);
     positionssenderDto.setLetzteWartung(datePositionssender);
 
     List<PositionssenderDto> positionssenderDtoList = new ArrayList<>();

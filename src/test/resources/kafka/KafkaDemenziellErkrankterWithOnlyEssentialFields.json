@@ -5,11 +5,16 @@
   "timestamp": "2020-12-02T12:12:00",
   "type": "created",
   "payload": {
-    "id": "trackerid",
+    "id": null,
     "name": null,
     "vorname": null,
     "zustimmung": true,
     "kontaktpersonen": [],
-    "positionssender": []
+    "positionssender": [
+      {
+        "id": "posiSenderId",
+        "letzteWartung": "2001-04-13T01:06:27.123+0000"
+      }
+    ]
   }
 }

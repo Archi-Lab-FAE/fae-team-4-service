@@ -27,8 +27,8 @@ public class AlarmknopfKafkaGateway {
   public AlarmknopfKafkaGateway(
       final KafkaTemplate<String, String> kafkaTemplate,
       final ObjectMapper objectMapper,
-      @Value("${product.topic}") final String alarmknopfHilferufTopic,
-      @Value("${alarmknopf.topic}") final String alarmknopfTopic) {
+      @Value("${spring.kafka.producer.product.topic}") final String alarmknopfHilferufTopic,
+      @Value("${spring.kafka.producer.alarmknopf.topic}") final String alarmknopfTopic) {
     this.kafkaTemplate = kafkaTemplate;
     this.objectMapper = objectMapper;
     this.alarmknopfHilferufTopic = alarmknopfHilferufTopic;

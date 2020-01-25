@@ -1,9 +1,11 @@
 package de.th.koeln.archilab.fae.faeteam4service.tracker.eventing;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import de.th.koeln.archilab.fae.faeteam4service.tracker.eventing.dto.PositionssenderDto;
 import de.th.koeln.archilab.fae.faeteam4service.tracker.persistence.Tracker;
 import de.th.koeln.archilab.fae.faeteam4service.tracker.persistence.TrackerRepository;
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
@@ -23,7 +25,7 @@ public class DemenziellErkrankterConsumer {
     this.objectMapper = objectMapper;
   }
 
-  @KafkaListener(topics = "demenziellErkrankte", autoStartup = "${spring.kafka.enabled}")
+  @KafkaListener(topics = "${spring.kafka.consumer.tracker.topic}", autoStartup = "${spring.kafka.enabled}")
   public void consumeDemenziellErkrankte(final String message) throws IOException {
 
     DemenziellErkrankterEvent demenziellErkrankterEvent = objectMapper.readValue(message,
@@ -31,35 +33,43 @@ public class DemenziellErkrankterConsumer {
 
     String eventType = demenziellErkrankterEvent.getType().toUpperCase();
     boolean zustimmung = demenziellErkrankterEvent.getPayload().getZustimmung();
+    List<PositionssenderDto> positionssenderDtoList =
+        demenziellErkrankterEvent.getPayload().getPositionssender();
 
     if (!zustimmung) {
-      handleNoZustimmung(demenziellErkrankterEvent.getKey());
+      handleNoZustimmung(positionssenderDtoList);
       return;
     }
     if (eventType.equals(Type.CREATED.toString())) {
-      handleCreateEvent(demenziellErkrankterEvent.getKey());
+      handleCreateEvent(positionssenderDtoList);
     }
     if (eventType.equals(Type.DELETED.toString())) {
-      handleDeleteEvent(demenziellErkrankterEvent.getKey());
+      handleDeleteEvent(positionssenderDtoList);
     }
   }
 
-  private void handleNoZustimmung(final String trackerId) {
-    trackerRepository.deleteById(trackerId);
-  }
-
-  private void handleCreateEvent(final String trackerId) {
-    Tracker tracker = new Tracker();
-    tracker.setId(trackerId);
-    Optional<Tracker> trackerInRepository = trackerRepository.findById(trackerId);
-
-    if (trackerInRepository.isPresent()) {
-      return;
+  private void handleNoZustimmung(final List<PositionssenderDto> positionssenderDtoList) {
+    for (PositionssenderDto positionssenderDto : positionssenderDtoList) {
+      trackerRepository.deleteById(positionssenderDto.getId());
     }
-    trackerRepository.save(tracker);
   }
 
-  private void handleDeleteEvent(final String trackerId) {
-    trackerRepository.deleteById(trackerId);
+  private void handleCreateEvent(final List<PositionssenderDto> positionssenderDtoList) {
+    for (PositionssenderDto positionssenderDto : positionssenderDtoList) {
+      Tracker tracker = new Tracker(positionssenderDto.getId());
+      Optional<Tracker> trackerInRepository = trackerRepository
+          .findById(positionssenderDto.getId());
+
+      if (trackerInRepository.isPresent()) {
+        continue;
+      }
+      trackerRepository.save(tracker);
+    }
+  }
+
+  private void handleDeleteEvent(final List<PositionssenderDto> positionssenderDtoList) {
+    for (PositionssenderDto positionssenderDto : positionssenderDtoList) {
+      trackerRepository.deleteById(positionssenderDto.getId());
+    }
   }
 }

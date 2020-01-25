@@ -4,5 +4,41 @@
       "name": "spring.kafka.enabled",
       "type": "java.lang.Boolean",
       "description": "Description for spring.kafka.enabled."
-  }
-] }
+    },
+    {
+      "name": "spring.kafka.group-id",
+      "type": "java.lang.String",
+      "description": "Description for spring.kafka.group-id."
+    },
+    {
+      "name": "spring.kafka.producer.product.topic",
+      "type": "java.lang.String",
+      "description": "Description for spring.kafka.producer.product.topic."
+    },
+    {
+      "name": "spring.kafka.producer.alarmknopf.topic",
+      "type": "java.lang.String",
+      "description": "Description for spring.kafka.producer.alarmknopf.topic."
+    },
+    {
+      "name": "spring.kafka.producer.alarmknopf.types.deleteType",
+      "type": "java.lang.String",
+      "description": "Description for spring.kafka.producer.alarmknopf.types.deleteType."
+    },
+    {
+      "name": "spring.kafka.producer.alarmknopf.types.updateType",
+      "type": "java.lang.String",
+      "description": "Description for spring.kafka.producer.alarmknopf.types.updateType."
+    },
+    {
+      "name": "spring.kafka.consumer.tracker.topic",
+      "type": "java.lang.String",
+      "description": "Description for spring.kafka.consumer.tracker.topic."
+    },
+    {
+      "name": "messagingSystem.url",
+      "type": "java.lang.String",
+      "description": "Description for messagingSystem.url."
+    }
+  ]
+}

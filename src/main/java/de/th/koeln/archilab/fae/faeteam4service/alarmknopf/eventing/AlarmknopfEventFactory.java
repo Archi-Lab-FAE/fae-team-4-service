@@ -15,8 +15,8 @@ public class AlarmknopfEventFactory {
 
   public AlarmknopfEventFactory(
       ModelMapper modelMapper,
-      @Value("${alarmknopf.updateType}") String updateType,
-      @Value("${alarmknopf.deleteType}") String deleteType) {
+      @Value("${spring.kafka.producer.alarmknopf.types.updateType}") String updateType,
+      @Value("${spring.kafka.producer.alarmknopf.types.deleteType}") String deleteType) {
     this.modelMapper = modelMapper;
     this.updateType = updateType;
     this.deleteType = deleteType;

@@ -12,7 +12,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class DemenziellErkrankterDto implements Serializable {
 
-  @NonNull
   private String id;
   private String name;
   private String vorname;
