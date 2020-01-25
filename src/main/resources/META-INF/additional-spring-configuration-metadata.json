@@ -1,11 +1,6 @@
 {
   "properties": [
     {
-      "name": "spring.kafka.enabled",
-      "type": "java.lang.Boolean",
-      "description": "Description for spring.kafka.enabled."
-    },
-    {
       "name": "spring.kafka.group-id",
       "type": "java.lang.String",
       "description": "Description for spring.kafka.group-id."
@@ -39,6 +34,11 @@
       "name": "messagingSystem.url",
       "type": "java.lang.String",
       "description": "Description for messagingSystem.url."
+    },
+    {
+      "name": "spring.kafka.consumer.position.topic",
+      "type": "java.lang.String",
+      "description": "Description for spring.kafka.consumer.position.topic."
     }
   ]
 }

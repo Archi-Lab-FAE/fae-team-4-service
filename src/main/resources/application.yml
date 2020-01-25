@@ -40,7 +40,8 @@ spring:
     consumer:
       tracker:
         topic: "demenziellErkrankte"
-
+      position:
+        topic: "tracker"
 
 # Server
 server:
