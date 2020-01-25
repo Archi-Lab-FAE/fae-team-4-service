@@ -17,7 +17,7 @@ public class DemenziellErkrankterConsumer {
 
   private final ObjectMapper objectMapper;
 
-  private enum Type {CREATED, DELETED}
+  private enum Type {CREATED, UPDATED, DELETED}
 
   public DemenziellErkrankterConsumer(final TrackerRepository trackerRepository,
       final ObjectMapper objectMapper) {
@@ -40,8 +40,8 @@ public class DemenziellErkrankterConsumer {
       handleNoZustimmung(positionssenderDtoList);
       return;
     }
-    if (eventType.equals(Type.CREATED.toString())) {
-      handleCreateEvent(positionssenderDtoList);
+    if (eventType.equals(Type.CREATED.toString()) || eventType.equals(Type.UPDATED.toString())) {
+      handleCreateOrUpdatedEvent(positionssenderDtoList);
     }
     if (eventType.equals(Type.DELETED.toString())) {
       handleDeleteEvent(positionssenderDtoList);
@@ -54,7 +54,7 @@ public class DemenziellErkrankterConsumer {
     }
   }
 
-  private void handleCreateEvent(final List<PositionssenderDto> positionssenderDtoList) {
+  private void handleCreateOrUpdatedEvent(final List<PositionssenderDto> positionssenderDtoList) {
     for (PositionssenderDto positionssenderDto : positionssenderDtoList) {
       Tracker tracker = new Tracker(positionssenderDto.getId());
       Optional<Tracker> trackerInRepository = trackerRepository
