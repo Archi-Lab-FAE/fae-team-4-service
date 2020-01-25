@@ -43,7 +43,7 @@ alarmknopf.updateType: "alarmknopf-created"
 alarmknopf.deleteType: "alarmknopf-deleted"
 
 # Messaging system
-messagingSystem.url: "https://some.url/"
+messagingSystem.url: "https://www.api.fae.archi-lab.io/team-3/ausnahmesituation/"
 
 # Logging Level
 logging:
