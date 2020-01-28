@@ -28,7 +28,7 @@ public class Error {
     PrintWriter pw = new PrintWriter(sw);
     exception.printStackTrace(pw);
 
-    text = pw.toString();
+    text = sw.toString();
 
     pw.close();
     try {
