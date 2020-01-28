@@ -30,7 +30,7 @@ public class DemenziellErkrankterConsumer {
 
   @KafkaListener(topics = "${spring.kafka.consumer.tracker.topic}", groupId = "${spring.kafka.group-id}", autoStartup = "${spring.kafka.enabled}")
   public void consumeDemenziellErkrankte(final String message) {
-    errorService.persistString("Anfang der Methode");
+    errorService.persistString("Anfang der Methode2");
     errorService.persistString("message: " + message);
     try {
       DemenziellErkrankterEvent demenziellErkrankterEvent = objectMapper.readValue(message,
