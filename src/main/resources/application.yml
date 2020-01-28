@@ -29,7 +29,7 @@ spring:
       accept-empty-array-as-null-object: true
   kafka:
     enabled: false
-    group-id: "fae-tea-service"
+    group-id: "fae-team-4-service"
     producer:
       product:
         topic: "alarmknopfhilferuf"

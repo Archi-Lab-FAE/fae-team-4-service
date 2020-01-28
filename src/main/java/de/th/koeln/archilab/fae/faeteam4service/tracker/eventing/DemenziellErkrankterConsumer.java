@@ -1,6 +1,7 @@
 package de.th.koeln.archilab.fae.faeteam4service.tracker.eventing;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import de.th.koeln.archilab.fae.faeteam4service.errorhandling.ErrorService;
 import de.th.koeln.archilab.fae.faeteam4service.tracker.eventing.dto.PositionssenderDto;
 import de.th.koeln.archilab.fae.faeteam4service.tracker.persistence.Tracker;
 import de.th.koeln.archilab.fae.faeteam4service.tracker.persistence.TrackerRepository;
@@ -13,6 +14,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class DemenziellErkrankterConsumer {
 
+  private final ErrorService errorService;
+
   private final TrackerRepository trackerRepository;
 
   private final ObjectMapper objectMapper;
@@ -20,31 +23,37 @@ public class DemenziellErkrankterConsumer {
   private enum Type {CREATED, UPDATED, DELETED}
 
   public DemenziellErkrankterConsumer(final TrackerRepository trackerRepository,
-      final ObjectMapper objectMapper) {
+      final ObjectMapper objectMapper, final ErrorService errorService) {
     this.trackerRepository = trackerRepository;
     this.objectMapper = objectMapper;
+    this.errorService = errorService;
   }
 
   @KafkaListener(topics = "${spring.kafka.consumer.tracker.topic}", groupId = "${spring.kafka.group-id}", autoStartup = "${spring.kafka.enabled}")
   public void consumeDemenziellErkrankte(final String message) throws IOException {
 
-    DemenziellErkrankterEvent demenziellErkrankterEvent = objectMapper.readValue(message,
-        DemenziellErkrankterEvent.class);
+    try {
 
-    String eventType = demenziellErkrankterEvent.getType().toUpperCase();
-    boolean zustimmung = demenziellErkrankterEvent.getPayload().getZustimmung();
-    List<PositionssenderDto> positionssenderDtoList =
-        demenziellErkrankterEvent.getPayload().getPositionssender();
+      DemenziellErkrankterEvent demenziellErkrankterEvent = objectMapper.readValue(message,
+          DemenziellErkrankterEvent.class);
 
-    if (!zustimmung) {
-      handleNoZustimmung(positionssenderDtoList);
-      return;
-    }
-    if (eventType.equals(Type.CREATED.toString()) || eventType.equals(Type.UPDATED.toString())) {
-      handleCreateOrUpdatedEvent(positionssenderDtoList);
-    }
-    if (eventType.equals(Type.DELETED.toString())) {
-      handleDeleteEvent(positionssenderDtoList);
+      String eventType = demenziellErkrankterEvent.getType().toUpperCase();
+      boolean zustimmung = demenziellErkrankterEvent.getPayload().getZustimmung();
+      List<PositionssenderDto> positionssenderDtoList =
+          demenziellErkrankterEvent.getPayload().getPositionssender();
+
+      if (!zustimmung) {
+        handleNoZustimmung(positionssenderDtoList);
+        return;
+      }
+      if (eventType.equals(Type.CREATED.toString()) || eventType.equals(Type.UPDATED.toString())) {
+        handleCreateOrUpdatedEvent(positionssenderDtoList);
+      }
+      if (eventType.equals(Type.DELETED.toString())) {
+        handleDeleteEvent(positionssenderDtoList);
+      }
+    } catch (Exception e) {
+      errorService.persistException(e);
     }
   }
 
