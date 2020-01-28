@@ -29,11 +29,4 @@ public class AlarmknopfHilferufController {
     alarmknopfdruckService.handleAlarmknopfdruck(new Alarmknopfdruck(alarmknopfId));
     return new ResponseEntity(HttpStatus.OK);
   }
-
-  @ExceptionHandler(Exception.class)
-  public ResponseEntity<String> handle(final Exception ex) {
-    errorRepository.save(new Error(ex));
-    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-        .body("Could not reach adjacent service.");
-  }
 }
