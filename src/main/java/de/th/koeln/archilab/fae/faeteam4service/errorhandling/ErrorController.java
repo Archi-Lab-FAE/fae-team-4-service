@@ -1,9 +1,8 @@
 package de.th.koeln.archilab.fae.faeteam4service.errorhandling;
 
+import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RestController
 public class ErrorController {

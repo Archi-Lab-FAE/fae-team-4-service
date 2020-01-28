@@ -33,7 +33,8 @@ public class DemenziellErkrankterConsumer {
   @KafkaListener(topics = "${spring.kafka.consumer.tracker.topic}", groupId = "${spring.kafka.group-id}", autoStartup = "${spring.kafka.enabled}")
   public void consumeDemenziellErkrankte(@Payload final String message) throws IOException {
 
-    String myMessage = message.replace("\\n", "").replace("\\", "");
+    String myMessage = message.substring(1, message.length() - 1);
+    myMessage = myMessage.replace("\\n", "").replace("\\", "");
 
     errorService.persistString("message1: " + myMessage.substring(0, 100));
     errorService.persistString("message2: " + myMessage.substring(100, 200));

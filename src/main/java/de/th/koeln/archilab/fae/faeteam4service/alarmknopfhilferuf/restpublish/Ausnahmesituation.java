@@ -8,6 +8,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 class Ausnahmesituation {
-    private String positionssenderId;
-    private String text;
+
+  private String positionssenderId;
+  private String text;
 }

@@ -43,24 +43,24 @@ public class Position {
 
   private GeodeticCurve getGeodeticCurve(
       final Position thisPosition, final Position otherPosition) {
-    GeodeticCalculator geoCalc = new GeodeticCalculator();
     double elevation = 0.0;
-    Ellipsoid representingModelOfEarth = Ellipsoid.WGS84;
-
-    assert otherPosition.breitengrad != null;
-    double otherBreitengrad = otherPosition.breitengrad.getBreitengradDezimal();
-    assert otherPosition.laengengrad != null;
-    double otherLaengengrad = otherPosition.laengengrad.getLaengengradDezimal();
 
     assert thisPosition.breitengrad != null;
     double thisBreitengrad = thisPosition.breitengrad.getBreitengradDezimal();
     assert thisPosition.laengengrad != null;
     double thisLaengengrad = thisPosition.laengengrad.getLaengengradDezimal();
-
     GlobalPosition thisGlobalPosition =
         new GlobalPosition(thisBreitengrad, thisLaengengrad, elevation);
+
+    assert otherPosition.breitengrad != null;
+    double otherBreitengrad = otherPosition.breitengrad.getBreitengradDezimal();
+    assert otherPosition.laengengrad != null;
+    double otherLaengengrad = otherPosition.laengengrad.getLaengengradDezimal();
     GlobalPosition otherGlobalPosition =
         new GlobalPosition(otherBreitengrad, otherLaengengrad, elevation);
+
+    GeodeticCalculator geoCalc = new GeodeticCalculator();
+    Ellipsoid representingModelOfEarth = Ellipsoid.WGS84;
 
     return geoCalc.calculateGeodeticCurve(
         representingModelOfEarth, otherGlobalPosition, thisGlobalPosition);
