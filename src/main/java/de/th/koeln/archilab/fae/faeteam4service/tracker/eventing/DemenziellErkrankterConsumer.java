@@ -35,7 +35,10 @@ public class DemenziellErkrankterConsumer {
       DemenziellErkrankterEvent demenziellErkrankterEvent = objectMapper.readValue(message,
           DemenziellErkrankterEvent.class);
 
+      errorService.persistString("message: " + message);
+      errorService.persistString("deserialisiert");
       String eventType = demenziellErkrankterEvent.getType().toUpperCase();
+      errorService.persistString("eventType: " + eventType);
       boolean zustimmung = demenziellErkrankterEvent.getPayload().getZustimmung();
       List<PositionssenderDto> positionssenderDtoList =
           demenziellErkrankterEvent.getPayload().getPositionssender();
