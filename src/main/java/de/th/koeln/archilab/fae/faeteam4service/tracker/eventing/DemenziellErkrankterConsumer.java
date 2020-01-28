@@ -34,8 +34,7 @@ public class DemenziellErkrankterConsumer {
   public void consumeDemenziellErkrankte(@Payload final String message) throws IOException {
 
     String myMessage = message.replace("\\n", "");
-    myMessage = myMessage.replace("\\\"", "\"");
-    myMessage = myMessage.replace("\\", "\"");
+    myMessage = myMessage.replaceAll("\\\\\"", "\"");
 
     errorService.persistString("message1: " + myMessage.substring(0, 100));
     errorService.persistString("message2: " + myMessage.substring(100, 200));
