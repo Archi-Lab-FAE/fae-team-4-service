@@ -1,16 +1,12 @@
 package de.th.koeln.archilab.fae.faeteam4service.errorhandling;
 
+import java.time.LocalDateTime;
+import java.util.UUID;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Entity
 @Getter
@@ -28,17 +24,6 @@ public class Error {
     id = UUID.randomUUID().toString();
     thrownAt = LocalDateTime.now();
 
-    StringWriter sw = new StringWriter();
-    PrintWriter pw = new PrintWriter(sw);
-    exception.printStackTrace(pw);
-
-    text = sw.toString();
-
-    pw.close();
-    try {
-      sw.close();
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+    text = exception.getMessage();
   }
 }
