@@ -6,7 +6,6 @@ import static org.mockito.Mockito.when;
 
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import de.th.koeln.archilab.fae.faeteam4service.errorhandling.ErrorService;
 import de.th.koeln.archilab.fae.faeteam4service.tracker.eventing.dto.DemenziellErkrankterDto;
 import de.th.koeln.archilab.fae.faeteam4service.tracker.eventing.dto.KontaktpersonDto;
 import de.th.koeln.archilab.fae.faeteam4service.tracker.eventing.dto.PositionssenderDto;
@@ -43,7 +42,7 @@ public class DemenziellErkrankterConsumerTest {
   public void setUp() {
     this.mockTrackerRepository = Mockito.mock(TrackerRepository.class);
     this.demenziellErkrankterConsumer = new DemenziellErkrankterConsumer(mockTrackerRepository,
-        objectMapper, Mockito.mock(ErrorService.class));
+        objectMapper);
   }
 
   @Test

@@ -6,17 +6,15 @@ import javax.persistence.Embedded;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.gavaghan.geodesy.Ellipsoid;
 import org.gavaghan.geodesy.GeodeticCalculator;
 import org.gavaghan.geodesy.GeodeticCurve;
 import org.gavaghan.geodesy.GlobalPosition;
 import org.springframework.lang.Nullable;
 
-@Getter
-@Setter
 @Embeddable
 @AllArgsConstructor
+@Getter
 @NoArgsConstructor
 public class Position {
 

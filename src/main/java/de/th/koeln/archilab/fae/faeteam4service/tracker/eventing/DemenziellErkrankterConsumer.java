@@ -1,7 +1,6 @@
 package de.th.koeln.archilab.fae.faeteam4service.tracker.eventing;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import de.th.koeln.archilab.fae.faeteam4service.errorhandling.ErrorService;
 import de.th.koeln.archilab.fae.faeteam4service.tracker.eventing.dto.PositionssenderDto;
 import de.th.koeln.archilab.fae.faeteam4service.tracker.persistence.Tracker;
 import de.th.koeln.archilab.fae.faeteam4service.tracker.persistence.TrackerRepository;
@@ -19,15 +18,12 @@ public class DemenziellErkrankterConsumer {
 
   private final ObjectMapper objectMapper;
 
-  private final ErrorService errorService;
-
   private enum Type {CREATED, UPDATED, DELETED}
 
   public DemenziellErkrankterConsumer(final TrackerRepository trackerRepository,
-      final ObjectMapper objectMapper, final ErrorService errorService) {
+      final ObjectMapper objectMapper) {
     this.trackerRepository = trackerRepository;
     this.objectMapper = objectMapper;
-    this.errorService = errorService;
   }
 
   @KafkaListener(topics = "${spring.kafka.consumer.tracker.topic}", groupId = "${spring.kafka.group-id}", autoStartup = "${spring.kafka.enabled}")
@@ -35,12 +31,9 @@ public class DemenziellErkrankterConsumer {
 
     String myMessage = removeLineFeedCharacters(message);
 
-    errorService.persistString("message1: " + myMessage.substring(0, 100));
-    errorService.persistString("message2: " + myMessage.substring(100, 200));
-
     DemenziellErkrankterEvent demenziellErkrankterEvent = objectMapper.readValue(myMessage,
         DemenziellErkrankterEvent.class);
-    errorService.persistString("deserialisiert");
+
     String eventType = demenziellErkrankterEvent.getType().toUpperCase();
     boolean zustimmung = demenziellErkrankterEvent.getPayload().getZustimmung();
     List<PositionssenderDto> positionssenderDtoList =
