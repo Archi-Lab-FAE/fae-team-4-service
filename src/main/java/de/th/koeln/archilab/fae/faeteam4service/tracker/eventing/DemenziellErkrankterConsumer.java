@@ -33,8 +33,7 @@ public class DemenziellErkrankterConsumer {
   @KafkaListener(topics = "${spring.kafka.consumer.tracker.topic}", groupId = "${spring.kafka.group-id}", autoStartup = "${spring.kafka.enabled}")
   public void consumeDemenziellErkrankte(@Payload final String message) throws IOException {
 
-    String myMessage = message.substring(1, message.length() - 1);
-    myMessage = myMessage.replace("\\n", "").replace("\\", "");
+    String myMessage = removeLineFeedCharacters(message);
 
     errorService.persistString("message1: " + myMessage.substring(0, 100));
     errorService.persistString("message2: " + myMessage.substring(100, 200));
@@ -57,6 +56,15 @@ public class DemenziellErkrankterConsumer {
     if (eventType.equals(Type.DELETED.toString())) {
       handleDeleteEvent(positionssenderDtoList);
     }
+  }
+
+  private String removeLineFeedCharacters(final String message) {
+    String sequenceToRemove = "\\n";
+    if (message.contains(sequenceToRemove)) {
+      String myMessage = message.substring(1, message.length() - 1);
+      return myMessage.replace(sequenceToRemove, "").replace("\\", "");
+    }
+    return message;
   }
 
   private void handleNoZustimmung(final List<PositionssenderDto> positionssenderDtoList) {
