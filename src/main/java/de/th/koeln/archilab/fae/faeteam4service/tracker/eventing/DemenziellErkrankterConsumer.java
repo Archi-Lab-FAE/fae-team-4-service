@@ -36,8 +36,7 @@ public class DemenziellErkrankterConsumer {
       errorService.persistString("Anfang der Methode2");
       errorService.persistString("message leer? " + message.isEmpty());
       errorService.persistString("message laenge: " + message.length());
-      String myMessage = message.replaceAll("\\\\", "");
-      myMessage = myMessage.replaceAll("\"", "");
+      String myMessage = message.replaceAll("\\\\n", "");
       errorService.persistString("message1: " + myMessage.substring(0, 100));
       errorService.persistString("message2: " + myMessage.substring(100, 200));
       errorService.persistString("message3: " + myMessage.substring(200, 300));
