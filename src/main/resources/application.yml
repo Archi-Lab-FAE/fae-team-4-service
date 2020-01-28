@@ -51,7 +51,7 @@ server:
   compression.mime-types: application/json,application/xml,text/html,text/xml,text/plain
 
 # Messaging system
-messagingSystem.url: "team-3"
+messagingSystem.url: "fae-team-3-service/ausnahmesituation"
 
 # Logging Level
 logging:
