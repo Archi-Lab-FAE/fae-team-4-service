@@ -8,15 +8,15 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class GlobalErrorHandler {
 
-  private ErrorRepository errorRepository;
+  private ErrorService errorService;
 
-  public GlobalErrorHandler(ErrorRepository errorRepository) {
-    this.errorRepository = errorRepository;
+  public GlobalErrorHandler(ErrorService errorService) {
+    this.errorService = errorService;
   }
 
   @ExceptionHandler(Exception.class)
   public ResponseEntity<String> handle(final Exception ex) {
-    errorRepository.save(new Error(ex));
+    errorService.persistException(ex);
     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
   }
 }
