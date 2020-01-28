@@ -34,7 +34,8 @@ public class DemenziellErkrankterConsumer {
 
     try {
       errorService.persistString("Anfang der Methode2");
-      errorService.persistString("message1: " + message);
+      errorService.persistString("message leer? " + message.isEmpty());
+      errorService.persistString("message laenge: " + message.length());
       DemenziellErkrankterEvent demenziellErkrankterEvent = objectMapper.readValue(message,
           DemenziellErkrankterEvent.class);
 
