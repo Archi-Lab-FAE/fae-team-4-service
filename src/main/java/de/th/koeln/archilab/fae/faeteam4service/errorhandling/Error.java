@@ -3,7 +3,6 @@ package de.th.koeln.archilab.fae.faeteam4service.errorhandling;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
