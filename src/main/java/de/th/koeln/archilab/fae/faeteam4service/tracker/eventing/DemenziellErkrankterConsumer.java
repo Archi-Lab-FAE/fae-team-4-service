@@ -8,6 +8,7 @@ import de.th.koeln.archilab.fae.faeteam4service.tracker.persistence.TrackerRepos
 import java.util.List;
 import java.util.Optional;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -29,7 +30,7 @@ public class DemenziellErkrankterConsumer {
   }
 
   @KafkaListener(topics = "${spring.kafka.consumer.tracker.topic}", groupId = "${spring.kafka.group-id}", autoStartup = "${spring.kafka.enabled}")
-  public void consumeDemenziellErkrankte(final String message) {
+  public void consumeDemenziellErkrankte(@Payload final String message) {
     errorService.persistString("Anfang der Methode2");
     errorService.persistString("message1: " + message.substring(0, 250));
     errorService.persistString("message2: " + message.substring(250));
