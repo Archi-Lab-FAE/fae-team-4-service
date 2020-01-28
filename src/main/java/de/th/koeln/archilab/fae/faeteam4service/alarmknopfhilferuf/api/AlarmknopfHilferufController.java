@@ -30,7 +30,7 @@ public class AlarmknopfHilferufController {
     return new ResponseEntity(HttpStatus.OK);
   }
 
-  @ExceptionHandler(MessagingServiceUnavailableException.class)
+  @ExceptionHandler(Exception.class)
   public ResponseEntity<String> handle(final Exception ex) {
     errorRepository.save(new Error(ex));
     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
