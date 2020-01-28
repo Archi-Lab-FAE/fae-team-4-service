@@ -36,11 +36,13 @@ public class DemenziellErkrankterConsumer {
       errorService.persistString("Anfang der Methode2");
       errorService.persistString("message leer? " + message.isEmpty());
       errorService.persistString("message laenge: " + message.length());
-      errorService.persistString("message1: " + message.substring(0, 100));
-      errorService.persistString("message2: " + message.substring(100, 200));
-      errorService.persistString("message3: " + message.substring(200, 300));
-      errorService.persistString("message4: " + message.substring(300, 400));
-      errorService.persistString("message5: " + message.substring(400));
+      String myMessage = message.replaceAll("\\\\", "");
+      myMessage = myMessage.replaceAll("\"", "");
+      errorService.persistString("message1: " + myMessage.substring(0, 100));
+      errorService.persistString("message2: " + myMessage.substring(100, 200));
+      errorService.persistString("message3: " + myMessage.substring(200, 300));
+      errorService.persistString("message4: " + myMessage.substring(300, 400));
+      errorService.persistString("message5: " + myMessage.substring(400));
       DemenziellErkrankterEvent demenziellErkrankterEvent = objectMapper.readValue(message,
           DemenziellErkrankterEvent.class);
 
