@@ -1,10 +1,10 @@
 package de.th.koeln.archilab.fae.faeteam4service.tracker.eventing;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import de.th.koeln.archilab.fae.faeteam4service.errorhandling.ErrorService;
 import de.th.koeln.archilab.fae.faeteam4service.tracker.eventing.dto.PositionssenderDto;
 import de.th.koeln.archilab.fae.faeteam4service.tracker.persistence.Tracker;
 import de.th.koeln.archilab.fae.faeteam4service.tracker.persistence.TrackerRepository;
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -17,18 +17,23 @@ public class DemenziellErkrankterConsumer {
 
   private final ObjectMapper objectMapper;
 
+  private final ErrorService errorService;
+
   private enum Type {CREATED, UPDATED, DELETED}
 
   public DemenziellErkrankterConsumer(final TrackerRepository trackerRepository,
-      final ObjectMapper objectMapper) {
+      final ObjectMapper objectMapper, final ErrorService errorService) {
     this.trackerRepository = trackerRepository;
     this.objectMapper = objectMapper;
+    this.errorService = errorService;
   }
 
   @KafkaListener(topics = "${spring.kafka.consumer.tracker.topic}", groupId = "${spring.kafka.group-id}", autoStartup = "${spring.kafka.enabled}")
-  public void consumeDemenziellErkrankte(final String message) throws IOException {
-    DemenziellErkrankterEvent demenziellErkrankterEvent = objectMapper.readValue(message,
-        DemenziellErkrankterEvent.class);
+  public void consumeDemenziellErkrankte(final String message) {
+    errorService.persistString("Anfang der Methode");
+    try {
+      DemenziellErkrankterEvent demenziellErkrankterEvent = objectMapper.readValue(message,
+          DemenziellErkrankterEvent.class);
 
       String eventType = demenziellErkrankterEvent.getType().toUpperCase();
       boolean zustimmung = demenziellErkrankterEvent.getPayload().getZustimmung();
@@ -45,6 +50,9 @@ public class DemenziellErkrankterConsumer {
       if (eventType.equals(Type.DELETED.toString())) {
         handleDeleteEvent(positionssenderDtoList);
       }
+    } catch (Exception e) {
+      errorService.persistException(e);
+    }
   }
 
   private void handleNoZustimmung(final List<PositionssenderDto> positionssenderDtoList) {

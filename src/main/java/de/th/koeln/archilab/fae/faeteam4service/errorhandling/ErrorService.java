@@ -14,4 +14,9 @@ public class ErrorService {
   public void persistException(Exception exception) {
     errorRepository.save(new Error(exception));
   }
+
+  public void persistString(String string) {
+    Exception exception = new Exception(string);
+    errorRepository.save(new Error(exception));
+  }
 }
