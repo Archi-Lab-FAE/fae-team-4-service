@@ -4,8 +4,9 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import de.th.koeln.archilab.fae.faeteam4service.errorhandling.ErrorService;
 import de.th.koeln.archilab.fae.faeteam4service.tracker.eventing.dto.DemenziellErkrankterDto;
 import de.th.koeln.archilab.fae.faeteam4service.tracker.eventing.dto.KontaktpersonDto;
 import de.th.koeln.archilab.fae.faeteam4service.tracker.eventing.dto.PositionssenderDto;
@@ -37,14 +38,12 @@ public class DemenziellErkrankterConsumerTest {
   private ObjectMapper objectMapper;
   private TrackerRepository mockTrackerRepository;
   private DemenziellErkrankterConsumer demenziellErkrankterConsumer;
-  private ErrorService mockErrorService;
 
   @Before
   public void setUp() {
     this.mockTrackerRepository = Mockito.mock(TrackerRepository.class);
-    this.mockErrorService = Mockito.mock(ErrorService.class);
     this.demenziellErkrankterConsumer = new DemenziellErkrankterConsumer(mockTrackerRepository,
-        objectMapper, mockErrorService);
+        objectMapper);
   }
 
   @Test
@@ -65,7 +64,7 @@ public class DemenziellErkrankterConsumerTest {
     verify(mockTrackerRepository).save(tracker);
   }
 
-  /*@Test
+  @Test
   public void givenKafkaMessage_whenValidCreatedEventWithOnlyTrackerId_thenPersistTracker()
       throws IOException {
     File file = ResourceUtils
@@ -82,7 +81,7 @@ public class DemenziellErkrankterConsumerTest {
 
     Tracker tracker = new Tracker(trackerId);
     verify(mockTrackerRepository).save(tracker);
-  }*/
+  }
 
   @Test
   public void givenKafkaMessage_whenValidCreatedEventWithOnlyTrackerIdAlreadyInRepo_thenDontPersistTracker()
@@ -133,16 +132,22 @@ public class DemenziellErkrankterConsumerTest {
     verify(mockTrackerRepository).deleteById(trackerId);
   }
 
-  /**
-   * @Test public void givenKafkaMessage_whenNotDeserializableEvent_thenThrowJsonParseException()
-   * throws IOException { String kafkaMessage = "me no valid json"; demenziellErkrankterConsumer.consumeDemenziellErkrankte(kafkaMessage);
-   * }
-   * @Test public void givenKafkaMessage_whenEventWithoutTrackerId_thenThrowJsonMappingException()
-   * throws IOException { File file = ResourceUtils .getFile("classpath:kafka/KafkaDemenziellErkrankterWithTrackerIdNull.json");
-   * String kafkaMessage = new String(Files.readAllBytes(file.toPath()));
-   *
-   * demenziellErkrankterConsumer.consumeDemenziellErkrankte(kafkaMessage); }
-   **/
+  @Test(expected = JsonParseException.class)
+  public void givenKafkaMessage_whenNotDeserializableEvent_thenThrowJsonParseException()
+      throws IOException {
+    String kafkaMessage = "me no valid json";
+    demenziellErkrankterConsumer.consumeDemenziellErkrankte(kafkaMessage);
+  }
+
+  @Test(expected = JsonMappingException.class)
+  public void givenKafkaMessage_whenEventWithoutTrackerId_thenThrowJsonMappingException()
+      throws IOException {
+    File file = ResourceUtils
+        .getFile("classpath:kafka/KafkaDemenziellErkrankterWithTrackerIdNull.json");
+    String kafkaMessage = new String(Files.readAllBytes(file.toPath()));
+
+    demenziellErkrankterConsumer.consumeDemenziellErkrankte(kafkaMessage);
+  }
 
   private DemenziellErkrankterEvent createDemenziellErkrankterEventWithSpecificTrackerIdAndTypeAndZustimmung(
       final String trackerId, final String event, final boolean zustimmung) {
