@@ -65,7 +65,7 @@ public class DemenziellErkrankterConsumerTest {
     verify(mockTrackerRepository).save(tracker);
   }
 
-  @Test
+  /*@Test
   public void givenKafkaMessage_whenValidCreatedEventWithOnlyTrackerId_thenPersistTracker()
       throws IOException {
     File file = ResourceUtils
@@ -82,7 +82,7 @@ public class DemenziellErkrankterConsumerTest {
 
     Tracker tracker = new Tracker(trackerId);
     verify(mockTrackerRepository).save(tracker);
-  }
+  }*/
 
   @Test
   public void givenKafkaMessage_whenValidCreatedEventWithOnlyTrackerIdAlreadyInRepo_thenDontPersistTracker()
