@@ -1,4 +1,4 @@
-package de.th.koeln.archilab.fae.faeteam4service.tracker.eventing.dto;
+package de.th.koeln.archilab.fae.faeteam4service.tracker.eventing.dto.registrierung;
 
 import java.io.Serializable;
 import java.util.List;

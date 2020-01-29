@@ -1,0 +1,15 @@
+{
+  "payload": {
+    "trackerId": null,
+    "currentPosition": {
+      "longitude": 6.9533,
+      "latitude": 50.94595,
+      "altitude": 0.0
+    }
+  },
+  "id": "af35b508-6932-489d-b695-c4930637a6b0",
+  "time": "2020-01-29T22:07:51.333848+01:00",
+  "type": "tracker-tracked",
+  "version": 0,
+  "key": "66b99e98-dcfd-3149-816b-bad6ec3a5d7e"
+}

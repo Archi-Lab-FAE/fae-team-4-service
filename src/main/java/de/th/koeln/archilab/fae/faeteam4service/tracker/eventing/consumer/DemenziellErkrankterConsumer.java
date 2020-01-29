@@ -1,7 +1,10 @@
-package de.th.koeln.archilab.fae.faeteam4service.tracker.eventing;
+package de.th.koeln.archilab.fae.faeteam4service.tracker.eventing.consumer;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import de.th.koeln.archilab.fae.faeteam4service.tracker.eventing.dto.PositionssenderDto;
+import de.th.koeln.archilab.fae.faeteam4service.tracker.eventing.TrackerEvent;
+import de.th.koeln.archilab.fae.faeteam4service.tracker.eventing.dto.registrierung.DemenziellErkrankterDto;
+import de.th.koeln.archilab.fae.faeteam4service.tracker.eventing.dto.registrierung.PositionssenderDto;
 import de.th.koeln.archilab.fae.faeteam4service.tracker.persistence.Tracker;
 import de.th.koeln.archilab.fae.faeteam4service.tracker.persistence.TrackerRepository;
 import java.io.IOException;
@@ -31,13 +34,14 @@ public class DemenziellErkrankterConsumer {
 
     String myMessage = removeLineFeedCharacters(message);
 
-    DemenziellErkrankterEvent demenziellErkrankterEvent = objectMapper.readValue(myMessage,
-        DemenziellErkrankterEvent.class);
+    TrackerEvent<DemenziellErkrankterDto> trackerEvent = objectMapper
+        .readValue(myMessage, new TypeReference<TrackerEvent<DemenziellErkrankterDto>>() {
+        });
 
-    String eventType = demenziellErkrankterEvent.getType().toUpperCase();
-    boolean zustimmung = demenziellErkrankterEvent.getPayload().getZustimmung();
-    List<PositionssenderDto> positionssenderDtoList =
-        demenziellErkrankterEvent.getPayload().getPositionssender();
+    DemenziellErkrankterDto demenziellErkrankterDto = trackerEvent.getPayload();
+    String eventType = trackerEvent.getType().toUpperCase();
+    boolean zustimmung = demenziellErkrankterDto.getZustimmung();
+    List<PositionssenderDto> positionssenderDtoList = demenziellErkrankterDto.getPositionssender();
 
     if (!zustimmung) {
       handleNoZustimmung(positionssenderDtoList);

@@ -4,11 +4,14 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import de.th.koeln.archilab.fae.faeteam4service.tracker.eventing.dto.DemenziellErkrankterDto;
-import de.th.koeln.archilab.fae.faeteam4service.tracker.eventing.dto.KontaktpersonDto;
-import de.th.koeln.archilab.fae.faeteam4service.tracker.eventing.dto.PositionssenderDto;
+import de.th.koeln.archilab.fae.faeteam4service.tracker.eventing.consumer.DemenziellErkrankterConsumer;
+import de.th.koeln.archilab.fae.faeteam4service.tracker.eventing.dto.registrierung.DemenziellErkrankterDto;
+import de.th.koeln.archilab.fae.faeteam4service.tracker.eventing.dto.registrierung.KontaktpersonDto;
+import de.th.koeln.archilab.fae.faeteam4service.tracker.eventing.dto.registrierung.PositionssenderDto;
 import de.th.koeln.archilab.fae.faeteam4service.tracker.persistence.Tracker;
 import de.th.koeln.archilab.fae.faeteam4service.tracker.persistence.TrackerRepository;
 import java.io.File;
@@ -50,11 +53,11 @@ public class DemenziellErkrankterConsumerTest {
       throws IOException {
     String trackerId = "myTrackerTestId";
     String event = "created";
-    DemenziellErkrankterEvent demenziellErkrankterEvent =
+    TrackerEvent<DemenziellErkrankterDto> trackerEvent =
         createDemenziellErkrankterEventWithSpecificTrackerIdAndTypeAndZustimmung(trackerId, event,
             true);
 
-    String kafkaMessage = objectMapper.writeValueAsString(demenziellErkrankterEvent);
+    String kafkaMessage = objectMapper.writeValueAsString(trackerEvent);
     demenziellErkrankterConsumer.consumeDemenziellErkrankte(kafkaMessage);
 
     when(mockTrackerRepository.findById(trackerId)).thenReturn(Optional.empty());
@@ -70,9 +73,12 @@ public class DemenziellErkrankterConsumerTest {
         .getFile("classpath:kafka/KafkaDemenziellErkrankterWithOnlyEssentialFields.json");
     String kafkaMessage = new String(Files.readAllBytes(file.toPath()));
 
-    DemenziellErkrankterEvent demenziellErkrankterEvent = objectMapper.readValue(kafkaMessage,
-        DemenziellErkrankterEvent.class);
-    String trackerId = demenziellErkrankterEvent.getPayload().getPositionssender().get(0).getId();
+    TrackerEvent<DemenziellErkrankterDto> trackerEvent = objectMapper
+        .readValue(kafkaMessage, new TypeReference<TrackerEvent<DemenziellErkrankterDto>>() {
+        });
+
+    DemenziellErkrankterDto demenziellErkrankterDto = trackerEvent.getPayload();
+    String trackerId = demenziellErkrankterDto.getPositionssender().get(0).getId();
 
     demenziellErkrankterConsumer.consumeDemenziellErkrankte(kafkaMessage);
 
@@ -83,15 +89,18 @@ public class DemenziellErkrankterConsumerTest {
   }
 
   @Test
-  public void givenKafkaMessage_whenValidCreatedEventWithOnlyTrackerIdAlreadyInRepo_thenDontPersistTracker()
+  public void givenKafkaMessage_whenValidCreatedEventWithTrackerIdAlreadyInRepo_thenDontPersistTracker()
       throws IOException {
     File file = ResourceUtils
         .getFile("classpath:kafka/KafkaDemenziellErkrankterWithOnlyEssentialFields.json");
     String kafkaMessage = new String(Files.readAllBytes(file.toPath()));
 
-    DemenziellErkrankterEvent demenziellErkrankterEvent = objectMapper.readValue(kafkaMessage,
-        DemenziellErkrankterEvent.class);
-    String trackerId = demenziellErkrankterEvent.getPayload().getPositionssender().get(0).getId();
+    TrackerEvent<DemenziellErkrankterDto> trackerEvent = objectMapper.readValue(kafkaMessage,
+        new TypeReference<TrackerEvent<DemenziellErkrankterDto>>() {
+        });
+
+    DemenziellErkrankterDto demenziellErkrankterDto = trackerEvent.getPayload();
+    String trackerId = demenziellErkrankterDto.getPositionssender().get(0).getId();
 
     Tracker tracker = new Tracker(trackerId);
     when(mockTrackerRepository.findById(trackerId)).thenReturn(Optional.of(tracker));
@@ -106,11 +115,11 @@ public class DemenziellErkrankterConsumerTest {
       throws IOException {
     String trackerId = "myTrackerTestId";
     String event = "created";
-    DemenziellErkrankterEvent demenziellErkrankterEvent =
+    TrackerEvent<DemenziellErkrankterDto> trackerEvent =
         createDemenziellErkrankterEventWithSpecificTrackerIdAndTypeAndZustimmung(trackerId, event,
             false);
 
-    String kafkaMessage = objectMapper.writeValueAsString(demenziellErkrankterEvent);
+    String kafkaMessage = objectMapper.writeValueAsString(trackerEvent);
     demenziellErkrankterConsumer.consumeDemenziellErkrankte(kafkaMessage);
 
     verify(mockTrackerRepository).deleteById(trackerId);
@@ -121,22 +130,22 @@ public class DemenziellErkrankterConsumerTest {
       throws IOException {
     String trackerId = "myTrackerTestId";
     String event = "deleted";
-    DemenziellErkrankterEvent demenziellErkrankterEvent =
+    TrackerEvent<DemenziellErkrankterDto> trackerEvent =
         createDemenziellErkrankterEventWithSpecificTrackerIdAndTypeAndZustimmung(trackerId, event,
             true);
 
-    String kafkaMessage = objectMapper.writeValueAsString(demenziellErkrankterEvent);
+    String kafkaMessage = objectMapper.writeValueAsString(trackerEvent);
     demenziellErkrankterConsumer.consumeDemenziellErkrankte(kafkaMessage);
 
     verify(mockTrackerRepository).deleteById(trackerId);
   }
 
-  /*@Test(expected = JsonParseException.class)
+  @Test(expected = JsonParseException.class)
   public void givenKafkaMessage_whenNotDeserializableEvent_thenThrowJsonParseException()
       throws IOException {
     String kafkaMessage = "me no valid json";
     demenziellErkrankterConsumer.consumeDemenziellErkrankte(kafkaMessage);
-  }*/
+  }
 
   @Test(expected = JsonMappingException.class)
   public void givenKafkaMessage_whenEventWithoutTrackerId_thenThrowJsonMappingException()
@@ -148,7 +157,7 @@ public class DemenziellErkrankterConsumerTest {
     demenziellErkrankterConsumer.consumeDemenziellErkrankte(kafkaMessage);
   }
 
-  private DemenziellErkrankterEvent createDemenziellErkrankterEventWithSpecificTrackerIdAndTypeAndZustimmung(
+  private TrackerEvent<DemenziellErkrankterDto> createDemenziellErkrankterEventWithSpecificTrackerIdAndTypeAndZustimmung(
       final String trackerId, final String event, final boolean zustimmung) {
     List<KontaktpersonDto> kontaktpersonDtoList = getKontaktpersonDtoList();
 
@@ -160,18 +169,18 @@ public class DemenziellErkrankterConsumerTest {
     return getDemenziellErkrankterEvent(trackerId, event, demenziellErkrankterDto);
   }
 
-  private DemenziellErkrankterEvent getDemenziellErkrankterEvent(final String trackerId,
+  private TrackerEvent<DemenziellErkrankterDto> getDemenziellErkrankterEvent(final String trackerId,
       final String event,
       final DemenziellErkrankterDto demenziellErkrankterDto) {
     LocalDateTime localDateEvent = LocalDateTime.of(2020, Month.DECEMBER, 2, 12, 12);
-    DemenziellErkrankterEvent demenziellErkrankterEvent = new DemenziellErkrankterEvent();
-    demenziellErkrankterEvent.setId("eventId");
-    demenziellErkrankterEvent.setKey(trackerId);
-    demenziellErkrankterEvent.setVersion(1L);
-    demenziellErkrankterEvent.setTimestamp(localDateEvent);
-    demenziellErkrankterEvent.setType(event);
-    demenziellErkrankterEvent.setPayload(demenziellErkrankterDto);
-    return demenziellErkrankterEvent;
+    TrackerEvent<DemenziellErkrankterDto> trackerEvent = new TrackerEvent<>();
+    trackerEvent.setId("eventId");
+    trackerEvent.setKey(trackerId);
+    trackerEvent.setVersion(1L);
+    trackerEvent.setTimestamp(localDateEvent);
+    trackerEvent.setType(event);
+    trackerEvent.setPayload(demenziellErkrankterDto);
+    return trackerEvent;
   }
 
   private DemenziellErkrankterDto getDemenziellErkrankterDto(final boolean zustimmung,
