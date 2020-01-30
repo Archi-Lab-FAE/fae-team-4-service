@@ -3,10 +3,10 @@ package de.th.koeln.archilab.fae.faeteam4service.alarmknopfhilferuf;
 import de.th.koeln.archilab.fae.faeteam4service.alarmknopfhilferuf.eventing.AlarmknopfHilferufKafkaPublisher;
 import de.th.koeln.archilab.fae.faeteam4service.alarmknopfhilferuf.restpublish.MessagingServiceClient;
 import de.th.koeln.archilab.fae.faeteam4service.tracker.persistence.Tracker;
+import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.stream.Collectors;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 @Service
 public class AlarmknopfHilferufService {
@@ -14,7 +14,6 @@ public class AlarmknopfHilferufService {
   private final AlarmknopfHilferufKafkaPublisher alarmknopfHilferufKafkaPublisher;
   private final MessagingServiceClient messagingServiceClient;
 
-  @Autowired
   public AlarmknopfHilferufService(
       final AlarmknopfHilferufKafkaPublisher alarmknopfHilferufKafkaPublisher,
       final MessagingServiceClient messagingServiceClient) {
@@ -24,13 +23,13 @@ public class AlarmknopfHilferufService {
 
   public void sendHilferufeForTracker(final List<Tracker> ascertainedTrackerInProximity) {
     List<AlarmknopfHilferuf> createdHilferufe =
-        getAlarmknopfHilferufeList(ascertainedTrackerInProximity);
+        createAlarmknopfHilferufFrom(ascertainedTrackerInProximity);
 
     publishViaRest(createdHilferufe);
     publishOnKafka(createdHilferufe);
   }
 
-  private List<AlarmknopfHilferuf> getAlarmknopfHilferufeList(
+  private List<AlarmknopfHilferuf> createAlarmknopfHilferufFrom(
       final List<Tracker> ascertainedTrackerInProximity) {
     return ascertainedTrackerInProximity.stream()
         .map(Tracker::createAlarmknopfHilferuf)
@@ -38,13 +37,11 @@ public class AlarmknopfHilferufService {
   }
 
   private void publishOnKafka(final List<AlarmknopfHilferuf> createdHilferufe) {
-    for (AlarmknopfHilferuf alarmknopfHilferuf : createdHilferufe) {
-      alarmknopfHilferufKafkaPublisher.publishAlarmknopfHilferufAusgeloestEvent(alarmknopfHilferuf);
-    }
+    createdHilferufe.forEach(
+        alarmknopfHilferufKafkaPublisher::publishAlarmknopfHilferufAusgeloestEvent);
   }
 
   private void publishViaRest(final List<AlarmknopfHilferuf> createdHilferufe) {
-    createdHilferufe
-        .forEach(messagingServiceClient::alertMessagingSystemAboutAlarmknopfHilferuf);
+    createdHilferufe.forEach(messagingServiceClient::alertMessagingSystemAboutAlarmknopfHilferuf);
   }
 }
