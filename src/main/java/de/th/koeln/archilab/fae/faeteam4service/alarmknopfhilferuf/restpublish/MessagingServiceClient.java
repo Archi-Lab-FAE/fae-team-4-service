@@ -29,14 +29,14 @@ public class MessagingServiceClient {
     } catch (FeignException e) {
 
       String rundownBuilder =
-          "Failed request to adjacent service"
-              + "Status: "
+          "Failed request to adjacent service\n"
+              + "Status: \n"
               + e.status()
-              + "Method: "
+              + "Method: \n"
               + e.request().httpMethod()
-              + "Url: "
+              + "Url: \n"
               + e.request().url()
-              + "Body: "
+              + "Body: \n"
               + e.request().requestBody().asString();
 
       throw new IllegalStateException(rundownBuilder);
