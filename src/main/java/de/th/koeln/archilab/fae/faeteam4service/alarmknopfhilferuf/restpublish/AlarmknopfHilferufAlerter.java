@@ -42,6 +42,9 @@ public class AlarmknopfHilferufAlerter {
 
     instance.ifPresent(
         serviceInstance -> {
+          errorService.persistString(
+              "Requesting to " + serviceInstance.getUri().toString() + "/ausnahmesituation");
+
           try {
             restTemplate.postForObject(
                 serviceInstance.getUri().toString() + "/ausnahmesituation",
