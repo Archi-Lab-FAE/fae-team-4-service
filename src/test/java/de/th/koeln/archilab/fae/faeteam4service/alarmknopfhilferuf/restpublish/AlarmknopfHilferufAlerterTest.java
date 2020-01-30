@@ -6,9 +6,13 @@ import de.th.koeln.archilab.fae.faeteam4service.errorhandling.ErrorService;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
+
+import java.net.URI;
+import java.util.List;
 
 import static org.mockito.Mockito.*;
 
@@ -18,6 +22,7 @@ public class AlarmknopfHilferufAlerterTest {
   private static final String TEST_URL = "someUrl";
   private RestTemplate mockRestTemplate;
   private AusnahmesituationFactory ausnahmesituationFactory;
+  private DiscoveryClient mockDiscoveryClient;
 
   private AlarmknopfHilferuf testHilferuf;
   private Ausnahmesituation testAusnahmesituation;
@@ -26,13 +31,14 @@ public class AlarmknopfHilferufAlerterTest {
   public void setUp() {
     mockRestTemplate = mock(RestTemplate.class);
     ausnahmesituationFactory = mock(AusnahmesituationFactory.class);
+    mockDiscoveryClient = mock(DiscoveryClient.class);
     alarmknopfHilferufAlerter =
         new AlarmknopfHilferufAlerter(
             mockRestTemplate,
             TEST_URL,
             ausnahmesituationFactory,
             mock(ErrorService.class),
-            mock(DiscoveryClient.class));
+            mockDiscoveryClient);
 
     testHilferuf = new AlarmknopfHilferuf("trackerId");
     testAusnahmesituation = new Ausnahmesituation("someId", "someText");
@@ -40,22 +46,4 @@ public class AlarmknopfHilferufAlerterTest {
         .thenReturn(testAusnahmesituation);
   }
 
-  @Test
-  public void whenAlertFunctionIsCalledThenRestTemplateShouldReceiveTheParameters() {
-    /* alarmknopfHilferufAlerter.alertMessagingSystemAboutAlarmknopfHilferuf(testHilferuf);
-
-    verify(mockRestTemplate)
-        .postForObject(TEST_URL, testAusnahmesituation, Ausnahmesituation.class); */
-  }
-
-  @Test(expected = MessagingServiceUnavailableException.class)
-  public void
-      givenTheMessagingSeriviceIsUnavailableWhenTheAlertFunctionIsCalledThenTheServiceShouldThrowAMessagingServiceIsUnavailableException() {
-    /* when(mockRestTemplate.postForObject(TEST_URL, testAusnahmesituation, Ausnahmesituation.class))
-        .thenThrow(new RestClientException(""));
-
-    alarmknopfHilferufAlerter.alertMessagingSystemAboutAlarmknopfHilferuf(testHilferuf); */
-
-    throw new MessagingServiceUnavailableException();
-  }
 }
