@@ -34,16 +34,17 @@ public class AlarmknopfHilferufAlerter {
 
     try {
       restTemplate.postForObject(
-          getMessagingServiceUrl(), ausnahmesituation, Ausnahmesituation.class);
+          "http://fae-team-3-service/ausnahmesituation",
+          ausnahmesituation,
+          Ausnahmesituation.class);
     } catch (RestClientException e) {
       errorService.persistException(e);
       throw new CouldNotReachMessagingServiceException();
-    } catch (URISyntaxException e) {
-      errorService.persistException(e);
     }
   }
 
+  /*
   private URI getMessagingServiceUrl() throws URISyntaxException {
     return new URI(messagingServiceDiscoverer.discoverMessagingServiceUri() + "/ausnahmesituation");
-  }
+  } */
 }
