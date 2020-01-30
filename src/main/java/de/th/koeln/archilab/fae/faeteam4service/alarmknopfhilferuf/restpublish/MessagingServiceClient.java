@@ -30,7 +30,7 @@ public class MessagingServiceClient {
       restTemplate.postForObject(
           createMessagingServiceUrl(), ausnahmesituation, Ausnahmesituation.class);
     } catch (RestClientException e) {
-      throw new CouldNotReachMessagingServiceException();
+      throw new CouldNotReachMessagingServiceException(e);
     }
   }
 
