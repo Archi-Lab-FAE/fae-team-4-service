@@ -28,13 +28,10 @@ public class MessagingServiceClient {
 
     try {
       restTemplate.postForObject(
-          createMessagingServiceUrl(), ausnahmesituation, Ausnahmesituation.class);
+          "http://fae-team-3-service/ausnahmesituation", ausnahmesituation, Ausnahmesituation.class);
     } catch (RestClientException e) {
       throw new CouldNotReachMessagingServiceException(e);
     }
   }
 
-  private String createMessagingServiceUrl() {
-    return "http://" + messagingServiceId + "/ausnahmesituation";
-  }
 }
