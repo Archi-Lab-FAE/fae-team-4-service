@@ -40,20 +40,22 @@ public class AlarmknopfHilferufAlerter {
     Optional<ServiceInstance> instance =
         discoveryClient.getInstances(messagingSystemUrl).stream().findFirst();
 
+    String suffix= "/ausnahmesituation";
+
     instance.ifPresent(
         serviceInstance -> {
           errorService.persistString(
-              "Requesting to " + serviceInstance.getUri().toString() + "/ausnahmesituation");
+              "Requesting to " + serviceInstance.getUri().toString() + suffix);
 
           String answer= restTemplate.getForObject(
-                  serviceInstance.getUri().toString() + "/ausnahmesituation",
+                  serviceInstance.getUri().toString() + suffix,
                   String.class);
 
           errorService.persistString(answer.substring(0, 50));
 
           try {
             restTemplate.postForObject(
-                serviceInstance.getUri().toString() + "/ausnahmesituation",
+                serviceInstance.getUri().toString()+serviceInstance.getPort() + suffix,
                 ausnahmesituation,
                 Ausnahmesituation.class);
           } catch (RestClientException e) {
