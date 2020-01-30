@@ -8,6 +8,7 @@ public class AusnahmesituationFactory {
 
   Ausnahmesituation createAusnahmesituationFromAlarmknopfHilferuf(
       AlarmknopfHilferuf alarmknopfHilferuf) {
-    return new Ausnahmesituation(alarmknopfHilferuf.getTrackerId(), "");
+    return new Ausnahmesituation(
+        alarmknopfHilferuf.getTrackerId(), "Alarmknopf gedrückt! Hilfe benötigt!");
   }
 }
