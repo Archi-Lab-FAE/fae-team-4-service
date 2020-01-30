@@ -4,10 +4,10 @@ import org.springframework.web.client.RestClientException;
 
 public class CouldNotReachMessagingServiceException extends RuntimeException {
 
-  private RestClientException restClientException;
+  private final RestClientException restClientException;
 
-  CouldNotReachMessagingServiceException(RestClientException e) {
-    this.restClientException = e;
+  CouldNotReachMessagingServiceException(final RestClientException restClientException) {
+    this.restClientException = restClientException;
   }
 
   @Override
