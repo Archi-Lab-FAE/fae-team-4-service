@@ -3,7 +3,6 @@ server:
 spring:
   # Kafka
   kafka:
-    enabled: false
     bootstrap-servers: localhost:9092
 # Eureka
 eureka:

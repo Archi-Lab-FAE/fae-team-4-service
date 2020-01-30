@@ -21,8 +21,6 @@ public class DemenziellErkrankterConsumer {
 
   private final ObjectMapper objectMapper;
 
-  private enum Type {CREATED, UPDATED, DELETED}
-
   public DemenziellErkrankterConsumer(final TrackerRepository trackerRepository,
       final ObjectMapper objectMapper) {
     this.trackerRepository = trackerRepository;
@@ -32,14 +30,12 @@ public class DemenziellErkrankterConsumer {
   @KafkaListener(topics = "${spring.kafka.consumer.tracker.topic}", groupId = "${spring.kafka.group-id}", autoStartup = "${spring.kafka.enabled}")
   public void consumeDemenziellErkrankte(@Payload final String message) throws IOException {
 
-    String myMessage = removeLineFeedCharacters(message);
-
     TrackerEvent<DemenziellErkrankterDto> trackerEvent = objectMapper
-        .readValue(myMessage, new TypeReference<TrackerEvent<DemenziellErkrankterDto>>() {
+        .readValue(message, new TypeReference<TrackerEvent<DemenziellErkrankterDto>>() {
         });
 
     DemenziellErkrankterDto demenziellErkrankterDto = trackerEvent.getPayload();
-    String eventType = trackerEvent.getType().toUpperCase();
+    String incomingEventType = trackerEvent.getType();
     boolean zustimmung = demenziellErkrankterDto.getZustimmung();
     List<PositionssenderDto> positionssenderDtoList = demenziellErkrankterDto.getPositionssender();
 
@@ -47,21 +43,13 @@ public class DemenziellErkrankterConsumer {
       handleNoZustimmung(positionssenderDtoList);
       return;
     }
-    if (eventType.equals(Type.CREATED.toString()) || eventType.equals(Type.UPDATED.toString())) {
+    if (incomingEventType.equals(EventType.CREATED.getEventString()) ||
+        incomingEventType.equals(EventType.UPDATED.getEventString())) {
       handleCreateOrUpdatedEvent(positionssenderDtoList);
     }
-    if (eventType.equals(Type.DELETED.toString())) {
+    if (incomingEventType.equals(EventType.DELETED.getEventString())) {
       handleDeleteEvent(positionssenderDtoList);
     }
-  }
-
-  private String removeLineFeedCharacters(final String message) {
-    String sequenceToRemove = "\\n";
-    if (message.contains(sequenceToRemove)) {
-      String myMessage = message.substring(1, message.length() - 1);
-      return myMessage.replace(sequenceToRemove, "").replace("\\", "");
-    }
-    return message;
   }
 
   private void handleNoZustimmung(final List<PositionssenderDto> positionssenderDtoList) {
