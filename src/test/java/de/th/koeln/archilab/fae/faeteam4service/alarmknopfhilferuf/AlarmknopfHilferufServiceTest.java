@@ -5,7 +5,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import de.th.koeln.archilab.fae.faeteam4service.alarmknopfhilferuf.eventing.AlarmknopfHilferufKafkaPublisher;
-import de.th.koeln.archilab.fae.faeteam4service.alarmknopfhilferuf.restpublish.AlarmknopfHilferufAlerter;
+import de.th.koeln.archilab.fae.faeteam4service.alarmknopfhilferuf.restpublish.MessagingServiceClient;
 import de.th.koeln.archilab.fae.faeteam4service.tracker.persistence.Tracker;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,16 +16,16 @@ import org.mockito.Mockito;
 public class AlarmknopfHilferufServiceTest {
 
   private final AlarmknopfHilferufKafkaPublisher mockAlarmknopfHilferufKafkaPublisher;
-  private final AlarmknopfHilferufAlerter mockAlarmknopfHilferufAlerter;
+  private final MessagingServiceClient mockMessagingServiceClient;
   private final AlarmknopfHilferufService alarmknopfHilferufService;
 
   public AlarmknopfHilferufServiceTest() {
     this.mockAlarmknopfHilferufKafkaPublisher = Mockito
         .mock(AlarmknopfHilferufKafkaPublisher.class);
-    this.mockAlarmknopfHilferufAlerter = Mockito.mock(AlarmknopfHilferufAlerter.class);
+    this.mockMessagingServiceClient = Mockito.mock(MessagingServiceClient.class);
     this.alarmknopfHilferufService =
         new AlarmknopfHilferufService(mockAlarmknopfHilferufKafkaPublisher,
-            mockAlarmknopfHilferufAlerter);
+                mockMessagingServiceClient);
   }
 
   @Test
@@ -64,7 +64,7 @@ public class AlarmknopfHilferufServiceTest {
 
     ArgumentCaptor<AlarmknopfHilferuf> argument = ArgumentCaptor.forClass(AlarmknopfHilferuf.class);
 
-    verify(mockAlarmknopfHilferufAlerter, times(4))
+    verify(mockMessagingServiceClient, times(4))
             .alertMessagingSystemAboutAlarmknopfHilferuf(argument.capture());
 
     List<AlarmknopfHilferuf> capturedTrackersToSend = argument.getAllValues();

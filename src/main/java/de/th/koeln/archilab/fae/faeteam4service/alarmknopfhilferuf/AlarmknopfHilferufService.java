@@ -1,7 +1,7 @@
 package de.th.koeln.archilab.fae.faeteam4service.alarmknopfhilferuf;
 
 import de.th.koeln.archilab.fae.faeteam4service.alarmknopfhilferuf.eventing.AlarmknopfHilferufKafkaPublisher;
-import de.th.koeln.archilab.fae.faeteam4service.alarmknopfhilferuf.restpublish.AlarmknopfHilferufAlerter;
+import de.th.koeln.archilab.fae.faeteam4service.alarmknopfhilferuf.restpublish.MessagingServiceClient;
 import de.th.koeln.archilab.fae.faeteam4service.tracker.persistence.Tracker;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -12,14 +12,14 @@ import org.springframework.stereotype.Service;
 public class AlarmknopfHilferufService {
 
   private final AlarmknopfHilferufKafkaPublisher alarmknopfHilferufKafkaPublisher;
-  private final AlarmknopfHilferufAlerter alarmknopfHilferufAlerter;
+  private final MessagingServiceClient messagingServiceClient;
 
   @Autowired
   public AlarmknopfHilferufService(
       final AlarmknopfHilferufKafkaPublisher alarmknopfHilferufKafkaPublisher,
-      final AlarmknopfHilferufAlerter alarmknopfHilferufAlerter) {
+      final MessagingServiceClient messagingServiceClient) {
     this.alarmknopfHilferufKafkaPublisher = alarmknopfHilferufKafkaPublisher;
-    this.alarmknopfHilferufAlerter = alarmknopfHilferufAlerter;
+    this.messagingServiceClient = messagingServiceClient;
   }
 
   public void sendHilferufeForTracker(final List<Tracker> ascertainedTrackerInProximity) {
@@ -45,6 +45,6 @@ public class AlarmknopfHilferufService {
 
   private void publishViaRest(final List<AlarmknopfHilferuf> createdHilferufe) {
     createdHilferufe
-        .forEach(alarmknopfHilferufAlerter::alertMessagingSystemAboutAlarmknopfHilferuf);
+        .forEach(messagingServiceClient::alertMessagingSystemAboutAlarmknopfHilferuf);
   }
 }
