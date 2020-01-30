@@ -4,7 +4,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-@FeignClient(name = "fae-team-3-service", decode404 = true)
+@FeignClient(name = "fae-team-3-service")
 public interface MessagingServiceFeignClient {
 
   @RequestMapping(value = "/ausnahmesituation", method = RequestMethod.POST)
