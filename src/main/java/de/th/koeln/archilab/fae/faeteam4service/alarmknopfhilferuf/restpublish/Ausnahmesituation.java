@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-class Ausnahmesituation {
+public class Ausnahmesituation {
 
   private String positionssenderId;
   private String text;
