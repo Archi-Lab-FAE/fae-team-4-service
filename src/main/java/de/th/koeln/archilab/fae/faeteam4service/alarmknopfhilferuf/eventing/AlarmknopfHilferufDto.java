@@ -1,4 +1,4 @@
-package de.th.koeln.archilab.fae.faeteam4service.alarmknopfhilferuf;
+package de.th.koeln.archilab.fae.faeteam4service.alarmknopfhilferuf.eventing;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.Getter;
@@ -10,14 +10,14 @@ import java.util.UUID;
 @Getter
 @Setter
 @NoArgsConstructor
-public class AlarmknopfHilferufDto {
+class AlarmknopfHilferufDto {
 
   private final String id = UUID.randomUUID().toString();
 
   private String trackerId;
 
   @JsonCreator
-  public AlarmknopfHilferufDto(final String trackerId) {
+  AlarmknopfHilferufDto(final String trackerId) {
     this.trackerId = trackerId;
   }
 }

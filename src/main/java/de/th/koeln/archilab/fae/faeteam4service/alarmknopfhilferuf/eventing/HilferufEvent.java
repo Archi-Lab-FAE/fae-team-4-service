@@ -2,7 +2,7 @@ package de.th.koeln.archilab.fae.faeteam4service.alarmknopfhilferuf.eventing;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import de.th.koeln.archilab.fae.faeteam4service.alarmknopfhilferuf.AlarmknopfHilferufDto;
+
 import java.time.LocalDateTime;
 import java.util.UUID;
 import lombok.Getter;
