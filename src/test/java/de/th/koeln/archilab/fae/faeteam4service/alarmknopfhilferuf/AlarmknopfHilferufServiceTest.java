@@ -1,9 +1,9 @@
 package de.th.koeln.archilab.fae.faeteam4service.alarmknopfhilferuf;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
+import de.th.koeln.archilab.fae.faeteam4service.alarmknopf.persistence.Alarmknopf;
 import de.th.koeln.archilab.fae.faeteam4service.alarmknopfhilferuf.eventing.AlarmknopfHilferufKafkaPublisher;
 import de.th.koeln.archilab.fae.faeteam4service.alarmknopfhilferuf.restpublish.MessagingServiceClient;
 import de.th.koeln.archilab.fae.faeteam4service.tracker.persistence.Tracker;
@@ -19,13 +19,16 @@ public class AlarmknopfHilferufServiceTest {
   private final MessagingServiceClient mockMessagingServiceClient;
   private final AlarmknopfHilferufService alarmknopfHilferufService;
 
+  private final Alarmknopf testAlarmknopf;
+
   public AlarmknopfHilferufServiceTest() {
-    this.mockAlarmknopfHilferufKafkaPublisher = Mockito
-        .mock(AlarmknopfHilferufKafkaPublisher.class);
+    this.mockAlarmknopfHilferufKafkaPublisher =
+        Mockito.mock(AlarmknopfHilferufKafkaPublisher.class);
     this.mockMessagingServiceClient = Mockito.mock(MessagingServiceClient.class);
     this.alarmknopfHilferufService =
-        new AlarmknopfHilferufService(mockAlarmknopfHilferufKafkaPublisher,
-                mockMessagingServiceClient);
+        new AlarmknopfHilferufService(
+            mockAlarmknopfHilferufKafkaPublisher, mockMessagingServiceClient);
+    testAlarmknopf = mock(Alarmknopf.class);
   }
 
   @Test
@@ -37,7 +40,7 @@ public class AlarmknopfHilferufServiceTest {
       trackerList.add(new Tracker(id));
     }
 
-    alarmknopfHilferufService.sendHilferufeForTracker(trackerList);
+    alarmknopfHilferufService.sendHilferufeForTracker(trackerList, testAlarmknopf);
 
     ArgumentCaptor<AlarmknopfHilferuf> argument = ArgumentCaptor.forClass(AlarmknopfHilferuf.class);
 
@@ -60,12 +63,12 @@ public class AlarmknopfHilferufServiceTest {
       trackerList.add(new Tracker(id));
     }
 
-    alarmknopfHilferufService.sendHilferufeForTracker(trackerList);
+    alarmknopfHilferufService.sendHilferufeForTracker(trackerList, testAlarmknopf);
 
     ArgumentCaptor<AlarmknopfHilferuf> argument = ArgumentCaptor.forClass(AlarmknopfHilferuf.class);
 
     verify(mockMessagingServiceClient, times(4))
-            .alertMessagingSystemAboutAlarmknopfHilferuf(argument.capture());
+        .alertMessagingSystemAboutAlarmknopfHilferuf(argument.capture(), eq(testAlarmknopf));
 
     List<AlarmknopfHilferuf> capturedTrackersToSend = argument.getAllValues();
 

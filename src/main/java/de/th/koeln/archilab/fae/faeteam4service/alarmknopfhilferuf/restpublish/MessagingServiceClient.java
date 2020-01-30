@@ -1,5 +1,6 @@
 package de.th.koeln.archilab.fae.faeteam4service.alarmknopfhilferuf.restpublish;
 
+import de.th.koeln.archilab.fae.faeteam4service.alarmknopf.persistence.Alarmknopf;
 import de.th.koeln.archilab.fae.faeteam4service.alarmknopfhilferuf.AlarmknopfHilferuf;
 import feign.FeignException;
 import org.springframework.stereotype.Component;
@@ -17,9 +18,11 @@ public class MessagingServiceClient {
     this.messagingServiceFeignClient = messagingServiceFeignClient;
   }
 
-  public void alertMessagingSystemAboutAlarmknopfHilferuf(AlarmknopfHilferuf alarmknopfHilferuf) {
+  public void alertMessagingSystemAboutAlarmknopfHilferuf(
+      AlarmknopfHilferuf alarmknopfHilferuf, Alarmknopf alarmknopf) {
     Ausnahmesituation ausnahmesituation =
-        ausnahmesituationFactory.createAusnahmesituationFromAlarmknopfHilferuf(alarmknopfHilferuf);
+        ausnahmesituationFactory.createAusnahmesituationFromAlarmknopfHilferuf(
+            alarmknopfHilferuf, alarmknopf);
 
     try {
       messagingServiceFeignClient.createAusnahmesituation(ausnahmesituation);

@@ -1,5 +1,6 @@
 package de.th.koeln.archilab.fae.faeteam4service.alarmknopfhilferuf;
 
+import de.th.koeln.archilab.fae.faeteam4service.alarmknopf.persistence.Alarmknopf;
 import de.th.koeln.archilab.fae.faeteam4service.alarmknopfhilferuf.eventing.AlarmknopfHilferufKafkaPublisher;
 import de.th.koeln.archilab.fae.faeteam4service.alarmknopfhilferuf.restpublish.MessagingServiceClient;
 import de.th.koeln.archilab.fae.faeteam4service.tracker.persistence.Tracker;
@@ -21,11 +22,12 @@ public class AlarmknopfHilferufService {
     this.messagingServiceClient = messagingServiceClient;
   }
 
-  public void sendHilferufeForTracker(final List<Tracker> ascertainedTrackerInProximity) {
+  public void sendHilferufeForTracker(
+      final List<Tracker> ascertainedTrackerInProximity, final Alarmknopf alarmknopf) {
     List<AlarmknopfHilferuf> createdHilferufe =
         createAlarmknopfHilferufFrom(ascertainedTrackerInProximity);
 
-    publishViaRest(createdHilferufe);
+    publishViaRest(createdHilferufe, alarmknopf);
     publishOnKafka(createdHilferufe);
   }
 
@@ -41,7 +43,11 @@ public class AlarmknopfHilferufService {
         alarmknopfHilferufKafkaPublisher::publishAlarmknopfHilferufAusgeloestEvent);
   }
 
-  private void publishViaRest(final List<AlarmknopfHilferuf> createdHilferufe) {
-    createdHilferufe.forEach(messagingServiceClient::alertMessagingSystemAboutAlarmknopfHilferuf);
+  private void publishViaRest(
+      final List<AlarmknopfHilferuf> createdHilferufe, final Alarmknopf alarmknopf) {
+    createdHilferufe.forEach(
+        alarmknopfHilferuf ->
+            messagingServiceClient.alertMessagingSystemAboutAlarmknopfHilferuf(
+                alarmknopfHilferuf, alarmknopf));
   }
 }

@@ -27,18 +27,15 @@ public class AlarmknopfdruckService {
     this.alarmknopfHilferufService = alarmknopfHilferufService;
   }
 
-  /**
-   * Handles a Knopfdruck and created Hilferufe if there are DementiellErkranktePersonen nearby the
-   * Alarmknopf.
-   *
-   * @param alarmknopfdruck alarmknopfdruck
-   */
   public void handleAlarmknopfdruck(final Alarmknopfdruck alarmknopfdruck) {
-    Alarmknopf pressedAlarmknopf = alarmknopfRepository.findById(alarmknopfdruck.getAlarmknopfId())
-        .orElseThrow(() -> new IllegalArgumentException("Alarmknopf not found"));
+    Alarmknopf pressedAlarmknopf =
+        alarmknopfRepository
+            .findById(alarmknopfdruck.getAlarmknopfId())
+            .orElseThrow(() -> new IllegalArgumentException("Alarmknopf not found"));
 
     List<Tracker> ascertainedTrackerInProximity = getTrackerInProximity(pressedAlarmknopf);
-    alarmknopfHilferufService.sendHilferufeForTracker(ascertainedTrackerInProximity);
+    alarmknopfHilferufService.sendHilferufeForTracker(
+        ascertainedTrackerInProximity, pressedAlarmknopf);
   }
 
   private List<Tracker> getTrackerInProximity(final Alarmknopf alarmknopf) {

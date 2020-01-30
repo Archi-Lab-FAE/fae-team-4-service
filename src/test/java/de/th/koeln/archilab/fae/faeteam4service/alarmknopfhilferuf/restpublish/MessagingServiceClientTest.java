@@ -1,5 +1,6 @@
 package de.th.koeln.archilab.fae.faeteam4service.alarmknopfhilferuf.restpublish;
 
+import de.th.koeln.archilab.fae.faeteam4service.alarmknopf.persistence.Alarmknopf;
 import de.th.koeln.archilab.fae.faeteam4service.alarmknopfhilferuf.AlarmknopfHilferuf;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,6 +14,7 @@ public class MessagingServiceClientTest {
 
   private AlarmknopfHilferuf testHilferuf;
   private Ausnahmesituation testAusnahmesituation;
+  private Alarmknopf testAlarmknopf;
 
   @Before
   public void setUp() {
@@ -23,13 +25,13 @@ public class MessagingServiceClientTest {
 
     testHilferuf = new AlarmknopfHilferuf("trackerId");
     testAusnahmesituation = new Ausnahmesituation("someId", "someText");
-    when(ausnahmesituationFactory.createAusnahmesituationFromAlarmknopfHilferuf(testHilferuf))
+    when(ausnahmesituationFactory.createAusnahmesituationFromAlarmknopfHilferuf(testHilferuf, testAlarmknopf))
         .thenReturn(testAusnahmesituation);
   }
 
   @Test
   public void shouldCallMessagingServiceWithAusnahmesituationWhenHilferufIsGiven() {
-    messagingServiceClient.alertMessagingSystemAboutAlarmknopfHilferuf(testHilferuf);
+    messagingServiceClient.alertMessagingSystemAboutAlarmknopfHilferuf(testHilferuf, testAlarmknopf);
 
     verify(messagingServiceFeignClient).createAusnahmesituation(testAusnahmesituation);
   }
