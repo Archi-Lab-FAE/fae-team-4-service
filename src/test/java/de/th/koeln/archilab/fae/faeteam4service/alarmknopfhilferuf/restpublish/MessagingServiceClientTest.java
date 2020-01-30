@@ -11,19 +11,17 @@ import static org.mockito.Mockito.*;
 public class MessagingServiceClientTest {
 
   private MessagingServiceClient messagingServiceClient;
-  private RestTemplate mockRestTemplate;
-  private static final String TEST_MESSAGING_SERVICE_ID = "someId";
+  private MessagingServiceFeignClient messagingServiceFeignClient;
 
   private AlarmknopfHilferuf testHilferuf;
   private Ausnahmesituation testAusnahmesituation;
 
   @Before
   public void setUp() {
-    mockRestTemplate = mock(RestTemplate.class);
+    messagingServiceFeignClient = mock(MessagingServiceFeignClient.class);
     AusnahmesituationFactory ausnahmesituationFactory = mock(AusnahmesituationFactory.class);
     messagingServiceClient =
-        new MessagingServiceClient(
-            mockRestTemplate, ausnahmesituationFactory, TEST_MESSAGING_SERVICE_ID);
+        new MessagingServiceClient(ausnahmesituationFactory, messagingServiceFeignClient);
 
     testHilferuf = new AlarmknopfHilferuf("trackerId");
     testAusnahmesituation = new Ausnahmesituation("someId", "someText");
@@ -35,17 +33,6 @@ public class MessagingServiceClientTest {
   public void shouldCallMessagingServiceWithAusnahmesituationWhenHilferufIsGiven() {
     messagingServiceClient.alertMessagingSystemAboutAlarmknopfHilferuf(testHilferuf);
 
-    verify(mockRestTemplate)
-        .postForObject(anyString(), eq(testAusnahmesituation), eq(Ausnahmesituation.class));
-  }
-
-  @Test(expected = CouldNotReachMessagingServiceException.class)
-  public void
-      shouldThrowCouldNotReachMessagingServiceExceptionWhenRestTemplateThrowsRestClientException() {
-    when(mockRestTemplate.postForObject(
-            anyString(), eq(testAusnahmesituation), eq(Ausnahmesituation.class)))
-        .thenThrow(new RestClientException(""));
-
-    messagingServiceClient.alertMessagingSystemAboutAlarmknopfHilferuf(testHilferuf);
+    verify(messagingServiceFeignClient).createAusnahmeSituation(testAusnahmesituation);
   }
 }
