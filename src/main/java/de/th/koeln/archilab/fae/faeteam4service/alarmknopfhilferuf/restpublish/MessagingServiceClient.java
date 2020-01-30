@@ -36,7 +36,7 @@ public class MessagingServiceClient {
               + "Body: "
               + e.request().requestBody().asString();
 
-      throw new RuntimeException(rundownBuilder);
+      throw new IllegalStateException(rundownBuilder);
     }
   }
 }
