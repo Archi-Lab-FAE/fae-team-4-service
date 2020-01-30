@@ -38,4 +38,8 @@ public class TrackerService {
         .filter(alarmknopf::isTrackerInProximity)
         .collect(Collectors.toList());
   }
+
+  public List<Tracker> getAllTrackers(){
+    return trackerRepository.findAll();
+  }
 }

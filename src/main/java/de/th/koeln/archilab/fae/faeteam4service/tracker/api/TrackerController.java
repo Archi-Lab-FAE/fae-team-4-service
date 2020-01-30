@@ -8,11 +8,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 public class TrackerController {
@@ -21,6 +19,11 @@ public class TrackerController {
 
   public TrackerController(TrackerService trackerService) {
     this.trackerService = trackerService;
+  }
+
+  @GetMapping(path = "tracker")
+  public ResponseEntity<List<Tracker>> deleteTracker() {
+    return new ResponseEntity<>(trackerService.getAllTrackers(), HttpStatus.OK);
   }
 
   @DeleteMapping(path = "tracker/{trackerId}")
@@ -59,15 +62,13 @@ public class TrackerController {
       savedTrackerDto =
           new TrackerDto(
               savedTrackerPosition.getBreitengrad().getBreitengradDezimal(),
-              savedTrackerPosition.getLaengengrad().getLaengengradDezimal()
-          );
+              savedTrackerPosition.getLaengengrad().getLaengengradDezimal());
     }
 
     return savedTrackerDto;
   }
 
   private Tracker createTrackerFrom(final String trackerId, final TrackerDto trackerDto) {
-    return new Tracker(
-        trackerId, trackerDto.getLaengengrad(), trackerDto.getBreitengrad());
+    return new Tracker(trackerId, trackerDto.getLaengengrad(), trackerDto.getBreitengrad());
   }
 }
