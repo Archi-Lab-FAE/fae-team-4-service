@@ -12,17 +12,14 @@ public class AlarmknopfHilferufAlerter {
   private RestTemplate restTemplate;
   private AusnahmesituationFactory ausnahmesituationFactory;
   private ErrorService errorService;
-  private MessagingServiceDiscoverer messagingServiceDiscoverer;
 
   public AlarmknopfHilferufAlerter(
       RestTemplate restTemplate,
       AusnahmesituationFactory ausnahmesituationFactory,
-      ErrorService errorService,
-      MessagingServiceDiscoverer messagingServiceDiscoverer) {
+      ErrorService errorService) {
     this.restTemplate = restTemplate;
     this.ausnahmesituationFactory = ausnahmesituationFactory;
     this.errorService = errorService;
-    this.messagingServiceDiscoverer = messagingServiceDiscoverer;
   }
 
   public void alertMessagingSystemAboutAlarmknopfHilferuf(AlarmknopfHilferuf alarmknopfHilferuf) {
@@ -39,9 +36,4 @@ public class AlarmknopfHilferufAlerter {
       throw new CouldNotReachMessagingServiceException();
     }
   }
-
-  /*
-  private URI getMessagingServiceUrl() throws URISyntaxException {
-    return new URI(messagingServiceDiscoverer.discoverMessagingServiceUri() + "/ausnahmesituation");
-  } */
 }
