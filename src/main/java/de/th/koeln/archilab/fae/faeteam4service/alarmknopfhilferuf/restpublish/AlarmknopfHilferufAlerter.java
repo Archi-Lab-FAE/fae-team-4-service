@@ -45,6 +45,12 @@ public class AlarmknopfHilferufAlerter {
           errorService.persistString(
               "Requesting to " + serviceInstance.getUri().toString() + "/ausnahmesituation");
 
+          String answer= restTemplate.getForObject(
+                  serviceInstance.getUri().toString() + "/ausnahmesituation",
+                  String.class);
+
+          errorService.persistString(answer.substring(0, 50));
+
           try {
             restTemplate.postForObject(
                 serviceInstance.getUri().toString() + "/ausnahmesituation",
