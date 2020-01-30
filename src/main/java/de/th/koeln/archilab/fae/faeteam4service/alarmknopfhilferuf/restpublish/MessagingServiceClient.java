@@ -16,7 +16,7 @@ public class MessagingServiceClient {
   public MessagingServiceClient(
       final RestTemplate restTemplate,
       final AusnahmesituationFactory ausnahmesituationFactory,
-      @Value("messagingSystem.eurekaId") String messagingServiceId) {
+      @Value("${messagingSystem.eurekaId}") String messagingServiceId) {
     this.restTemplate = restTemplate;
     this.ausnahmesituationFactory = ausnahmesituationFactory;
     this.messagingServiceId = messagingServiceId;
