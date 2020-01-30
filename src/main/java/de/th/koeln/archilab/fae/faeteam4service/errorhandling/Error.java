@@ -25,6 +25,6 @@ public class Error {
     thrownAt = LocalDateTime.now();
 
     text =
-        exception.toString() + " " + exception.getMessage() + " " + exception.getLocalizedMessage();
+        exception.getMessage();
   }
 }

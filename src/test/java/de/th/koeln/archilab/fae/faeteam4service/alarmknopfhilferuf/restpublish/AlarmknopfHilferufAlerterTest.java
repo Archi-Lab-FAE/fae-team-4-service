@@ -1,7 +1,9 @@
 package de.th.koeln.archilab.fae.faeteam4service.alarmknopfhilferuf.restpublish;
 
 import de.th.koeln.archilab.fae.faeteam4service.alarmknopfhilferuf.AlarmknopfHilferuf;
+import de.th.koeln.archilab.fae.faeteam4service.errorhandling.ErrorService;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
@@ -23,7 +25,7 @@ public class AlarmknopfHilferufAlerterTest {
     mockRestTemplate = mock(RestTemplate.class);
     ausnahmesituationFactory = mock(AusnahmesituationFactory.class);
     alarmknopfHilferufAlerter =
-        new AlarmknopfHilferufAlerter(mockRestTemplate, TEST_URL, ausnahmesituationFactory);
+        new AlarmknopfHilferufAlerter(mockRestTemplate, TEST_URL, ausnahmesituationFactory, mock(ErrorService.class));
 
     testHilferuf = new AlarmknopfHilferuf("trackerId");
     testAusnahmesituation = new Ausnahmesituation("someId", "someText");
