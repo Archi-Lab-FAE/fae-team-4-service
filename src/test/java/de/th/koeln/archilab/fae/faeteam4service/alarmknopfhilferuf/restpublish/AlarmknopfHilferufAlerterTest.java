@@ -13,7 +13,6 @@ public class AlarmknopfHilferufAlerterTest {
   private AlarmknopfHilferufAlerter alarmknopfHilferufAlerter;
   private RestTemplate mockRestTemplate;
   private AusnahmesituationFactory ausnahmesituationFactory;
-  private MessagingServiceDiscoverer mockMessagingServiceDiscoverer;
 
   private AlarmknopfHilferuf testHilferuf;
   private Ausnahmesituation testAusnahmesituation;
@@ -22,13 +21,9 @@ public class AlarmknopfHilferufAlerterTest {
   public void setUp() {
     mockRestTemplate = mock(RestTemplate.class);
     ausnahmesituationFactory = mock(AusnahmesituationFactory.class);
-    mockMessagingServiceDiscoverer = mock(MessagingServiceDiscoverer.class);
     alarmknopfHilferufAlerter =
         new AlarmknopfHilferufAlerter(
-            mockRestTemplate,
-            ausnahmesituationFactory,
-            mock(ErrorService.class),
-            mockMessagingServiceDiscoverer);
+            mockRestTemplate, ausnahmesituationFactory, mock(ErrorService.class));
 
     testHilferuf = new AlarmknopfHilferuf("trackerId");
     testAusnahmesituation = new Ausnahmesituation("someId", "someText");
