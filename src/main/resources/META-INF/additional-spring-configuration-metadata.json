@@ -44,6 +44,11 @@
       "name": "spring.kafka.enabled",
       "type": "java.lang.Boolean",
       "description": "Description for spring.kafka.enabled."
+    },
+    {
+      "name": "messagingSystem.eurekaId",
+      "type": "java.lang.String",
+      "description": "Description for messagingSystem.eurekaId."
     }
   ]
 }
