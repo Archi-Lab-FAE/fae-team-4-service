@@ -40,7 +40,6 @@ public class AlarmknopfHilferufAlerterTest {
         .postForObject(TEST_URL, testAusnahmesituation, Ausnahmesituation.class);
   }
 
-  @Ignore
   @Test(expected = MessagingServiceUnavailableException.class)
   public void
       givenTheMessagingSeriviceIsUnavailableWhenTheAlertFunctionIsCalledThenTheServiceShouldThrowAMessagingServiceIsUnavailableException() {
