@@ -29,7 +29,7 @@ public class AlarmknopfHilferufAlerter {
     try {
       restTemplate.postForObject(messagingSystemUrl, ausnahmesituation, Ausnahmesituation.class);
     } catch (RestClientException e) {
-      throw new MessagingServiceUnavailableException();
+      throw e;
     }
   }
 }
