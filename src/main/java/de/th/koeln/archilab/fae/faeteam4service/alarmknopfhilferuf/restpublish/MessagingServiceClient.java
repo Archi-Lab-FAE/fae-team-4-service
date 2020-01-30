@@ -19,6 +19,6 @@ public class MessagingServiceClient {
   public void alertMessagingSystemAboutAlarmknopfHilferuf(AlarmknopfHilferuf alarmknopfHilferuf) {
     Ausnahmesituation ausnahmesituation =
         ausnahmesituationFactory.createAusnahmesituationFromAlarmknopfHilferuf(alarmknopfHilferuf);
-    messagingServiceFeignClient.createAusnahmeSituation(ausnahmesituation);
+    messagingServiceFeignClient.createAusnahmesituation(ausnahmesituation);
   }
 }

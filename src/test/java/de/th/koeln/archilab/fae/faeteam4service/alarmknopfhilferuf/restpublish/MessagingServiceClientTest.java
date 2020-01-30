@@ -3,8 +3,6 @@ package de.th.koeln.archilab.fae.faeteam4service.alarmknopfhilferuf.restpublish;
 import de.th.koeln.archilab.fae.faeteam4service.alarmknopfhilferuf.AlarmknopfHilferuf;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.web.client.RestClientException;
-import org.springframework.web.client.RestTemplate;
 
 import static org.mockito.Mockito.*;
 
@@ -33,6 +31,6 @@ public class MessagingServiceClientTest {
   public void shouldCallMessagingServiceWithAusnahmesituationWhenHilferufIsGiven() {
     messagingServiceClient.alertMessagingSystemAboutAlarmknopfHilferuf(testHilferuf);
 
-    verify(messagingServiceFeignClient).createAusnahmeSituation(testAusnahmesituation);
+    verify(messagingServiceFeignClient).createAusnahmesituation(testAusnahmesituation);
   }
 }

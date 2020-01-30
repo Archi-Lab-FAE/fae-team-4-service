@@ -8,5 +8,5 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public interface MessagingServiceFeignClient {
 
   @RequestMapping(value = "/ausnahmesituation", method = RequestMethod.POST)
-  Ausnahmesituation createAusnahmeSituation(Ausnahmesituation ausnahmesituation);
+  Ausnahmesituation createAusnahmesituation(Ausnahmesituation ausnahmesituation);
 }
