@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @FeignClient("fae-team-3-service")
 public interface MessagingServiceFeignClient {
 
-  @RequestMapping(value = "/ausnahmesitation", method = RequestMethod.POST)
+  @RequestMapping(value = "/ausnahmesituation", method = RequestMethod.POST)
   Ausnahmesituation createAusnahmeSituation(Ausnahmesituation ausnahmesituation);
 }
