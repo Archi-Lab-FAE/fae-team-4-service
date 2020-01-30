@@ -1,7 +1,6 @@
 package de.th.koeln.archilab.fae.faeteam4service.alarmknopfhilferuf.restpublish;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.stereotype.Component;
 
@@ -21,10 +20,9 @@ public class MessagingServiceDiscoverer {
   }
 
   URI discoverMessagingServiceUri() {
-    ServiceInstance serviceInstance =
-        discoveryClient.getInstances(messagingServiceId).stream()
-            .findFirst()
-            .orElseThrow(NoInstanceOfMessagingServiceFoundException::new);
-    return serviceInstance.getUri();
+    return discoveryClient.getInstances(messagingServiceId).stream()
+        .findFirst()
+        .orElseThrow(NoInstanceOfMessagingServiceFoundException::new)
+        .getUri();
   }
 }
