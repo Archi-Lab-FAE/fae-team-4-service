@@ -3,6 +3,7 @@ package de.th.koeln.archilab.fae.faeteam4service.alarmknopfhilferuf.restpublish;
 import de.th.koeln.archilab.fae.faeteam4service.alarmknopfhilferuf.AlarmknopfHilferuf;
 import de.th.koeln.archilab.fae.faeteam4service.errorhandling.ErrorService;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
@@ -31,6 +32,8 @@ public class AlarmknopfHilferufAlerter {
           "http://fae-team-3-service/ausnahmesituation",
           ausnahmesituation,
           Ausnahmesituation.class);
+    } catch (HttpClientErrorException e) {
+      errorService.persistString("Status: " + e.getStatusText());
     } catch (RestClientException e) {
       errorService.persistException(e);
       throw new CouldNotReachMessagingServiceException();
