@@ -25,6 +25,6 @@ public class Error {
     id = UUID.randomUUID().toString();
     thrownAt = LocalDateTime.now();
 
-    text = exception.getMessage();
+    text = exception.toString() + " " + exception.getMessage();
   }
 }
