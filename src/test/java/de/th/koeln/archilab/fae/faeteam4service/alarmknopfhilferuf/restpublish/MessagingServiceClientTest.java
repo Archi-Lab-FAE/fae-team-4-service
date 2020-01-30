@@ -36,19 +36,14 @@ public class MessagingServiceClientTest {
     messagingServiceClient.alertMessagingSystemAboutAlarmknopfHilferuf(testHilferuf);
 
     verify(mockRestTemplate)
-        .postForObject(
-            "http://" + TEST_MESSAGING_SERVICE_ID + "/ausnahmesituation",
-            testAusnahmesituation,
-            Ausnahmesituation.class);
+        .postForObject(anyString(), eq(testAusnahmesituation), eq(Ausnahmesituation.class));
   }
 
   @Test(expected = CouldNotReachMessagingServiceException.class)
   public void
       shouldThrowCouldNotReachMessagingServiceExceptionWhenRestTemplateThrowsRestClientException() {
     when(mockRestTemplate.postForObject(
-            anyString(),
-            eq(testAusnahmesituation),
-            eq(Ausnahmesituation.class)))
+            anyString(), eq(testAusnahmesituation), eq(Ausnahmesituation.class)))
         .thenThrow(new RestClientException(""));
 
     messagingServiceClient.alertMessagingSystemAboutAlarmknopfHilferuf(testHilferuf);
